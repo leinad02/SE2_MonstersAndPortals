@@ -1,5 +1,6 @@
 package t_industries.monstersandportals;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,7 +15,7 @@ public class Portal extends AppCompatActivity implements View.OnClickListener {
 
     int position;
     Button portal;
-    WebView webView;
+    //WebView webView;
 
 
     @Override
@@ -24,10 +25,32 @@ public class Portal extends AppCompatActivity implements View.OnClickListener {
         portal = (Button)findViewById(R.id.portalBtn);
         portal.setOnClickListener(this);
 
-        webView = (WebView) findViewById(R.id.webView);
+       /* webView = (WebView) findViewById(R.id.webView);
         webView.loadUrl("file:///C:/Users/SW/AndroidStudioProjects/SE2_MonstersAndPortals_NEUohneLibGDX/app/src/main/assets/portal2.html");
+*/
 
+        Thread timer = new Thread(){
 
+            public void run(){
+                try{
+                    sleep(5000); //Dauer der Gif Animation / "Splash-Screen"
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }finally {
+                    Intent intent = new Intent(Portal.this, MenuActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+        };
+        timer.start();;
+
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        finish();
     }
 
 
