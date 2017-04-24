@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="t_industries.monstersandportals.DiceActivity"
+    android:weightSum="1">
+
+
+    <ImageView
+        android:id="@+id/iv_dicepreview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/d0"
+        android:scaleType="centerInside"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="195dp" />
+
+    <Button
+        android:id="@+id/b_roll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/roll"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/iv_dicepreview"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>
