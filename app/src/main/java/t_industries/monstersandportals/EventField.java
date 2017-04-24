@@ -43,6 +43,7 @@ public class EventField extends AppCompatActivity {
 
     public void checkodd(View v){
         do {
+
             number=number%2;
             if (number == 1) {
                 //Spieler bewegen und zurück
