@@ -31,6 +31,7 @@ public class EventField extends AppCompatActivity {
 
     public void checkstraight(View v){
         do {
+            number=number%2;
             if (number == 0) {
 
                 //Spieler bewegen und zurück
@@ -42,6 +43,7 @@ public class EventField extends AppCompatActivity {
 
     public void checkodd(View v){
         do {
+            number=number%2;
             if (number == 1) {
                 //Spieler bewegen und zurück
             } else {
