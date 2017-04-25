@@ -11,4 +11,5 @@
     <string name="playerTwo">Player 2:</string>
     <string name="serverClose">Server schließen</string>
     <string name="disconnect">Disconnect</string>
+    <string name="roll">Würfle!</string>
 </resources>
