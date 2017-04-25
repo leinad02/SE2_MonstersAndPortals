@@ -14,6 +14,10 @@ public class Spielbrett extends AppCompatActivity{
 
     static int turn = 0;
     static String[] gameBoard = new String[48]; // 8 x 6 Spielfeld
+    static String[] monster = new String[48];
+    static String[] portal = new String[48];
+    static String[] risk = new String[48];
+
     static Map<Integer, Integer> portalPositionValue;
     static Map<Integer, Integer> monsterPositionValue;
     static Map<Integer, Integer> riskPositionValue;
@@ -34,7 +38,9 @@ public class Spielbrett extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spielbrett);
 
+        gameBoard();
         setBoard();
+
 
 
 
@@ -47,17 +53,19 @@ public class Spielbrett extends AppCompatActivity{
                 if ( userPosition != 47 && rivalPosition != 47) {
 
                     if (userTurn()) {
-                        System.out.println("Du bist dran:");
+
                         int rolledNo = 3;
-                        System.out.println("Ziehe weiter:");
+                        System.out.println("Host zieht weiter:");
                         newUserPosition(rolledNo);
                         checkBoard();
+                        System.out.println("Gast ist dran:");
                     } else {
-                        System.out.println("Dein Gegner ist dran:");
+
                         int rolledNo = 2;
-                        System.out.println("Dein Gegner zieht weiter:");
+                        System.out.println("Gast zieht weiter:");
                         newrivalPosition(rolledNo);
                         checkBoard();
+                        System.out.println("Host dran:");
                     }
                 }
 
@@ -83,21 +91,21 @@ public class Spielbrett extends AppCompatActivity{
         for (int i = 0; i < 4; i++) {
             int portalPositionKey = (int) (Math.random() * 35) + 5;
             if (!portalPositionValue.keySet().contains(portalPositionKey)) {
-                portalPositionValue.put((int) (Math.random() * 100) + 1, (int) (Math.random() * 10) + 5);
+                portalPositionValue.put((int) (Math.random() * 40) + 1, (int) (Math.random() * 10) + 5);
             } else {
                 i--;
             }
             int monsterPositionKey = (int) (Math.random() * 40) + 10;
             if (!portalPositionValue.keySet().contains(portalPositionKey) &&
                     !monsterPositionValue.keySet().contains(portalPositionKey)) {
-                monsterPositionValue.put((int) (Math.random() * 100) + 1, (int) (Math.random() * 10) + 5);
+                monsterPositionValue.put((int) (Math.random() * 40) + 1, (int) (Math.random() * 10) + 5);
             } else {
                 i--;
             }
             int riskPositionKey = (int) (Math.random() * 35) + 5;
             if (!portalPositionValue.keySet().contains(portalPositionKey) &&
                     !riskPositionValue.keySet().contains(portalPositionKey)) {
-                riskPositionValue.put((int) (Math.random() * 100) + 1, (int) (Math.random() * 10) + 5);
+                riskPositionValue.put((int) (Math.random() * 40) + 1, (int) (Math.random() * 10) + 5);
             } else {
                 i--;
             }
@@ -121,7 +129,7 @@ public class Spielbrett extends AppCompatActivity{
     }
 
 
-    public static void newUserPosition(int rolledNo) {
+    public static void newUserPosition(int rolledNo) {                // Bewegt den Host
 
         if ( gameBoard[userPosition] == "H G"){
             gameBoard[userPosition] = "G";
@@ -133,12 +141,17 @@ public class Spielbrett extends AppCompatActivity{
         if ( userPosition > 47 ){
             userPosition = 47;
         }
-        gameBoard[userPosition] = "H";
-        System.out.println("Hostposition ist:" + userPosition);
+
+        if ( gameBoard[userPosition] == "G"){
+            gameBoard[userPosition] = "H G";
+        } else {
+            gameBoard[userPosition] = "H";
+        }
+        System.out.println("Hostposition ist: " + userPosition);
         // userPosition = checkMonsterOrPortalOrRisk(userPosition);
     }
 
-    public static void newrivalPosition(int rolledNo) {
+    public static void newrivalPosition(int rolledNo) {             // Bewegt den Gast
 
         if ( gameBoard[rivalPosition] == "H G"){
             gameBoard[rivalPosition] = "H";
@@ -150,16 +163,21 @@ public class Spielbrett extends AppCompatActivity{
         if ( rivalPosition > 47 ){
             rivalPosition = 47;
         }
-        gameBoard[rivalPosition] = "G";
-        System.out.println("Die Position des Gastspielers ist:" + rivalPosition);
+
+        if ( gameBoard[rivalPosition] == "H"){
+            gameBoard[rivalPosition] = "H G";
+        } else {
+            gameBoard[rivalPosition] = "G";
+        }
+        System.out.println("Die Position des Gastspielers ist: " + rivalPosition);
         // rivalPosition = checkMonsterOrPortalOrRisk(rivalPosition);
     }
 
-    private static int checkMonsterOrPortalOrRisk(int position) {
+    private static int checkMonsterOrPortalOrRisk(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
         if (monsterPositionValue.keySet().contains(position)) {
             System.out.println("Ohhh Nein! Ein MONSTER greift dich an!");
             position = position - monsterPositionValue.get(position);
-        } else if (portalPositionValue.keySet().contains(position)) {
+        } else if (portalPositionValue.keySet().contains(position)) {   // Hier wird in der Zukunft die Klasse Portal ausgeführt
             System.out.println("Es ist ein magisches PORTAL!");
             position = position + portalPositionValue.get(position);
         } else if (riskPositionValue.keySet().contains(position)) {
@@ -179,11 +197,11 @@ public class Spielbrett extends AppCompatActivity{
     public void main(String args[]) {
         System.out.println("WILLKOMMEN BEI MONSTERS & PORTALS!");
 
-        gameBoard();
+
     }
 
 
-    public void setBoard(){
+    public void setBoard(){     //Die buttons aus dem Layout werden ins code übernommen
 
         f0 = (Button) findViewById(R.id.f0);
         f1 = (Button) findViewById(R.id.f1);
@@ -243,14 +261,19 @@ public class Spielbrett extends AppCompatActivity{
 
         for (int i = 0; i < gameBoard.length; i++ ){
             gameBoard[i] = "";
+            monster[i] = "";
+            portal[i] = "";
+            risk[i] = "";
         }
 
         gameBoard[0] = "H G";
         f0.setText(gameBoard[0]);
 
+
+
     }
 
-    public void checkBoard(){
+    public void checkBoard(){       //checkt wo Host & Gast sich gerade befinden
 
         f0.setText(gameBoard[0]);       f10.setText(gameBoard[10]);      f20.setText(gameBoard[20]);        f30.setText(gameBoard[30]);        f40.setText(gameBoard[40]);
         f1.setText(gameBoard[1]);       f11.setText(gameBoard[11]);      f21.setText(gameBoard[21]);        f31.setText(gameBoard[31]);        f41.setText(gameBoard[41]);
@@ -263,6 +286,7 @@ public class Spielbrett extends AppCompatActivity{
         f8.setText(gameBoard[8]);       f18.setText(gameBoard[18]);      f28.setText(gameBoard[28]);        f38.setText(gameBoard[38]);
         f9.setText(gameBoard[9]);       f19.setText(gameBoard[19]);      f29.setText(gameBoard[29]);        f39.setText(gameBoard[39]);
 
-    }
+        // f10.setBackgroundColor(Color.BLUE);      f20.setBackgroundColor(Color.BLUE);     f30.setBackgroundColor(Color.BLUE);    f40.setBackgroundColor(Color.BLUE);
 
+    }
 }
