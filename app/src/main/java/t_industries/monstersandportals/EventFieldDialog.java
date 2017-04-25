@@ -4,10 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
-
 import java.util.Random;
-
 import static java.lang.String.valueOf;
 
 /**
