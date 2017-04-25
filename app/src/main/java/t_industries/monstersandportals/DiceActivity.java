@@ -25,7 +25,7 @@ public class DiceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dice);
 
         b_roll = (Button) findViewById(R.id.b_roll);
-        iv_dicepreview = (ImageView) findViewById(R.id.iv_dicepreview);
+        iv_dicepreview = (ImageView) findViewById(R.id.dicepreview);
 
         random = new Random();
 
