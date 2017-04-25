@@ -13,6 +13,9 @@ import static java.lang.String.valueOf;
  * Created by Jasmin on 24.04.2017.
  */
 
+//Wird dann als eigene Methode in die Gameaktivity eingebunden, wenn das Spielbrett in die
+//Gameaktivity eingebaut worden ist.
+
 public class EventFieldDialog extends AppCompatActivity {
     Random random = new Random();
     private int number = (random.nextInt(10) + 1);
