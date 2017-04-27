@@ -35,6 +35,9 @@ dependencies {
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.4'
 
 }
+
+//UM Jenkins einzubinden
+
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
