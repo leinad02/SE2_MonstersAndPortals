@@ -10,6 +10,7 @@ package t_industries.monstersandportals;
  * Created by SW on 30.04.2017.
  */
 
+
 public class Monster extends AppCompatActivity{
     int position;
     //zum handlen der Threads
@@ -49,6 +50,7 @@ public class Monster extends AppCompatActivity{
         Spielbrett.setUserPosition(position);
         }
         * */
+
                         dialog.cancel();
                     }
                 });
@@ -57,5 +59,3 @@ public class Monster extends AppCompatActivity{
         });
     }
 }
-
-

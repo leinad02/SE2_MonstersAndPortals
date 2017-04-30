@@ -105,22 +105,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         } else {
             Toast.makeText(GameActivity.this, "Keine Daten vorhanden!", Toast.LENGTH_LONG).show();
         }
-
-        /*Object object = getIntent().getSerializableExtra("object");
-        if(object instanceof MyServer){
-            final MyServer server = (MyServer) object;
-            closeServer.setVisibility(View.VISIBLE);
-            if(closeServer.isPressed()){
-                server.stopServer();
-            }
-        } else if(object instanceof MyClient){
-            final MyClient client = (MyClient) object;
-            client.sendWelcomeMessage();
-            disconnect.setVisibility(View.VISIBLE);
-            if(disconnect.isPressed()){
-                client.disconnect();
-            }
-        }*/
     }
 
     private void startRunnableServer(){
@@ -161,30 +145,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     };
 
-    /*private void gameLoop(String type, int myRolledNr) {
-        if(type.equalsIgnoreCase("client")){
-            newUserPosition(myRolledNr);
-            checkBoard();
-            while(updateClient.getReadyForTurnClient() == 0){
-                Toast.makeText(GameActivity.this, "Bitte warten, der Server ist noch am Zug.", Toast.LENGTH_LONG).show();
-            }
-            newrivalPosition(updateClient.getPosition());
-            checkBoard();
-            //Toast.makeText(GameActivity.this, "Server würfelte " + updateClient.getPosition(), Toast.LENGTH_LONG).show();
-            gameHandlerClient(type);
-        } else if(type.equalsIgnoreCase("server")){
-            newUserPosition(myRolledNr);
-            checkBoard();
-            while(updateServer.getReadyForTurnServer() == 0){
-                Toast.makeText(GameActivity.this, "Bitte warten, der Client ist noch am Zug.", Toast.LENGTH_LONG).show();
-            }
-            newrivalPosition(updateServer.getPosition());
-            checkBoard();
-            //Toast.makeText(GameActivity.this, "Client würfelte " + updateServer.getPosition(), Toast.LENGTH_LONG).show();
-            gameHandlerServer(type);
-        }
-    }*/
-
     private void gameHandlerClient() {
         rollClient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,8 +159,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         System.out.println("Client zieht weiter:");
                         new MessageClient(rolledNo, updateClient).execute();
                         System.out.println("Host ist dran:");
-                        //updateClient.setCheckTurnClient(false);
-                        //roll.setVisibility(View.INVISIBLE);
                         newrivalPosition(rolledNo);
                         checkBoard();
                         startRunnableClient();
@@ -208,14 +166,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
                     if (userPosition == 47) {
                         Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
-                        //updateClient.setCheckTurnClient(false);
-                        //roll.setVisibility(View.INVISIBLE);
-                        //gameLoop(type);
                     } else if (rivalPosition == 47) {
                         Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
-                        //updateClient.setCheckTurnClient(false);
-                        //roll.setVisibility(View.INVISIBLE);
-                        //gameLoop(type);
                     }
 
             }
@@ -235,8 +187,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     System.out.println("Host zieht weiter:");
                     new MessageServer(rolledNo, updateServer).execute();
                     System.out.println("Client ist dran:");
-                    //updateServer.setCheckTurnServer(false);
-                    //roll.setVisibility(View.INVISIBLE);
                     newUserPosition(rolledNo);
                     checkBoard();
                     startRunnableServer();
@@ -244,14 +194,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
                 if (userPosition == 47) {
                     Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
-                    //updateServer.setCheckTurnServer(false);
-                    //roll.setVisibility(View.INVISIBLE);
-                    //gameLoop(type);
                 } else if (rivalPosition == 47) {
                     Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
-                    //updateServer.setCheckTurnServer(false);
-                    //roll.setVisibility(View.INVISIBLE);
-                    //gameLoop(type);
                 }
             }
         });
@@ -507,48 +451,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         @Override
         protected Void doInBackground(Void... params) {
             server.sendPosition(this.rolledNr, this.updateServer);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result){
-            super.onPostExecute(result);
-        }
-    }
-
-    private class UpdateClientBack extends AsyncTask<Void, Void, Void> {
-        int myRollNr, rivalRollNr;
-        public UpdateClientBack(int myRollNr, int rivalRollNr){
-            this.myRollNr = myRollNr;
-            this.rivalRollNr = rivalRollNr;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            newUserPosition(myRollNr);
-            newrivalPosition(rivalRollNr);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result){
-            super.onPostExecute(result);
-            checkBoard();
-        }
-    }
-
-    private class UpdateServerBack extends AsyncTask<Void, Void, Void> {
-        int myRollNr, rivalRollNr;
-        public UpdateServerBack(int myRollNr, int rivalRollNr){
-            this.myRollNr = myRollNr;
-            this.rivalRollNr = rivalRollNr;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            newUserPosition(myRollNr);
-            newrivalPosition(rivalRollNr);
-            checkBoard();
             return null;
         }
 
