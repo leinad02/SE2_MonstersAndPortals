@@ -10,6 +10,8 @@ import t_industries.monstersandportals.NetworkClasses.ForClient;
 import t_industries.monstersandportals.NetworkClasses.LoginRequest;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
 import t_industries.monstersandportals.NetworkClasses.ServerName;
+import t_industries.monstersandportals.NetworkClasses.UpdateClient;
+import t_industries.monstersandportals.NetworkClasses.UpdateServer;
 
 /**
  * Created by Michi on 07.04.2017.
@@ -17,7 +19,12 @@ import t_industries.monstersandportals.NetworkClasses.ServerName;
 
 public class MyClientListener extends Listener implements Serializable {
     ForClient forClient;
+    UpdateClient updateClient;
     public MyClientListener(){}
+
+    public MyClientListener(UpdateClient updateClient){
+        this.updateClient = updateClient;
+    }
 
     public MyClientListener(ForClient forClient) {
         this.forClient = forClient;
@@ -43,6 +50,13 @@ public class MyClientListener extends Listener implements Serializable {
         } else if(object instanceof ServerName){
             ServerName serverName = (ServerName) object;
             this.forClient.setName(serverName.getNameFromServer());
+        } else if(object instanceof UpdateClient){
+            UpdateClient updateClient = (UpdateClient) object;
+            this.updateClient.setPosition(updateClient.getPosition());
+            this.updateClient.setReadyForTurnClient(1);
+            connection.sendTCP(updateClient);
+        } else if(object instanceof UpdateServer){
+            UpdateServer updateServer = (UpdateServer) object;
         }
     }
 

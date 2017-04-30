@@ -10,6 +10,8 @@ import t_industries.monstersandportals.NetworkClasses.LoginRequest;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
 import t_industries.monstersandportals.NetworkClasses.Message;
 import t_industries.monstersandportals.NetworkClasses.ServerName;
+import t_industries.monstersandportals.NetworkClasses.UpdateClient;
+import t_industries.monstersandportals.NetworkClasses.UpdateServer;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -51,11 +53,11 @@ public class MyServer implements Serializable{
         server.sendToAllTCP(serverName);
         }
 
-    public void startServerNew(){
+    public void startServerNew(UpdateServer updateServer){
         server.start();
         try {
             server.bind(TCP_PORT, UDP_PORT);
-            MyServerListener listener = new MyServerListener();
+            MyServerListener listener = new MyServerListener(updateServer);
             server.addListener(listener);
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,6 +66,13 @@ public class MyServer implements Serializable{
 
     public void stopServer(){
         server.stop();
+    }
+
+    public void sendPosition(int rolledNr, UpdateServer updateServer){
+        UpdateClient updateClient = new UpdateClient();
+        updateClient.setPosition(rolledNr);
+        server.sendToAllTCP(updateClient);
+        updateServer.setReadyForTurnServer(0);
     }
 
     private void registerKryoClasses(){
@@ -75,6 +84,8 @@ public class MyServer implements Serializable{
         kryo.register(ForServer.class);
         kryo.register(ForClient.class);
         kryo.register(Message.class);
+        kryo.register(UpdateClient.class);
+        kryo.register(UpdateServer.class);
     }
 
 }

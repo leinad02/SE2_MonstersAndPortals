@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,10 +27,15 @@ public class ClientActivity extends Activity implements View.OnClickListener {
     ForClient forClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*Die Titelleiste (Akku etc.) wird ausgeblendet wichtig, dies muss vor setContentView geschehen, sonst schmeißt
+        das Programm eine Exception*/
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
         //Damit der Screen immer aktiv bleibt, diese kleine Änderung
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        // Der Screen wird noch auf Fullscreen gesetzt
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         name = (EditText) findViewById(R.id.textfieldNameClient);
         ip = (EditText) findViewById(R.id.textfieldIP);
