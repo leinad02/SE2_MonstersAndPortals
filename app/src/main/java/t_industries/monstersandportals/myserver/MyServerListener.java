@@ -12,6 +12,8 @@ import t_industries.monstersandportals.NetworkClasses.LoginRequest;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
 import t_industries.monstersandportals.NetworkClasses.Message;
 import t_industries.monstersandportals.NetworkClasses.ServerName;
+import t_industries.monstersandportals.NetworkClasses.UpdateClient;
+import t_industries.monstersandportals.NetworkClasses.UpdateServer;
 
 
 /**
@@ -23,9 +25,13 @@ public class MyServerListener extends Listener implements Serializable {
     ClientRegister clientRegister;
     String name;
     ForServer forServer;
+    UpdateServer updateServer;
 
     public MyServerListener(){
+    }
 
+    public MyServerListener(UpdateServer updateServer){
+        this.updateServer = updateServer;
     }
 
     public MyServerListener(ClientRegister clientRegister, String name, ForServer forServer) {
@@ -57,7 +63,15 @@ public class MyServerListener extends Listener implements Serializable {
             LoginResponse response = new LoginResponse();
             response.setResponseText("Testeintrag");
             connection.sendTCP(response);
+        } else if(object instanceof UpdateServer){
+            UpdateServer updateServer = (UpdateServer) object;
+            this.updateServer.setPosition(updateServer.getPosition());
+            this.updateServer.setReadyForTurnServer(1);
+            connection.sendTCP(updateServer);
+        } else if(object instanceof UpdateClient){
+            UpdateClient updateClient = (UpdateClient) object;
         }
+
     }
 
 }

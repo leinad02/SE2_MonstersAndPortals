@@ -10,6 +10,8 @@ import t_industries.monstersandportals.NetworkClasses.LoginRequest;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
 import t_industries.monstersandportals.NetworkClasses.Message;
 import t_industries.monstersandportals.NetworkClasses.ServerName;
+import t_industries.monstersandportals.NetworkClasses.UpdateClient;
+import t_industries.monstersandportals.NetworkClasses.UpdateServer;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -55,11 +57,11 @@ public class MyClient implements Serializable{
 
     }
 
-    public void connectNew(String ip){
+    public void connectNew(String ip, UpdateClient updateClient){
         try {
             client.start();
             client.connect(TIMEOUT, ip, TCP_PORT, UDP_PORT);
-            client.addListener(new MyClientListener());
+            client.addListener(new MyClientListener(updateClient));
             LoginRequest req = new LoginRequest();
             req.setMessageText("Hallo");
             client.sendTCP(req);
@@ -73,6 +75,19 @@ public class MyClient implements Serializable{
         client.stop();
     }
 
+    public void sendWelcomeMessage() {
+        Message message = new Message();
+        message.setMessage("Wir spielen jetzt zusammen");
+        client.sendTCP(message);
+    }
+
+    public void sendPosition(int rolledNr, UpdateClient updateClient){
+        UpdateServer updateServer = new UpdateServer();
+        updateServer.setPosition(rolledNr);
+        client.sendTCP(updateServer);
+        updateClient.setReadyForTurnClient(0);
+    }
+
     private void registerKryoClasses(){
         kryo.register(LoginRequest.class);
         kryo.register(LoginResponse.class);
@@ -82,11 +97,7 @@ public class MyClient implements Serializable{
         kryo.register(ForServer.class);
         kryo.register(ForClient.class);
         kryo.register(Message.class);
-    }
-
-    public void sendWelcomeMessage() {
-        Message message = new Message();
-        message.setMessage("Wir spielen jetzt zusammen");
-        client.sendTCP(message);
+        kryo.register(UpdateClient.class);
+        kryo.register(UpdateServer.class);
     }
 }
