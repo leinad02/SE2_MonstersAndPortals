@@ -185,6 +185,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 if (userPosition <= 47 && rivalPosition <= 47) {
                     int rolledNo = 2;
                     System.out.println("Host zieht weiter:");
+                    //if(newUserPosition(rolledNo) == 20)
                     new MessageServer(rolledNo, updateServer).execute();
                     System.out.println("Client ist dran:");
                     newUserPosition(rolledNo);
