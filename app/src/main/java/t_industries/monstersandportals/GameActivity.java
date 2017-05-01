@@ -2,22 +2,26 @@ package t_industries.monstersandportals;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
-import t_industries.monstersandportals.NetworkClasses.Message;
 import t_industries.monstersandportals.NetworkClasses.UpdateClient;
 import t_industries.monstersandportals.NetworkClasses.UpdateServer;
 import t_industries.monstersandportals.myclient.MyClient;
@@ -27,8 +31,9 @@ import t_industries.monstersandportals.myserver.MyServer;
  * Created by micha on 22.04.2017.
  */
 
-public class GameActivity extends Activity implements Serializable, View.OnClickListener {
+public class GameActivity extends Activity implements Serializable, View.OnClickListener, SensorEventListener {
     private TextView tvServerName, tvClientName;
+    private ImageView iv_dicepreview;
     private Button closeServer, disconnect;
     Handler handler;
     MyServer server;
@@ -71,6 +76,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         updateServer = new UpdateServer();
         updateClient = new UpdateClient();
         handler = new Handler();
+        iv_dicepreview = (ImageView) findViewById(R.id.dicepreview);
+        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         Intent i = this.getIntent();
         Bundle bundle = i.getExtras();
@@ -155,7 +163,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
 
                 if (userPosition <= 47 && rivalPosition <= 47) {
-                        int rolledNo = 3;
+                        //int rolledNo = 3;
+                        int rolledNo = rollDice();
                         System.out.println("Client zieht weiter:");
                         new MessageClient(rolledNo, updateClient).execute();
                         System.out.println("Host ist dran:");
@@ -183,7 +192,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     return;
                 }
                 if (userPosition <= 47 && rivalPosition <= 47) {
-                    int rolledNo = 2;
+                    //int rolledNo = 2;
+                    int rolledNo = rollDice();
                     System.out.println("Host zieht weiter:");
                     //if(newUserPosition(rolledNo) == 20)
                     new MessageServer(rolledNo, updateServer).execute();
@@ -459,5 +469,53 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         protected void onPostExecute(Void result){
             super.onPostExecute(result);
         }
+    }
+
+    public int rollDice(){
+        Random random_d = new Random();
+        int rolledNumber = random_d.nextInt(6) + 1;
+
+        switch (rolledNumber) {
+            case 1:
+                iv_dicepreview.setImageResource(R.drawable.d1);
+
+            case 2:
+                iv_dicepreview.setImageResource(R.drawable.d2);
+
+            case 3:
+                iv_dicepreview.setImageResource(R.drawable.d3);
+
+            case 4:
+                iv_dicepreview.setImageResource(R.drawable.d4);
+
+            case 5:
+                iv_dicepreview.setImageResource(R.drawable.d5);
+
+            case 6:
+                iv_dicepreview.setImageResource(R.drawable.d6);
+        }
+
+        return rolledNumber;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        int SHAKE_THRESHOLD = 3;
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+
+        float acceleration  = (float) Math.sqrt(x*x + y*y + z*z) - SensorManager.GRAVITY_EARTH;
+
+        if (acceleration > SHAKE_THRESHOLD){
+           rollDice();
+
+        }
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
