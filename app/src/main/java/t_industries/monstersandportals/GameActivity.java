@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,7 @@ import t_industries.monstersandportals.myserver.MyServer;
  * Created by micha on 22.04.2017.
  */
 
-public class GameActivity extends Activity implements Serializable, View.OnClickListener, SensorEventListener {
+public class GameActivity extends Activity implements Serializable, View.OnClickListener {
     private TextView tvServerName, tvClientName;
     private ImageView iv_dicepreview;
     private Button closeServer, disconnect;
@@ -51,11 +52,56 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     static int userPosition = 0;
     static int rivalPosition = 0;
 
-    Button  f0, f1, f2, f3, f4, f5, f6, f7, f8, f9,
-            f10, f11, f12, f13, f14, f15, f16, f17, f18, f19,
-            f20,  f21, f22, f23, f24, f25, f26, f27, f28, f29,
-            f30,  f31, f32, f33, f34, f35, f36, f37, f38, f39,
-            f40,  f41, f42, f43, f44, f45, f46, f47, rollClient, rollServer;
+    Button  f0;
+    Button f1;
+    Button f2;
+    Button f3;
+    Button f4;
+    Button f5;
+    Button f6;
+    Button f7;
+    Button f8;
+    Button f9;
+    Button f10;
+    Button f11;
+    Button f12;
+    Button f13;
+    Button f14;
+    Button f15;
+    Button f16;
+    Button f17;
+    Button f18;
+    Button f19;
+    Button f20;
+    Button f21;
+    Button f22;
+    Button f23;
+    Button f24;
+    Button f25;
+    Button f26;
+    Button f27;
+    Button f28;
+    Button f29;
+    Button f30;
+    Button f31;
+    Button f32;
+    Button f33;
+    Button f34;
+    Button f35;
+    Button f36;
+    Button f37;
+    Button f38;
+    Button f39;
+    Button f40;
+    Button f41;
+    Button f42;
+    Button f43;
+    Button f44;
+    Button f45;
+    Button f46;
+    Button f47;
+    ImageButton rollClient;
+    ImageButton rollServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +123,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         updateClient = new UpdateClient();
         handler = new Handler();
         iv_dicepreview = (ImageView) findViewById(R.id.dicepreview);
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        //SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        //sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         Intent i = this.getIntent();
         Bundle bundle = i.getExtras();
@@ -361,11 +407,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         f46 = (Button) findViewById(R.id.f46);
         f47 = (Button) findViewById(R.id.f47);
 
-        rollClient = (Button) findViewById(R.id.rollClient);
-        rollClient.setText("Würfel");
+        rollClient = (ImageButton) findViewById(R.id.rollClient);
+        //rollClient.setText("Würfel");
 
-        rollServer = (Button) findViewById(R.id.rollServer);
-        rollServer.setText("Würfel");
+        rollServer = (ImageButton) findViewById(R.id.rollServer);
+        //rollServer.setText("Würfel");
 
         for (int i = 0; i < gameBoard.length; i++ ){
             gameBoard[i] = "";
@@ -478,25 +524,37 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         switch (rolledNumber) {
             case 1:
                 iv_dicepreview.setImageResource(R.drawable.d1);
+                return rolledNumber;
 
             case 2:
                 iv_dicepreview.setImageResource(R.drawable.d2);
+                return rolledNumber;
 
             case 3:
                 iv_dicepreview.setImageResource(R.drawable.d3);
+                return rolledNumber;
 
             case 4:
                 iv_dicepreview.setImageResource(R.drawable.d4);
+                return rolledNumber;
 
             case 5:
                 iv_dicepreview.setImageResource(R.drawable.d5);
+                return rolledNumber;
 
             case 6:
                 iv_dicepreview.setImageResource(R.drawable.d6);
+                return rolledNumber;
+
+            default:
+                break;
         }
 
         return rolledNumber;
     }
+
+
+    /*
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -518,4 +576,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+   */
 }
