@@ -10,12 +10,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import t_industries.monstersandportals.NetworkClasses.Message;
 import t_industries.monstersandportals.NetworkClasses.UpdateClient;
@@ -30,6 +32,7 @@ import t_industries.monstersandportals.myserver.MyServer;
 public class GameActivity extends Activity implements Serializable, View.OnClickListener {
     private TextView tvServerName, tvClientName;
     private Button closeServer, disconnect;
+    int rolledNumber;
     Handler handler;
     MyServer server;
     MyClient client;
@@ -46,11 +49,15 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     static int userPosition = 0;
     static int rivalPosition = 0;
 
-    Button  f0, f1, f2, f3, f4, f5, f6, f7, f8, f9,
+    Button f0, f1, f2, f3, f4, f5, f6, f7, f8, f9,
             f10, f11, f12, f13, f14, f15, f16, f17, f18, f19,
-            f20,  f21, f22, f23, f24, f25, f26, f27, f28, f29,
-            f30,  f31, f32, f33, f34, f35, f36, f37, f38, f39,
-            f40,  f41, f42, f43, f44, f45, f46, f47, rollClient, rollServer;
+            f20, f21, f22, f23, f24, f25, f26, f27, f28, f29,
+            f30, f31, f32, f33, f34, f35, f36, f37, f38, f39,
+            f40, f41, f42, f43, f44, f45, f46, f47;
+
+    ImageView rollClient;
+    ImageView rollServer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +87,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             String clientName = bundle.getString("clientName");
             tvClientName.setText(clientName);
             final String type = bundle.getString("type");
-            if(type.equalsIgnoreCase("server")){
+            if (type.equalsIgnoreCase("server")) {
                 server = new MyServer(55557, 55558);
                 new MyTaskServer().execute();
                 closeServer.setVisibility(View.VISIBLE);
@@ -90,7 +97,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 rollServer.setVisibility(View.VISIBLE);
                 startRunnableServer();
 
-            } else if (type.equalsIgnoreCase("client")){
+            } else if (type.equalsIgnoreCase("client")) {
                 String ip = bundle.getString("ip");
                 client = new MyClient(55557, 55558, 5000);
                 new MyTaskClient(ip).execute();
@@ -107,15 +114,15 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     }
 
-    private void startRunnableServer(){
+    private void startRunnableServer() {
         handler.postDelayed(runnableServer, 1000);
     }
 
-    private Runnable runnableServer = new Runnable(){
+    private Runnable runnableServer = new Runnable() {
         public void run() {
             int getReady = updateServer.getReadyForTurnServer();
             int rolledNrRival = updateServer.getPosition();
-            if (getReady == 1){
+            if (getReady == 1) {
                 newrivalPosition(rolledNrRival);
                 checkBoard();
                 Toast.makeText(GameActivity.this, "Client würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
@@ -126,15 +133,15 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     };
 
-    private void startRunnableClient(){
+    private void startRunnableClient() {
         handler.postDelayed(runnableClient, 1000);
     }
 
-    private Runnable runnableClient = new Runnable(){
+    private Runnable runnableClient = new Runnable() {
         public void run() {
             int getReady = updateClient.getReadyForTurnClient();
             int rolledNrRival = updateClient.getPosition();
-            if (getReady == 1){
+            if (getReady == 1) {
                 newUserPosition(rolledNrRival);
                 checkBoard();
                 Toast.makeText(GameActivity.this, "Server würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
@@ -149,41 +156,43 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         rollClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(updateClient.getReadyForTurnClient() == 0){
+                if (updateClient.getReadyForTurnClient() == 0) {
                     Toast.makeText(GameActivity.this, "Bitte warten, der Server ist noch am Zug.", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 if (userPosition <= 47 && rivalPosition <= 47) {
-                        int rolledNo = 3;
-                        System.out.println("Client zieht weiter:");
-                        new MessageClient(rolledNo, updateClient).execute();
-                        System.out.println("Host ist dran:");
-                        newrivalPosition(rolledNo);
-                        checkBoard();
-                        startRunnableClient();
-                    }
+                    int rolledNo = rollDice();
+                    setDiceClient(rolledNo);
+                    System.out.println("Client zieht weiter:");
+                    new MessageClient(rolledNo, updateClient).execute();
+                    System.out.println("Host ist dran:");
+                    newrivalPosition(rolledNo);
+                    checkBoard();
+                    startRunnableClient();
+                }
 
-                    if (userPosition == 47) {
-                        Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
-                    } else if (rivalPosition == 47) {
-                        Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
-                    }
+                if (userPosition == 47) {
+                    Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
+                } else if (rivalPosition == 47) {
+                    Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
+                }
 
             }
         });
     }
 
     private void gameHandlerServer() {
-       rollServer.setOnClickListener(new View.OnClickListener() {
+        rollServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(updateServer.getReadyForTurnServer() == 0){
+                if (updateServer.getReadyForTurnServer() == 0) {
                     Toast.makeText(GameActivity.this, "Bitte warten, der Client ist noch am Zug.", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (userPosition <= 47 && rivalPosition <= 47) {
-                    int rolledNo = 2;
+                    int rolledNo = rollDice();
+                    setDiceServer(rolledNo);
                     System.out.println("Host zieht weiter:");
                     //if(newUserPosition(rolledNo) == 20)
                     new MessageServer(rolledNo, updateServer).execute();
@@ -237,18 +246,18 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     public static void newUserPosition(int rolledNo) {                // Bewegt den Host
 
-        if ( gameBoard[userPosition] == "H G"){
+        if (gameBoard[userPosition] == "H G") {
             gameBoard[userPosition] = "G";
         } else {
             gameBoard[userPosition] = "";
         }
 
         userPosition = userPosition + rolledNo;
-        if ( userPosition > 47 ){
+        if (userPosition > 47) {
             userPosition = 47;
         }
 
-        if ( gameBoard[userPosition] == "G"){
+        if (gameBoard[userPosition] == "G") {
             gameBoard[userPosition] = "H G";
         } else {
             gameBoard[userPosition] = "H";
@@ -259,18 +268,18 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     public static void newrivalPosition(int rolledNo) {             // Bewegt den Gast
 
-        if ( gameBoard[rivalPosition] == "H G"){
+        if (gameBoard[rivalPosition] == "H G") {
             gameBoard[rivalPosition] = "H";
         } else {
             gameBoard[rivalPosition] = "";
         }
 
         rivalPosition = rivalPosition + rolledNo;
-        if ( rivalPosition > 47 ){
+        if (rivalPosition > 47) {
             rivalPosition = 47;
         }
 
-        if ( gameBoard[rivalPosition] == "H"){
+        if (gameBoard[rivalPosition] == "H") {
             gameBoard[rivalPosition] = "H G";
         } else {
             gameBoard[rivalPosition] = "G";
@@ -279,24 +288,62 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         // rivalPosition = checkMonsterOrPortalOrRisk(rivalPosition);
     }
 
-    public void checkBoard(){       //checkt wo Host & Gast sich gerade befinden
+    public void checkBoard() {       //checkt wo Host & Gast sich gerade befinden
 
-        f0.setText(gameBoard[0]);       f10.setText(gameBoard[10]);      f20.setText(gameBoard[20]);        f30.setText(gameBoard[30]);        f40.setText(gameBoard[40]);
-        f1.setText(gameBoard[1]);       f11.setText(gameBoard[11]);      f21.setText(gameBoard[21]);        f31.setText(gameBoard[31]);        f41.setText(gameBoard[41]);
-        f2.setText(gameBoard[2]);       f12.setText(gameBoard[12]);      f22.setText(gameBoard[22]);        f32.setText(gameBoard[32]);        f42.setText(gameBoard[42]);
-        f3.setText(gameBoard[3]);       f13.setText(gameBoard[13]);      f23.setText(gameBoard[23]);        f33.setText(gameBoard[33]);        f43.setText(gameBoard[43]);
-        f4.setText(gameBoard[4]);       f14.setText(gameBoard[14]);      f24.setText(gameBoard[24]);        f34.setText(gameBoard[34]);        f44.setText(gameBoard[44]);
-        f5.setText(gameBoard[5]);       f15.setText(gameBoard[15]);      f25.setText(gameBoard[25]);        f35.setText(gameBoard[35]);        f45.setText(gameBoard[45]);
-        f6.setText(gameBoard[6]);       f16.setText(gameBoard[16]);      f26.setText(gameBoard[26]);        f36.setText(gameBoard[36]);        f46.setText(gameBoard[46]);
-        f7.setText(gameBoard[7]);       f17.setText(gameBoard[17]);      f27.setText(gameBoard[27]);        f37.setText(gameBoard[37]);        f47.setText(gameBoard[47]);
-        f8.setText(gameBoard[8]);       f18.setText(gameBoard[18]);      f28.setText(gameBoard[28]);        f38.setText(gameBoard[38]);
-        f9.setText(gameBoard[9]);       f19.setText(gameBoard[19]);      f29.setText(gameBoard[29]);        f39.setText(gameBoard[39]);
+        f0.setText(gameBoard[0]);
+        f10.setText(gameBoard[10]);
+        f20.setText(gameBoard[20]);
+        f30.setText(gameBoard[30]);
+        f40.setText(gameBoard[40]);
+        f1.setText(gameBoard[1]);
+        f11.setText(gameBoard[11]);
+        f21.setText(gameBoard[21]);
+        f31.setText(gameBoard[31]);
+        f41.setText(gameBoard[41]);
+        f2.setText(gameBoard[2]);
+        f12.setText(gameBoard[12]);
+        f22.setText(gameBoard[22]);
+        f32.setText(gameBoard[32]);
+        f42.setText(gameBoard[42]);
+        f3.setText(gameBoard[3]);
+        f13.setText(gameBoard[13]);
+        f23.setText(gameBoard[23]);
+        f33.setText(gameBoard[33]);
+        f43.setText(gameBoard[43]);
+        f4.setText(gameBoard[4]);
+        f14.setText(gameBoard[14]);
+        f24.setText(gameBoard[24]);
+        f34.setText(gameBoard[34]);
+        f44.setText(gameBoard[44]);
+        f5.setText(gameBoard[5]);
+        f15.setText(gameBoard[15]);
+        f25.setText(gameBoard[25]);
+        f35.setText(gameBoard[35]);
+        f45.setText(gameBoard[45]);
+        f6.setText(gameBoard[6]);
+        f16.setText(gameBoard[16]);
+        f26.setText(gameBoard[26]);
+        f36.setText(gameBoard[36]);
+        f46.setText(gameBoard[46]);
+        f7.setText(gameBoard[7]);
+        f17.setText(gameBoard[17]);
+        f27.setText(gameBoard[27]);
+        f37.setText(gameBoard[37]);
+        f47.setText(gameBoard[47]);
+        f8.setText(gameBoard[8]);
+        f18.setText(gameBoard[18]);
+        f28.setText(gameBoard[28]);
+        f38.setText(gameBoard[38]);
+        f9.setText(gameBoard[9]);
+        f19.setText(gameBoard[19]);
+        f29.setText(gameBoard[29]);
+        f39.setText(gameBoard[39]);
 
         // f10.setBackgroundColor(Color.BLUE);      f20.setBackgroundColor(Color.BLUE);     f30.setBackgroundColor(Color.BLUE);    f40.setBackgroundColor(Color.BLUE);
 
     }
 
-    public void setBoard(){     //Die buttons aus dem Layout werden ins code übernommen
+    public void setBoard() {     //Die buttons aus dem Layout werden ins code übernommen
 
         f0 = (Button) findViewById(R.id.f0);
         f1 = (Button) findViewById(R.id.f1);
@@ -351,13 +398,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         f46 = (Button) findViewById(R.id.f46);
         f47 = (Button) findViewById(R.id.f47);
 
-        rollClient = (Button) findViewById(R.id.rollClient);
-        rollClient.setText("Würfel");
+        rollClient = (ImageView) findViewById(R.id.rollClient);
+        //rollClient.setText("Würfel");
 
-        rollServer = (Button) findViewById(R.id.rollServer);
-        rollServer.setText("Würfel");
+        rollServer = (ImageView) findViewById(R.id.rollServer);
+        //rollServer.setText("Würfel");
 
-        for (int i = 0; i < gameBoard.length; i++ ){
+        for (int i = 0; i < gameBoard.length; i++) {
             gameBoard[i] = "";
             monster[i] = "";
             portal[i] = "";
@@ -366,7 +413,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         gameBoard[0] = "H G";
         f0.setText(gameBoard[0]);
-
 
 
     }
@@ -397,13 +443,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
         @Override
-        protected void onPostExecute(Void result){
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
         }
     }
 
     private class MyTaskClient extends AsyncTask<Void, Void, Void> {
         String ip;
+
         public MyTaskClient(String ip) {
             this.ip = ip;
         }
@@ -416,7 +463,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
         @Override
-        protected void onPostExecute(Void result){
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
         }
     }
@@ -424,6 +471,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private class MessageClient extends AsyncTask<Void, Void, Void> {
         int rolledNr;
         UpdateClient updateClient;
+
         public MessageClient(int roll, UpdateClient updateClient) {
             this.rolledNr = roll;
             this.updateClient = updateClient;
@@ -436,7 +484,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
         @Override
-        protected void onPostExecute(Void result){
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
         }
     }
@@ -444,6 +492,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private class MessageServer extends AsyncTask<Void, Void, Void> {
         int rolledNr;
         UpdateServer updateServer;
+
         public MessageServer(int roll, UpdateServer updateServer) {
             this.rolledNr = roll;
             this.updateServer = updateServer;
@@ -456,8 +505,49 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
         @Override
-        protected void onPostExecute(Void result){
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
         }
     }
+
+    private int rollDice() {
+        Random random_d = new Random();
+        rolledNumber = random_d.nextInt(6) + 1;
+        return rolledNumber;
+    }
+
+
+    private void setDiceServer(int rolledNo) {
+
+        if (rolledNo == 1) {
+            rollServer.setImageResource(R.drawable.d1);
+        } else if (rolledNo == 2) {
+            rollServer.setImageResource(R.drawable.d2);
+        } else if (rolledNo == 3) {
+            rollServer.setImageResource(R.drawable.d3);
+        } else if (rolledNo == 4) {
+            rollServer.setImageResource(R.drawable.d4);
+        } else if (rolledNo == 5) {
+            rollServer.setImageResource(R.drawable.d5);
+        } else if (rolledNo == 6) {
+            rollServer.setImageResource(R.drawable.d6);
+        }
+    }
+
+    private void setDiceClient(int rolledNo) {
+        if (rolledNo == 1) {
+            rollClient.setImageResource(R.drawable.d1);
+        } else if (rolledNo == 2) {
+            rollClient.setImageResource(R.drawable.d2);
+        } else if (rolledNo == 3) {
+            rollClient.setImageResource(R.drawable.d3);
+        } else if (rolledNo == 4) {
+            rollClient.setImageResource(R.drawable.d4);
+        } else if (rolledNo == 5) {
+            rollClient.setImageResource(R.drawable.d5);
+        } else if (rolledNo == 6) {
+            rollClient.setImageResource(R.drawable.d6);
+        }
+    }
+
 }
