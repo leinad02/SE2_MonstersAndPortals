@@ -353,10 +353,10 @@
 
         <ImageView
             android:id="@+id/rollClient"
-            android:src="@drawable/d0"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:src="@drawable/d0"
             android:visibility="invisible" />
     </LinearLayout>
 

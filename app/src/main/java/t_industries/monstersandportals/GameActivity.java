@@ -73,6 +73,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         tvClientName = (TextView) findViewById(R.id.nameClient);
         closeServer = (Button) findViewById(R.id.serverClose);
         disconnect = (Button) findViewById(R.id.disconnect);
+        rollClient = (ImageView) findViewById(R.id.rollClient);
+        rollServer = (ImageView) findViewById(R.id.rollServer);
         updateServer = new UpdateServer();
         updateClient = new UpdateClient();
         handler = new Handler();
@@ -229,7 +231,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             gameBoard[userPosition] = "H";
         }
         System.out.println("Hostposition ist: " + userPosition);
-        userPosition = checkMonsterOrPortalOrRisk(userPosition);
+        userPosition = checkMonsterOrPortalOrRiskServer(userPosition);
     }
 
     public static void newrivalPosition(int rolledNo) {             // Bewegt den Gast
@@ -251,71 +253,89 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             gameBoard[rivalPosition] = "G";
         }
         System.out.println("Die Position des Gastspielers ist: " + rivalPosition);
-        rivalPosition = checkMonsterOrPortalOrRisk(rivalPosition);
+        rivalPosition = checkMonsterOrPortalOrRiskClient(rivalPosition);
     }
 
-    private static int checkMonsterOrPortalOrRisk(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
+    private static int checkMonsterOrPortalOrRiskServer(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
         for ( int i = 0; i < 3; i++) {
             if (position == monster[i]) {
                 System.out.println("Ohhh Nein! Ein MONSTER greift dich an!");
 
-                if (getReady == 1){
-                    if (gameBoard[monster[i]] == "H G"){
+                if (gameBoard[monster[i]] == "H G"){
                         gameBoard[monster[i]] = "G";
                     } else {
                         gameBoard[monster[i]] = ""; }
-                } else {
-                    if ( gameBoard[monster[i]] == "H G"){
+
+                position = monster[i+3];             // der derzeitige Spieler betritt einen Monsterfeld
+
+                if (gameBoard[monster[i+3]] == "G"){
+                        gameBoard[monster[i+3]] = "H G";
+                    } else {
+                        gameBoard[monster[i+3]] = "H"; }
+
+
+            } else if (position == portal[i]) {     // Hier wird in der Zukunft die Klasse Portal ausgeführt
+
+                if (gameBoard[portal[i]] == "H G"){
+                        gameBoard[portal[i]] = "G";
+                    } else {
+                        gameBoard[portal[i]] = ""; }
+
+
+                position = portal[i+3];             // der derzeitige Spieler geht durch den Portal
+
+                if (gameBoard[portal[i+3]] == "G"){
+                        gameBoard[portal[i+3]] = "H G";
+                    } else {
+                        gameBoard[portal[i+3]] = "H"; }
+
+
+            } else if (position == risk[i]) {
+                System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
+                // drawRiskcard();      Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
+            }
+        }
+        return position;
+    }
+
+    private static int checkMonsterOrPortalOrRiskClient(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
+        for ( int i = 0; i < 3; i++) {
+            if (position == monster[i]) {
+                System.out.println("Ohhh Nein! Ein MONSTER greift dich an!");
+
+                if ( gameBoard[monster[i]] == "H G"){
                         gameBoard[monster[i]] = "H";
                     } else {
                         gameBoard[monster[i]] = "";
                     }
-                }
+
 
                 position = monster[i+3];             // der derzeitige Spieler betritt einen Monsterfeld
 
-                if (getReady == 1){
-                    if (gameBoard[monster[i+3]] == "G"){
-                        gameBoard[monster[i+3]] = "H G";
-                    } else {
-                        gameBoard[monster[i+3]] = "H"; }
-                } else {
-                    if ( gameBoard[monster[i+3]] == "H"){
+                if ( gameBoard[monster[i+3]] == "H"){
                         gameBoard[monster[i+3]] = "H G";
                     } else {
                         gameBoard[monster[i+3]] = "G";
                     }
-                }
+
 
             } else if (position == portal[i]) {     // Hier wird in der Zukunft die Klasse Portal ausgeführt
 
-                if (getReady == 1){
-                    if (gameBoard[portal[i]] == "H G"){
-                        gameBoard[portal[i]] = "G";
-                    } else {
-                        gameBoard[portal[i]] = ""; }
-                } else {
-                    if ( gameBoard[portal[i]] == "H G"){
+                if ( gameBoard[portal[i]] == "H G"){
                         gameBoard[portal[i]] = "H";
                     } else {
                         gameBoard[portal[i]] = "";
                     }
-                }
+
 
                 position = portal[i+3];             // der derzeitige Spieler geht durch den Portal
 
-                if (getReady == 1){
-                    if (gameBoard[portal[i+3]] == "G"){
-                        gameBoard[portal[i+3]] = "H G";
-                    } else {
-                        gameBoard[portal[i+3]] = "H"; }
-                } else {
-                    if ( gameBoard[portal[i+3]] == "H"){
+                if ( gameBoard[portal[i+3]] == "H"){
                         gameBoard[portal[i+3]] = "H G";
                     } else {
                         gameBoard[portal[i+3]] = "G";
                     }
-                }
+
 
             } else if (position == risk[i]) {
                 System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
@@ -345,8 +365,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
 
-        roll = (Button) findViewById(R.id.roll);
-        roll.setText("Würfel");
+        /*roll = (Button) findViewById(R.id.roll);
+        roll.setText("Würfel");*/
 
         for (int i = 0; i < 3; i++) {
             buttons[monster[i]].setBackgroundColor(Color.RED);          // Monsterfelder
