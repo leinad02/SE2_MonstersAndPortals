@@ -1,12 +1,14 @@
 package t_industries.monstersandportals;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -26,6 +28,8 @@ import t_industries.monstersandportals.NetworkClasses.UpdateClient;
 import t_industries.monstersandportals.NetworkClasses.UpdateServer;
 import t_industries.monstersandportals.myclient.MyClient;
 import t_industries.monstersandportals.myserver.MyServer;
+
+import static java.lang.String.valueOf;
 
 /**
  * Created by micha on 22.04.2017.
@@ -56,6 +60,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     ImageView rollClient;
     ImageView rollServer;
 
+    Random random = new Random();
+    private int number = (random.nextInt(10) + 1);
+    //Randomzahl zwischen 1 und 10
+    private String num = valueOf(number);
+    private int move = 4; //wenn richtig, den Player 4 Positionen vor schicken
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +119,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         } else {
             Toast.makeText(GameActivity.this, "Keine Daten vorhanden!", Toast.LENGTH_LONG).show();
         }
+
     }
 
     private void startRunnableServer() {
@@ -212,7 +222,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
 
 
-    public static void newUserPosition(int rolledNo) {                // Bewegt den Host
+    public void newUserPosition(int rolledNo) {                // Bewegt den Host
 
         if (gameBoard[userPosition] == "H G") {
             gameBoard[userPosition] = "G";
@@ -234,7 +244,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         userPosition = checkMonsterOrPortalOrRiskServer(userPosition);
     }
 
-    public static void newrivalPosition(int rolledNo) {             // Bewegt den Gast
+    public void newrivalPosition(int rolledNo) {             // Bewegt den Gast
 
         if (gameBoard[rivalPosition] == "H G") {
             gameBoard[rivalPosition] = "H";
@@ -256,7 +266,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         rivalPosition = checkMonsterOrPortalOrRiskClient(rivalPosition);
     }
 
-    private static int checkMonsterOrPortalOrRiskServer(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
+    private int checkMonsterOrPortalOrRiskServer(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
         for ( int i = 0; i < 3; i++) {
             if (position == monster[i]) {
                 System.out.println("Ohhh Nein! Ein MONSTER greift dich an!");
@@ -292,13 +302,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
             } else if (position == risk[i]) {
                 System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
-                // drawRiskcard();      Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
+                drawRiskcard();     // Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
             }
         }
         return position;
     }
 
-    private static int checkMonsterOrPortalOrRiskClient(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
+    private int checkMonsterOrPortalOrRiskClient(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
         for ( int i = 0; i < 3; i++) {
             if (position == monster[i]) {
                 System.out.println("Ohhh Nein! Ein MONSTER greift dich an!");
@@ -309,7 +319,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         gameBoard[monster[i]] = "";
                     }
 
-
                 position = monster[i+3];             // der derzeitige Spieler betritt einen Monsterfeld
 
                 if ( gameBoard[monster[i+3]] == "H"){
@@ -317,7 +326,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     } else {
                         gameBoard[monster[i+3]] = "G";
                     }
-
 
             } else if (position == portal[i]) {     // Hier wird in der Zukunft die Klasse Portal ausgeführt
 
@@ -327,7 +335,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         gameBoard[portal[i]] = "";
                     }
 
-
                 position = portal[i+3];             // der derzeitige Spieler geht durch den Portal
 
                 if ( gameBoard[portal[i+3]] == "H"){
@@ -336,13 +343,69 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         gameBoard[portal[i+3]] = "G";
                     }
 
-
             } else if (position == risk[i]) {
                 System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
-                // drawRiskcard();      Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
+                drawRiskcard();      //Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
             }
         }
         return position;
+    }
+
+    public void drawRiskcard(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builderfalse = new AlertDialog.Builder(this);
+
+        // Hilfsklasse für Dialogfenster erstellen
+        builder.setMessage("Ist die Zahl "+num+ " gerade?");
+
+        //für das Weiterbewegen des Spielers
+        final DialogInterface.OnClickListener goListener = new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(rivalPosition == 10 || rivalPosition == 25 || rivalPosition == 39){
+                    newrivalPosition(4);
+                }else if(userPosition==10 || userPosition == 25 || userPosition ==39){
+                    newUserPosition(4);
+                }
+            }
+        };
+
+        DialogInterface.OnClickListener positivListener = new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                do {
+                    number = number % 2;
+                }while(number>1);
+                if(number==0){ //dann Zahl gerade
+                    builderfalse.setMessage("Juhu, du hast richtig geantwortet!");
+                    builderfalse.setPositiveButton("4 Felder vor", goListener);
+                    builderfalse.show();
+                }else{
+                    dialog.dismiss();//Dialogfenster wird beendet, weil Zahl ungerade ist
+                }
+            }
+        };
+
+        DialogInterface.OnClickListener negativListener = new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                do {
+                    number = number % 2;
+                }while(number>1);
+                if(number==1){ //dann Zahl ungerade
+                    builderfalse.setMessage("Juhu, du hast richtig geantwortet");
+                    builderfalse.setPositiveButton("4 Felder vor", goListener);
+                    builderfalse.show();
+
+                }else{
+                    dialog.dismiss();//Dialogfenster wird beendet, weil Zahl gerade ist
+                }
+            }
+        };
+        builder.setPositiveButton("richtig",positivListener);
+        builder.setNegativeButton("falsch", negativListener);
+        builder.show();
+
     }
 
     public void checkBoard(){                                           //checkt wo Host & Gast sich gerade befinden
