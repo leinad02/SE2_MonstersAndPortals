@@ -49,7 +49,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     static String[] gameBoard = new String[48]; // 8 x 6 Spielfeld
     static int[] monster = {19, 30, 46, 12, 25, 39};
     static int[] portal = {8, 22, 33, 13, 27, 41};
-    static int[] risk = {10, 25, 39};
+    static int[] risk = {10, 26, 40};
 
     static int userPosition = 0;
     static int rivalPosition = 0;
@@ -302,7 +302,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
             } else if (position == risk[i]) {
                 System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
-                drawRiskcard();     // Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
+                //drawRiskcardServer();     // Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
             }
         }
         return position;
@@ -345,13 +345,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
             } else if (position == risk[i]) {
                 System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
-                drawRiskcard();      //Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
+                //drawRiskcardClient();      //Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
             }
         }
         return position;
     }
 
-    public void drawRiskcard(){
+   public void drawRiskcardClient(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog.Builder builderfalse = new AlertDialog.Builder(this);
 
@@ -359,18 +359,17 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         builder.setMessage("Ist die Zahl "+num+ " gerade?");
 
         //für das Weiterbewegen des Spielers
-        final DialogInterface.OnClickListener goListener = new DialogInterface.OnClickListener(){
+        final DialogInterface.OnClickListener goListenerClient = new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(rivalPosition == 10 || rivalPosition == 25 || rivalPosition == 39){
                     newrivalPosition(4);
-                }else if(userPosition==10 || userPosition == 25 || userPosition ==39){
-                    newUserPosition(4);
+                    dialog.dismiss();
                 }
             }
         };
 
-        DialogInterface.OnClickListener positivListener = new DialogInterface.OnClickListener(){
+        DialogInterface.OnClickListener positivListenerClient = new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 do {
@@ -378,7 +377,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }while(number>1);
                 if(number==0){ //dann Zahl gerade
                     builderfalse.setMessage("Juhu, du hast richtig geantwortet!");
-                    builderfalse.setPositiveButton("4 Felder vor", goListener);
+                    builderfalse.setPositiveButton("4 Felder vor", goListenerClient);
                     builderfalse.show();
                 }else{
                     dialog.dismiss();//Dialogfenster wird beendet, weil Zahl ungerade ist
@@ -386,7 +385,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             }
         };
 
-        DialogInterface.OnClickListener negativListener = new DialogInterface.OnClickListener(){
+        DialogInterface.OnClickListener negativListenerClient = new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 do {
@@ -394,7 +393,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }while(number>1);
                 if(number==1){ //dann Zahl ungerade
                     builderfalse.setMessage("Juhu, du hast richtig geantwortet");
-                    builderfalse.setPositiveButton("4 Felder vor", goListener);
+                    builderfalse.setPositiveButton("4 Felder vor", goListenerClient);
                     builderfalse.show();
 
                 }else{
@@ -402,9 +401,65 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
             }
         };
-        builder.setPositiveButton("richtig",positivListener);
-        builder.setNegativeButton("falsch", negativListener);
+        builder.setPositiveButton("richtig",positivListenerClient);
+        builder.setNegativeButton("falsch", negativListenerClient);
         builder.show();
+
+    }
+
+    public void drawRiskcardServer(){
+        AlertDialog.Builder builderServer = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builderfalseServer = new AlertDialog.Builder(this);
+
+        // Hilfsklasse für Dialogfenster erstellen
+        builderServer.setMessage("Ist die Zahl "+num+ " gerade?");
+
+        //für das Weiterbewegen des Spielers
+        final DialogInterface.OnClickListener goListenerServer = new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(userPosition == 10 || userPosition == 25 || userPosition == 39){
+                    newUserPosition(4);
+                    dialog.dismiss();
+                }
+            }
+        };
+
+        DialogInterface.OnClickListener positivListenerServer = new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                do {
+                    number = number % 2;
+                }while(number>1);
+                if(number==0){ //dann Zahl gerade
+                    builderfalseServer.setMessage("Juhu, du hast richtig geantwortet!");
+                    builderfalseServer.setPositiveButton("4 Felder vor", goListenerServer);
+                    builderfalseServer.show();
+                }else{
+                    dialog.dismiss();//Dialogfenster wird beendet, weil Zahl ungerade ist
+                }
+            }
+        };
+
+        DialogInterface.OnClickListener negativListenerServer = new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                do {
+                    number = number % 2;
+                }while(number>1);
+                if(number==1){ //dann Zahl ungerade
+                    builderfalseServer.setMessage("Juhu, du hast richtig geantwortet");
+                    builderfalseServer.setPositiveButton("4 Felder vor", goListenerServer);
+                    builderfalseServer.show();
+
+                }else{
+                    dialog.dismiss();//Dialogfenster wird beendet, weil Zahl gerade ist
+                }
+            }
+        };
+        builderServer.setPositiveButton("richtig",positivListenerServer);
+        builderServer.setNegativeButton("falsch", negativListenerServer);
+        builderServer.show();
 
     }
 
