@@ -535,6 +535,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private void setDiceClient(int rolledNo) {
+
         if (rolledNo == 1) {
             rollClient.setImageResource(R.drawable.d1);
         } else if (rolledNo == 2) {
@@ -549,5 +550,4 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             rollClient.setImageResource(R.drawable.d6);
         }
     }
-
 }
