@@ -48,7 +48,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     static String[] gameBoard = new String[48]; // 8 x 6 Spielfeld
     static int[] monster = {19, 30, 46, 12, 25, 39};
-    static int[] portal = {8, 22, 33, 13, 27, 41};
+    static int[] portal = {22, 33, 13, 27, 41, 46}; //8
     static int[] risk = {10, 26, 40};
 
     static int userPosition = 0;
@@ -65,6 +65,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     //Randomzahl zwischen 1 und 10
     private String num = valueOf(number);
     private int move = 4; //wenn richtig, den Player 4 Positionen vor schicken
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +96,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             tvServerName.setText(serverName);
             String clientName = bundle.getString("clientName");
             tvClientName.setText(clientName);
-            final String type = bundle.getString("type");
+            type = bundle.getString("type");
             if (type.equalsIgnoreCase("server")) {
                 server = new MyServer(55557, 55558);
                 new MyTaskServer().execute();
@@ -199,7 +200,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     return;
                 }
                 if (userPosition <= 47 && rivalPosition <= 47) {
-                    int rolledNo = rollDice();
+                    int rolledNo = 1; //rollDice()
                     setDiceServer(rolledNo);
                     System.out.println("Host zieht weiter:");
                     //if(newUserPosition(rolledNo) == 20)
@@ -302,7 +303,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
             } else if (position == risk[i]) {
                 System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
-                //drawRiskcardServer();     // Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
+                if(type.equalsIgnoreCase("server")){
+                    drawRiskcardServer();
+                }// Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
             }
         }
         return position;
@@ -345,7 +348,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
             } else if (position == risk[i]) {
                 System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
-                //drawRiskcardClient();      //Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
+                if(type.equalsIgnoreCase("client")){
+                    drawRiskcardClient();
+                }//Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
             }
         }
         return position;
@@ -364,6 +369,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             public void onClick(DialogInterface dialog, int which) {
                 if(rivalPosition == 10 || rivalPosition == 25 || rivalPosition == 39){
                     newrivalPosition(4);
+                    checkBoard();
                     dialog.dismiss();
                 }
             }
@@ -420,6 +426,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             public void onClick(DialogInterface dialog, int which) {
                 if(userPosition == 10 || userPosition == 25 || userPosition == 39){
                     newUserPosition(4);
+                    checkBoard();
                     dialog.dismiss();
                 }
             }
