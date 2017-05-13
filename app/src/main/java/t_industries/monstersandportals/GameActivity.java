@@ -480,6 +480,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     }
 
+
     private int rollDice() {
         Random random_d = new Random();
         rolledNumber = random_d.nextInt(6) + 1;
