@@ -47,8 +47,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
 
     static String[] gameBoard = new String[48]; // 8 x 6 Spielfeld
-    static int[] monster = {19, 30, 46, 12, 25, 39};
-    static int[] portal = {22, 33, 13, 27, 41, 46}; //8
+    static int[] monster = {19, 31, 46, 12, 25, 39};
+    static int[] portal = {16, 22, 33, 27, 41, 45}; //8
     static int[] risk = {10, 26, 40};
 
     static int userPosition = 0;
@@ -178,6 +178,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     System.out.println("Host ist dran:");
                     newrivalPosition(rolledNo);
                     checkBoard();
+
+                    if(rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40){
+                        drawRiskcardClient();
+                    }
                     startRunnableClient();
                 }
 
@@ -208,6 +212,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     System.out.println("Client ist dran:");
                     newUserPosition(rolledNo);
                     checkBoard();
+
+                    if(userPosition == 10 || userPosition == 26 || userPosition == 40){
+                        drawRiskcardServer();
+                    }
                     startRunnableServer();
                 }
 
@@ -220,8 +228,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         });
 
     }
-
-
 
     public void newUserPosition(int rolledNo) {                // Bewegt den Host
 
@@ -301,12 +307,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         gameBoard[portal[i+3]] = "H"; }
 
 
-            } else if (position == risk[i]) {
+            } /*else if (position == risk[i]) {
                 System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
                 if(type.equalsIgnoreCase("server")){
                     drawRiskcardServer();
-                }// Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
-            }
+                    position=userPosition;
+                }
+
+            }*/
         }
         return position;
     }
@@ -346,12 +354,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         gameBoard[portal[i+3]] = "G";
                     }
 
-            } else if (position == risk[i]) {
+            } /*else if (position == risk[i]) {
                 System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
                 if(type.equalsIgnoreCase("client")){
                     drawRiskcardClient();
-                }//Hier dann einfügen was passieren soll, wenn man auf einem Risiko Feld landet
-            }
+                    position = rivalPosition;
+                }
+
+            }*/
         }
         return position;
     }
@@ -367,11 +377,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         final DialogInterface.OnClickListener goListenerClient = new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(rivalPosition == 10 || rivalPosition == 25 || rivalPosition == 39){
-                    newrivalPosition(4);
-                    checkBoard();
-                    dialog.dismiss();
-                }
+                newrivalPosition(4);
+                checkBoard();
+                new MessageClient(4, updateClient).execute();
+                dialog.dismiss();
             }
         };
 
@@ -424,11 +433,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         final DialogInterface.OnClickListener goListenerServer = new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(userPosition == 10 || userPosition == 25 || userPosition == 39){
-                    newUserPosition(4);
-                    checkBoard();
-                    dialog.dismiss();
-                }
+                newUserPosition(4);
+                checkBoard();
+                new MessageServer(4, updateServer).execute();
+                dialog.dismiss();
             }
         };
 
