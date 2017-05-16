@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,11 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
-import t_industries.monstersandportals.NetworkClasses.Message;
+import t_industries.monstersandportals.NetworkClasses.RiskClient;
+import t_industries.monstersandportals.NetworkClasses.RiskServer;
 import t_industries.monstersandportals.NetworkClasses.UpdateClient;
 import t_industries.monstersandportals.NetworkClasses.UpdateServer;
 import t_industries.monstersandportals.myclient.MyClient;
@@ -44,11 +42,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     MyClient client;
     UpdateClient updateClient;
     UpdateServer updateServer;
+    RiskServer riskServer;
+    RiskClient riskClient;
 
 
     static String[] gameBoard = new String[48]; // 8 x 6 Spielfeld
-    static int[] monster = {19, 31, 46, 12, 25, 39};
-    static int[] portal = {16, 22, 33, 27, 41, 45}; //8
+    static int[] monster = {12, 31, 46, 5, 25, 19};
+    static int[] portal = {7, 22, 33, 16, 28, 41};
     static int[] risk = {10, 26, 40};
 
     static int userPosition = 0;
@@ -64,7 +64,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private int number = (random.nextInt(10) + 1);
     //Randomzahl zwischen 1 und 10
     private String num = valueOf(number);
-    private int move = 4; //wenn richtig, den Player 4 Positionen vor schicken
+    private int isRisk = 0; //wenn richtig, den Player 4 Positionen vor schicken
     private String type;
 
     @Override
@@ -87,6 +87,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         rollServer = (ImageView) findViewById(R.id.rollServer);
         updateServer = new UpdateServer();
         updateClient = new UpdateClient();
+        riskServer = new RiskServer();
+        riskClient = new RiskClient();
         handler = new Handler();
 
         Intent i = this.getIntent();
@@ -132,9 +134,29 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             int getReady = updateServer.getReadyForTurnServer();
             int rolledNrRival = updateServer.getPosition();
             if (getReady == 1) {
-                newrivalPosition(rolledNrRival);
-                checkBoard();
-                Toast.makeText(GameActivity.this, "Client würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
+                if(isRisk == 0){
+                    newrivalPosition(rolledNrRival);
+                    checkBoard();
+                    Toast.makeText(GameActivity.this, "Client würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
+                }
+                if(rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40){
+                    if(riskServer.isCheckField() == 0){
+                        rollServer.setVisibility(View.INVISIBLE);
+                        Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist noch beim Beantworten!", Toast.LENGTH_SHORT).show();
+                        isRisk = 1;
+                        startRunnableServer();
+                    } else {
+                        if(riskServer.getFailCounterServer() == 0){
+                            newrivalPosition(4);
+                            checkBoard();
+                            Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet und darf 4 Felder vorwärts!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(GameActivity.this, "Der Gegner ist zu dumm, um die Frage zu beantworten!", Toast.LENGTH_SHORT).show();
+                        }
+                        rollServer.setVisibility(View.VISIBLE);
+                        resetRiskValues();
+                    }
+                }
                 gameHandlerServer();
             } else {
                 startRunnableServer();
@@ -151,15 +173,46 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             int getReady = updateClient.getReadyForTurnClient();
             int rolledNrRival = updateClient.getPosition();
             if (getReady == 1) {
-                newUserPosition(rolledNrRival);
-                checkBoard();
-                Toast.makeText(GameActivity.this, "Server würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
+                if(isRisk == 0){
+                    newUserPosition(rolledNrRival);
+                    checkBoard();
+                    Toast.makeText(GameActivity.this, "Server würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
+                }
+                if(userPosition == 10 || userPosition == 26 || userPosition == 40){
+                    if(riskClient.isCheckFieldClient() == 0){
+                        rollClient.setVisibility(View.INVISIBLE);
+                        Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist noch beim Beantworten!", Toast.LENGTH_SHORT).show();
+                        isRisk = 1;
+                        startRunnableClient();
+                    } else{
+                        if(riskClient.getFailCounterClient() == 0){
+                            newUserPosition(4);
+                            checkBoard();
+                            Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet und darf 4 Felder vorwärts!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(GameActivity.this, "Der Gegner ist zu dumm, um die Frage zu beantworten!", Toast.LENGTH_SHORT).show();
+                        }
+                        rollClient.setVisibility(View.VISIBLE);
+                        resetRiskValues();
+                    }
+                }
                 gameHandlerClient();
             } else {
                 startRunnableClient();
             }
         }
     };
+
+    private void resetRiskValues(){
+        isRisk = 0;
+        if(type.equalsIgnoreCase("client")){
+            riskClient.setCheckFieldClient(0);
+            riskClient.setFailCounterClient(0);
+        } else {
+            riskServer.setCheckFieldServer(0);
+            riskServer.setFailCounterServer(0);
+        }
+    }
 
     private void gameHandlerClient() {
         rollClient.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +227,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     int rolledNo = rollDice();
                     setDiceClient(rolledNo);
                     System.out.println("Client zieht weiter:");
-                    new MessageClient(rolledNo, updateClient).execute();
+                    new MessageClient(rolledNo).execute();
                     System.out.println("Host ist dran:");
                     newrivalPosition(rolledNo);
                     checkBoard();
@@ -182,6 +235,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     if(rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40){
                         drawRiskcardClient();
                     }
+                    new ACKClient(updateClient).execute();
                     startRunnableClient();
                 }
 
@@ -204,11 +258,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     return;
                 }
                 if (userPosition <= 47 && rivalPosition <= 47) {
-                    int rolledNo = 1; //rollDice()
+                    int rolledNo = rollDice();
                     setDiceServer(rolledNo);
                     System.out.println("Host zieht weiter:");
                     //if(newUserPosition(rolledNo) == 20)
-                    new MessageServer(rolledNo, updateServer).execute();
+                    new MessageServer(rolledNo).execute();
                     System.out.println("Client ist dran:");
                     newUserPosition(rolledNo);
                     checkBoard();
@@ -216,6 +270,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     if(userPosition == 10 || userPosition == 26 || userPosition == 40){
                         drawRiskcardServer();
                     }
+                    new ACKServer(updateServer).execute();
                     startRunnableServer();
                 }
 
@@ -307,14 +362,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         gameBoard[portal[i+3]] = "H"; }
 
 
-            } /*else if (position == risk[i]) {
-                System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
-                if(type.equalsIgnoreCase("server")){
-                    drawRiskcardServer();
-                    position=userPosition;
-                }
-
-            }*/
+            }
         }
         return position;
     }
@@ -354,14 +402,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         gameBoard[portal[i+3]] = "G";
                     }
 
-            } /*else if (position == risk[i]) {
-                System.out.println("WoW, ein Risikofeld. Du ziehst jetzt eine RISIKOKARTE!");
-                if(type.equalsIgnoreCase("client")){
-                    drawRiskcardClient();
-                    position = rivalPosition;
-                }
-
-            }*/
+            }
         }
         return position;
     }
@@ -377,9 +418,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         final DialogInterface.OnClickListener goListenerClient = new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                newrivalPosition(4);
-                checkBoard();
-                new MessageClient(4, updateClient).execute();
                 dialog.dismiss();
             }
         };
@@ -394,9 +432,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     builderfalse.setMessage("Juhu, du hast richtig geantwortet!");
                     builderfalse.setPositiveButton("4 Felder vor", goListenerClient);
                     builderfalse.show();
+                    sendRiskMessageSuccess();
                 }else{
-                    dialog.dismiss();//Dialogfenster wird beendet, weil Zahl ungerade ist
-                }
+                    sendRiskMessageFail();
+                    dialog.dismiss();
+                    Toast.makeText(GameActivity.this, "Sorry, leider falsch!", Toast.LENGTH_SHORT).show();                }
             }
         };
 
@@ -410,9 +450,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     builderfalse.setMessage("Juhu, du hast richtig geantwortet");
                     builderfalse.setPositiveButton("4 Felder vor", goListenerClient);
                     builderfalse.show();
-
+                    sendRiskMessageSuccess();
                 }else{
-                    dialog.dismiss();//Dialogfenster wird beendet, weil Zahl gerade ist
+                    sendRiskMessageFail();
+                    dialog.dismiss();
+                    Toast.makeText(GameActivity.this, "Sorry, leider falsch!", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -433,9 +475,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         final DialogInterface.OnClickListener goListenerServer = new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                newUserPosition(4);
-                checkBoard();
-                new MessageServer(4, updateServer).execute();
                 dialog.dismiss();
             }
         };
@@ -450,8 +489,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     builderfalseServer.setMessage("Juhu, du hast richtig geantwortet!");
                     builderfalseServer.setPositiveButton("4 Felder vor", goListenerServer);
                     builderfalseServer.show();
+                    sendRiskMessageSuccess();
                 }else{
-                    dialog.dismiss();//Dialogfenster wird beendet, weil Zahl ungerade ist
+                    sendRiskMessageFail();
+                    dialog.dismiss();
+                    Toast.makeText(GameActivity.this, "Sorry, leider falsch!", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -466,9 +508,12 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     builderfalseServer.setMessage("Juhu, du hast richtig geantwortet");
                     builderfalseServer.setPositiveButton("4 Felder vor", goListenerServer);
                     builderfalseServer.show();
+                    sendRiskMessageSuccess();
 
                 }else{
-                    dialog.dismiss();//Dialogfenster wird beendet, weil Zahl gerade ist
+                    sendRiskMessageFail();
+                    dialog.dismiss();
+                    Toast.makeText(GameActivity.this, "Sorry, leider falsch!", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -476,6 +521,30 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         builderServer.setNegativeButton("falsch", negativListenerServer);
         builderServer.show();
 
+    }
+
+    public void sendRiskMessageSuccess(){
+        String decision = "success";
+        if(type.equalsIgnoreCase("client")){
+            newrivalPosition(4);
+            checkBoard();
+            new CheckRiskClient(decision).execute();
+            new MessageClient(4).execute();
+        } else{
+            newUserPosition(4);
+            checkBoard();
+            new CheckRiskServer(decision).execute();
+            new MessageServer(4).execute();
+        }
+    }
+
+    public void sendRiskMessageFail(){
+        String decision = "fail";
+        if(type.equalsIgnoreCase("client")){
+            new CheckRiskClient(decision).execute();
+        } else{
+            new CheckRiskServer(decision).execute();
+        }
     }
 
     public void checkBoard(){                                           //checkt wo Host & Gast sich gerade befinden
@@ -541,7 +610,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         @Override
         protected Void doInBackground(Void... params) {
-            server.startServerNew(updateServer);
+            server.startServerNew(updateServer, riskServer);
             return null;
         }
 
@@ -560,7 +629,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         @Override
         protected Void doInBackground(Void... params) {
-            client.connectNew(this.ip, updateClient);
+            client.connectNew(this.ip, updateClient, riskClient);
             client.sendWelcomeMessage();
             return null;
         }
@@ -573,16 +642,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     private class MessageClient extends AsyncTask<Void, Void, Void> {
         int rolledNr;
-        UpdateClient updateClient;
 
-        public MessageClient(int roll, UpdateClient updateClient) {
+        public MessageClient(int roll) {
             this.rolledNr = roll;
-            this.updateClient = updateClient;
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            client.sendPosition(this.rolledNr, this.updateClient);
+            client.sendPosition(this.rolledNr);
             return null;
         }
 
@@ -594,16 +661,96 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     private class MessageServer extends AsyncTask<Void, Void, Void> {
         int rolledNr;
+
+        public MessageServer(int roll) {
+            this.rolledNr = roll;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            server.sendPosition(this.rolledNr);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private class ACKServer extends AsyncTask<Void, Void, Void> {
         UpdateServer updateServer;
 
-        public MessageServer(int roll, UpdateServer updateServer) {
-            this.rolledNr = roll;
+        public ACKServer(UpdateServer updateServer) {
             this.updateServer = updateServer;
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            server.sendPosition(this.rolledNr, this.updateServer);
+            server.sendACK(this.updateServer);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private class ACKClient extends AsyncTask<Void, Void, Void> {
+        UpdateClient updateClient;
+
+        public ACKClient(UpdateClient updateClient) {
+            this.updateClient = updateClient;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            client.sendACK(this.updateClient);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private class CheckRiskClient extends AsyncTask<Void, Void, Void> {
+        String decision;
+        public CheckRiskClient(String decision) {
+           this.decision = decision;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            if(decision.equalsIgnoreCase("fail")){
+                client.sendRiskFail();
+            } else {
+                client.sendRiskField();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private class CheckRiskServer extends AsyncTask<Void, Void, Void> {
+        String decision;
+        public CheckRiskServer(String decision) {
+            this.decision = decision;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            if(decision.equalsIgnoreCase("fail")){
+                server.sendRiskFail();
+            } else {
+                server.sendRiskField();
+            }
             return null;
         }
 

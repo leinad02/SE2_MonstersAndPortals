@@ -5,13 +5,14 @@ import com.esotericsoftware.kryonet.Listener;
 
 import java.io.Serializable;
 
+import t_industries.monstersandportals.NetworkClasses.ACKClient;
 import t_industries.monstersandportals.NetworkClasses.ClientName;
 import t_industries.monstersandportals.NetworkClasses.ClientRegister;
 import t_industries.monstersandportals.NetworkClasses.ForServer;
 import t_industries.monstersandportals.NetworkClasses.LoginRequest;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
 import t_industries.monstersandportals.NetworkClasses.Message;
-import t_industries.monstersandportals.NetworkClasses.ServerName;
+import t_industries.monstersandportals.NetworkClasses.RiskServer;
 import t_industries.monstersandportals.NetworkClasses.UpdateClient;
 import t_industries.monstersandportals.NetworkClasses.UpdateServer;
 
@@ -26,12 +27,14 @@ public class MyServerListener extends Listener implements Serializable {
     String name;
     ForServer forServer;
     UpdateServer updateServer;
+    RiskServer riskServer;
 
     public MyServerListener(){
     }
 
-    public MyServerListener(UpdateServer updateServer){
+    public MyServerListener(UpdateServer updateServer, RiskServer riskServer){
         this.updateServer = updateServer;
+        this.riskServer = riskServer;
     }
 
     public MyServerListener(ClientRegister clientRegister, String name, ForServer forServer) {
@@ -66,10 +69,19 @@ public class MyServerListener extends Listener implements Serializable {
         } else if(object instanceof UpdateServer){
             UpdateServer updateServer = (UpdateServer) object;
             this.updateServer.setPosition(updateServer.getPosition());
-            this.updateServer.setReadyForTurnServer(1);
             connection.sendTCP(updateServer);
         } else if(object instanceof UpdateClient){
             UpdateClient updateClient = (UpdateClient) object;
+        } else if(object instanceof ACKClient){
+            ACKClient ackClient = (ACKClient) object;
+            System.out.println(ackClient.getText());
+            this.updateServer.setReadyForTurnServer(1);
+        } else if(object instanceof RiskServer){
+            RiskServer riskServer = (RiskServer) object;
+            if(riskServer.getText().equalsIgnoreCase("fail")){
+                this.riskServer.setFailCounterServer(1);
+            }
+            this.riskServer.setCheckFieldServer(1);
         }
 
     }

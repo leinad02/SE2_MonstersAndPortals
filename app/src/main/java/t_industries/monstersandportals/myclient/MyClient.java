@@ -2,6 +2,12 @@ package t_industries.monstersandportals.myclient;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
+
+import java.io.IOException;
+import java.io.Serializable;
+
+import t_industries.monstersandportals.NetworkClasses.ACKClient;
+import t_industries.monstersandportals.NetworkClasses.ACKServer;
 import t_industries.monstersandportals.NetworkClasses.ClientName;
 import t_industries.monstersandportals.NetworkClasses.ClientRegister;
 import t_industries.monstersandportals.NetworkClasses.ForClient;
@@ -9,12 +15,11 @@ import t_industries.monstersandportals.NetworkClasses.ForServer;
 import t_industries.monstersandportals.NetworkClasses.LoginRequest;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
 import t_industries.monstersandportals.NetworkClasses.Message;
+import t_industries.monstersandportals.NetworkClasses.RiskClient;
+import t_industries.monstersandportals.NetworkClasses.RiskServer;
 import t_industries.monstersandportals.NetworkClasses.ServerName;
 import t_industries.monstersandportals.NetworkClasses.UpdateClient;
 import t_industries.monstersandportals.NetworkClasses.UpdateServer;
-
-import java.io.IOException;
-import java.io.Serializable;
 
 /**
  * Created by Michi on 07.04.2017.
@@ -57,11 +62,11 @@ public class MyClient implements Serializable{
 
     }
 
-    public void connectNew(String ip, UpdateClient updateClient){
+    public void connectNew(String ip, UpdateClient updateClient, RiskClient riskClient){
         try {
             client.start();
             client.connect(TIMEOUT, ip, TCP_PORT, UDP_PORT);
-            client.addListener(new MyClientListener(updateClient));
+            client.addListener(new MyClientListener(updateClient, riskClient));
             LoginRequest req = new LoginRequest();
             req.setMessageText("Hallo");
             client.sendTCP(req);
@@ -81,11 +86,30 @@ public class MyClient implements Serializable{
         client.sendTCP(message);
     }
 
-    public void sendPosition(int rolledNr, UpdateClient updateClient){
+    public void sendPosition(int rolledNr){
         UpdateServer updateServer = new UpdateServer();
         updateServer.setPosition(rolledNr);
         client.sendTCP(updateServer);
+    }
+
+    public void sendACK(UpdateClient updateClient){
+        ACKClient ackClient = new ACKClient();
+        ackClient.setText("fertig");
+        client.sendTCP(ackClient);
         updateClient.setReadyForTurnClient(0);
+    }
+
+    public void sendRiskField(){
+        RiskServer riskServer = new RiskServer();
+        riskServer.setCheckFieldServer(1);
+        riskServer.setText("success");
+        client.sendTCP(riskServer);
+    }
+
+    public void sendRiskFail(){
+        RiskServer riskServer = new RiskServer();
+        riskServer.setText("fail");
+        client.sendTCP(riskServer);
     }
 
     private void registerKryoClasses(){
@@ -99,5 +123,9 @@ public class MyClient implements Serializable{
         kryo.register(Message.class);
         kryo.register(UpdateClient.class);
         kryo.register(UpdateServer.class);
+        kryo.register(ACKClient.class);
+        kryo.register(ACKServer.class);
+        kryo.register(RiskServer.class);
+        kryo.register(RiskClient.class);
     }
 }
