@@ -42,7 +42,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     MyClient client;
     UpdateClient updateClient;
     UpdateServer updateServer;
-    RiskServer riskServer;
+    RiskServer riskServer; //für die Kommunikation
     RiskClient riskClient;
 
 
