@@ -1,29 +1,16 @@
 package t_industries.monstersandportals;
 
-import android.app.Activity;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
-
-import junit.framework.Assert;
-
 import org.junit.Test;
 
-import java.sql.ResultSet;
 import java.util.Random;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
- * Created by danie on 07.05.2017.
+ * Created by danie on 13.05.2017.
  */
-
-public class DiceTest extends GameActivity {
-
+public class GameActivityTest {
     @Test
     public void rollDice() throws Exception {
         Random random = new Random();
@@ -37,8 +24,7 @@ public class DiceTest extends GameActivity {
             System.out.println(zahl);
 
         }
+
     }
-
-
 
 }

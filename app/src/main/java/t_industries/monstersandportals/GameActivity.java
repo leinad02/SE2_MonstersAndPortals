@@ -1,13 +1,17 @@
 package t_industries.monstersandportals;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,8 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import t_industries.monstersandportals.NetworkClasses.Message;
@@ -31,7 +33,7 @@ import t_industries.monstersandportals.myserver.MyServer;
  * Created by micha on 22.04.2017.
  */
 
-public class GameActivity extends Activity implements Serializable, View.OnClickListener {
+public class GameActivity extends Activity implements Serializable, View.OnClickListener, SensorEventListener {
     private TextView tvServerName, tvClientName;
     private Button closeServer, disconnect;
     int rolledNumber;
@@ -40,6 +42,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     MyClient client;
     UpdateClient updateClient;
     UpdateServer updateServer;
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
+    private static final int SHAKE_THRESHOLD = 600;
+    boolean isClickedClient = false;
+    boolean isClickedServer = false;
 
 
     static String[] gameBoard = new String[48]; // 8 x 6 Spielfeld
@@ -78,6 +87,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         updateServer = new UpdateServer();
         updateClient = new UpdateClient();
         handler = new Handler();
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+
 
         Intent i = this.getIntent();
         Bundle bundle = i.getExtras();
@@ -151,6 +165,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     };
 
     private void gameHandlerClient() {
+
+        if (isClickedClient)
         rollClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,8 +176,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
 
                 if (userPosition <= 47 && rivalPosition <= 47) {
+                    isClickedClient = true;
+
                     int rolledNo = rollDice();
-                    setDiceClient(rolledNo);
+                    //setDiceClient(rolledNo);
                     System.out.println("Client zieht weiter:");
                     new MessageClient(rolledNo, updateClient).execute();
                     System.out.println("Host ist dran:");
@@ -189,8 +207,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     return;
                 }
                 if (userPosition <= 47 && rivalPosition <= 47) {
+                    isClickedServer = true;
                     int rolledNo = rollDice();
-                    setDiceServer(rolledNo);
+                    //setDiceServer(rolledNo);
                     System.out.println("Host zieht weiter:");
                     //if(newUserPosition(rolledNo) == 20)
                     new MessageServer(rolledNo, updateServer).execute();
@@ -404,6 +423,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     }
 
+
     private class MyTaskServer extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -488,37 +508,85 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
 
-    private void setDiceServer(int rolledNo) {
+    private void setDiceServer() {
 
-        if (rolledNo == 1) {
+        if (rolledNumber == 1) {
             rollServer.setImageResource(R.drawable.d1);
-        } else if (rolledNo == 2) {
+        } else if (rolledNumber == 2) {
             rollServer.setImageResource(R.drawable.d2);
-        } else if (rolledNo == 3) {
+        } else if (rolledNumber == 3) {
             rollServer.setImageResource(R.drawable.d3);
-        } else if (rolledNo == 4) {
+        } else if (rolledNumber == 4) {
             rollServer.setImageResource(R.drawable.d4);
-        } else if (rolledNo == 5) {
+        } else if (rolledNumber == 5) {
             rollServer.setImageResource(R.drawable.d5);
-        } else if (rolledNo == 6) {
+        } else if (rolledNumber == 6) {
             rollServer.setImageResource(R.drawable.d6);
         }
     }
 
-    private void setDiceClient(int rolledNo) {
-        if (rolledNo == 1) {
+    private void setDiceClient() {
+        if (rolledNumber == 1) {
             rollClient.setImageResource(R.drawable.d1);
-        } else if (rolledNo == 2) {
+        } else if (rolledNumber == 2) {
             rollClient.setImageResource(R.drawable.d2);
-        } else if (rolledNo == 3) {
+        } else if (rolledNumber == 3) {
             rollClient.setImageResource(R.drawable.d3);
-        } else if (rolledNo == 4) {
+        } else if (rolledNumber == 4) {
             rollClient.setImageResource(R.drawable.d4);
-        } else if (rolledNo == 5) {
+        } else if (rolledNumber == 5) {
             rollClient.setImageResource(R.drawable.d5);
-        } else if (rolledNo == 6) {
+        } else if (rolledNumber == 6) {
             rollClient.setImageResource(R.drawable.d6);
         }
     }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            getShake(event);
+        }
+    }
+
+    private void getShake(SensorEvent event){
+
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+        long curTime = System.currentTimeMillis();
+
+        if ((curTime - lastUpdate) > 100) {
+            long diffTime = (curTime - lastUpdate);
+            lastUpdate = curTime;
+
+            float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+            if (speed > SHAKE_THRESHOLD) {
+                rollDice();
+
+                if (isClickedClient){
+                    setDiceClient();
+                }
+
+                if (isClickedServer){
+                    setDiceServer();
+                }
+
+            }
+
+            last_x = x;
+            last_y = y;
+            last_z = z;
+        }
+    }
+
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+
 
 }
