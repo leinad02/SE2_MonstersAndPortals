@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DarkMonster" parent="Theme.AppCompat.NoActionBar" >
+        <item name="android:textColorPrimary">@color/colorRed</item>
+        <item name="android:textColorSecondary">@color/colorRed</item>
+        <item name="colorAccent">@android:color/darker_gray</item>
+    </style>
+
 </resources>

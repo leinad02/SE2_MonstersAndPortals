@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MonstersAndPortals2.iml" filepath="$PROJECT_DIR$/MonstersAndPortals2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SE2_MAP_160517.iml" filepath="$PROJECT_DIR$/SE2_MAP_160517.iml" />
       <module fileurl="file://$PROJECT_DIR$/SE2_MonstersAndPortals.iml" filepath="$PROJECT_DIR$/SE2_MonstersAndPortals.iml" />
       <module fileurl="file://$PROJECT_DIR$/SE2_MonstersAndPortals_0805.iml" filepath="$PROJECT_DIR$/SE2_MonstersAndPortals_0805.iml" />
       <module fileurl="file://$PROJECT_DIR$/SE2_MonstersAndPortals_BetaVersion.iml" filepath="$PROJECT_DIR$/SE2_MonstersAndPortals_BetaVersion.iml" />
