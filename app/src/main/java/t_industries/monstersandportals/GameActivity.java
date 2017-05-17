@@ -1,10 +1,15 @@
 package t_industries.monstersandportals;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,7 +38,7 @@ import static java.lang.String.valueOf;
  * Created by micha on 22.04.2017.
  */
 
-public class GameActivity extends Activity implements Serializable, View.OnClickListener {
+public class GameActivity extends Activity implements Serializable, View.OnClickListener, SensorEventListener {
     private TextView tvServerName, tvClientName;
     private Button closeServer, disconnect;
     int rolledNumber;
@@ -44,6 +49,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     UpdateServer updateServer;
     RiskServer riskServer; //für die Kommunikation
     RiskClient riskClient;
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
+    private static final int SHAKE_THRESHOLD = 1000;
 
 
     static String[] gameBoard = new String[48]; // 8 x 6 Spielfeld
@@ -90,6 +100,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         riskServer = new RiskServer();
         riskClient = new RiskClient();
         handler = new Handler();
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+
 
         Intent i = this.getIntent();
         Bundle bundle = i.getExtras();
@@ -215,73 +230,80 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private void gameHandlerClient() {
-        rollClient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (updateClient.getReadyForTurnClient() == 0) {
-                    Toast.makeText(GameActivity.this, "Bitte warten, der Server ist noch am Zug.", Toast.LENGTH_LONG).show();
-                    return;
+                rollClient.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gameTurnClient();
                 }
-
-                if (userPosition <= 47 && rivalPosition <= 47) {
-                    int rolledNo = rollDice();
-                    setDiceClient(rolledNo);
-                    System.out.println("Client zieht weiter:");
-                    new MessageClient(rolledNo).execute();
-                    System.out.println("Host ist dran:");
-                    newrivalPosition(rolledNo);
-                    checkBoard();
-
-                    if(rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40){
-                        drawRiskcardClient();
-                    }
-                    new ACKClient(updateClient).execute();
-                    startRunnableClient();
-                }
-
-                if (userPosition == 47) {
-                    Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
-                } else if (rivalPosition == 47) {
-                    Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
+            });
     }
 
+
     private void gameHandlerServer() {
-        rollServer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (updateServer.getReadyForTurnServer() == 0) {
-                    Toast.makeText(GameActivity.this, "Bitte warten, der Client ist noch am Zug.", Toast.LENGTH_LONG).show();
-                    return;
+            rollServer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gameTurnServer();
                 }
-                if (userPosition <= 47 && rivalPosition <= 47) {
-                    int rolledNo = rollDice();
-                    setDiceServer(rolledNo);
-                    System.out.println("Host zieht weiter:");
-                    //if(newUserPosition(rolledNo) == 20)
-                    new MessageServer(rolledNo).execute();
-                    System.out.println("Client ist dran:");
-                    newUserPosition(rolledNo);
-                    checkBoard();
+            });
+    }
 
-                    if(userPosition == 10 || userPosition == 26 || userPosition == 40){
-                        drawRiskcardServer();
-                    }
-                    new ACKServer(updateServer).execute();
-                    startRunnableServer();
-                }
+    public void gameTurnServer(){
+        if (updateServer.getReadyForTurnServer() == 0) {
+            Toast.makeText(GameActivity.this, "Bitte warten, der Client ist noch am Zug.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (userPosition <= 47 && rivalPosition <= 47) {
+            int rolledNo = rollDice();
+            setDiceServer(rolledNo);
+            System.out.println("Host zieht weiter:");
+            //if(newUserPosition(rolledNo) == 20)
+            new MessageServer(rolledNo).execute();
+            System.out.println("Client ist dran:");
+            newUserPosition(rolledNo);
+            checkBoard();
 
-                if (userPosition == 47) {
-                    Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
-                } else if (rivalPosition == 47) {
-                    Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
-                }
+            if (userPosition == 10 || userPosition == 26 || userPosition == 40) {
+                drawRiskcardServer();
             }
-        });
+            new ACKServer(updateServer).execute();
+            startRunnableServer();
+        }
 
+        if (userPosition == 47) {
+            Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
+        } else if (rivalPosition == 47) {
+            Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void gameTurnClient(){
+        if (updateClient.getReadyForTurnClient() == 0) {
+            Toast.makeText(GameActivity.this, "Bitte warten, der Server ist noch am Zug.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (userPosition <= 47 && rivalPosition <= 47) {
+            int rolledNo = rollDice();
+            setDiceClient(rolledNo);
+            System.out.println("Client zieht weiter:");
+            new MessageClient(rolledNo).execute();
+            System.out.println("Host ist dran:");
+            newrivalPosition(rolledNo);
+            checkBoard();
+
+            if (rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40) {
+                drawRiskcardClient();
+            }
+            new ACKClient(updateClient).execute();
+            startRunnableClient();
+        }
+
+        if (userPosition == 47) {
+            Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
+        } else if (rivalPosition == 47) {
+            Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void newUserPosition(int rolledNo) {                // Bewegt den Host
@@ -606,6 +628,58 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+        long curTime = System.currentTimeMillis();
+
+        if ((curTime - lastUpdate) > 100) {
+            long diffTime = (curTime - lastUpdate);
+            lastUpdate = curTime;
+
+            float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+            if (speed > SHAKE_THRESHOLD) {
+
+                if (type.equalsIgnoreCase("Client")){
+                    gameTurnClient();
+                }
+
+                if (type.equalsIgnoreCase("Server")){
+                    gameTurnServer();
+                }
+
+            }
+
+            last_x = x;
+            last_y = y;
+            last_z = z;
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        if (sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).size()!=0){
+            Sensor sensor = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
     private class MyTaskServer extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -799,5 +873,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             rollClient.setImageResource(R.drawable.d6);
         }
     }
+
 
 }
