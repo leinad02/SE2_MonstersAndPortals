@@ -1,6 +1,7 @@
 package t_industries.monstersandportals;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -66,6 +67,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private String num = valueOf(number);
     private int isRisk = 0; //wenn richtig, den Player 4 Positionen vor schicken
     private String type;
+    //Dialoge für Monster,Portale,Gewonnen,Verloren
+    Dialog dialog;
+    //Initialisiere SoundPlayer zur Verwaltung von Audiodateien
+    private SoundPlayer sound;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -338,6 +344,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     } else {
                         gameBoard[monster[i]] = ""; }
 
+                if (type.equalsIgnoreCase("server")){
+                    showDialogMonster();
+                }
+
                 position = monster[i+3];             // der derzeitige Spieler betritt einen Monsterfeld
 
                 if (gameBoard[monster[i+3]] == "G"){
@@ -378,6 +388,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         gameBoard[monster[i]] = "";
                     }
 
+                if (type.equalsIgnoreCase("client")){
+                    showDialogMonster();
+                }
+
                 position = monster[i+3];             // der derzeitige Spieler betritt einen Monsterfeld
 
                 if ( gameBoard[monster[i+3]] == "H"){
@@ -406,6 +420,27 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
         return position;
     }
+
+    private void showDialogMonster(){
+        sound = new SoundPlayer(this);
+        dialog = new Dialog(GameActivity.this);
+        dialog.setContentView(R.layout.portal);
+        dialog.show();
+
+        //Beim Öffnen des Dialogs Sound abspielen
+        sound.playPortalSound();
+
+        Button portal = (Button) dialog.findViewById(R.id.portalBtn);
+        portal.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                dialog.cancel();
+            }
+        });
+    }
+
 
    public void drawRiskcardClient(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
