@@ -346,6 +346,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
                 if (type.equalsIgnoreCase("server")){
                     showDialogMonster();
+                }else{
+                    showDialogRivalMonster();
                 }
 
                 position = monster[i+3];             // der derzeitige Spieler betritt einen Monsterfeld
@@ -363,6 +365,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     } else {
                         gameBoard[portal[i]] = ""; }
 
+                if (type.equalsIgnoreCase("server")){
+                    showDialogPortal();
+                }else{
+                    showDialogRivalPortal();
+                }
 
                 position = portal[i+3];             // der derzeitige Spieler geht durch den Portal
 
@@ -390,6 +397,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
                 if (type.equalsIgnoreCase("client")){
                     showDialogMonster();
+                }else{
+                    showDialogRivalMonster();
                 }
 
                 position = monster[i+3];             // der derzeitige Spieler betritt einen Monsterfeld
@@ -407,6 +416,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     } else {
                         gameBoard[portal[i]] = "";
                     }
+                if (type.equalsIgnoreCase("client")){
+                    showDialogPortal();
+                }else{
+                    showDialogRivalPortal();
+                }
 
                 position = portal[i+3];             // der derzeitige Spieler geht durch den Portal
 
@@ -422,6 +436,46 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private void showDialogMonster(){
+        sound = new SoundPlayer(this);
+        dialog = new Dialog(GameActivity.this);
+        dialog.setContentView(R.layout.monster);
+        dialog.show();
+
+        //Beim Öffnen des Dialogs Sound abspielen
+        sound.playMonsterSound();
+
+        Button portal = (Button) dialog.findViewById(R.id.monsterBtn);
+        portal.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                dialog.cancel();
+            }
+        });
+    }
+
+    private void showDialogRivalMonster(){
+        sound = new SoundPlayer(this);
+        dialog = new Dialog(GameActivity.this);
+        dialog.setContentView(R.layout.monsterRival);
+        dialog.show();
+
+        //Beim Öffnen des Dialogs Sound abspielen
+        sound.playRivalMonsterSound();
+
+        Button portal = (Button) dialog.findViewById(R.id.monsterBtn);
+        portal.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                dialog.cancel();
+            }
+        });
+    }
+
+    private void showDialogPortal(){
         sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
         dialog.setContentView(R.layout.portal);
@@ -440,6 +494,27 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             }
         });
     }
+
+    private void showDialogRivalPortal(){
+        sound = new SoundPlayer(this);
+        dialog = new Dialog(GameActivity.this);
+        dialog.setContentView(R.layout.portalRival);
+        dialog.show();
+
+        //Beim Öffnen des Dialogs Sound abspielen
+        sound.playRivalPortalSound();
+
+        Button portal = (Button) dialog.findViewById(R.id.portalBtn);
+        portal.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                dialog.cancel();
+            }
+        });
+    }
+
 
 
    public void drawRiskcardClient(){
