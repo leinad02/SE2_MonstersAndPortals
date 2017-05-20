@@ -40,17 +40,6 @@ public class Monster extends AppCompatActivity{
 
                     @Override
                     public void onClick(View v) {
-
-       /*übergebene Position verändern Code
-
-        position = Spielbrett.getUserPosition()- (int)(Math.random()*10)+1
-        if (position < 0){
-        positon = 0
-        }else{
-        Spielbrett.setUserPosition(position);
-        }
-        * */
-
                         dialog.cancel();
                     }
                 });
