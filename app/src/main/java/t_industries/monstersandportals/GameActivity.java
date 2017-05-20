@@ -53,7 +53,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private Sensor sensor;
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
-    private static final int SHAKE_THRESHOLD = 1000;
+    private static final int SHAKE_THRESHOLD = 800;
 
 
     static String[] gameBoard = new String[48]; // 8 x 6 Spielfeld
@@ -652,8 +652,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                             if(updateClient.getActiveSensorClient() == 1){
                                 gameTurnClient();
                                 updateClient.setActiveSensorClient(0);
-                            } else{
-                                Toast.makeText(GameActivity.this, "Server noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (speed > 2000) {
+                                    Toast.makeText(GameActivity.this, "Server noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
+                                }
                             }
 
                         }
@@ -662,10 +664,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                             if(updateServer.getActiveSensorServer() == 1){
                                 gameTurnServer();
                                 updateServer.setActiveSensorServer(0);
-                            } else{
-                                Toast.makeText(GameActivity.this, "Client noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (speed > 2000) {
+                                    Toast.makeText(GameActivity.this, "Client noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
+                                }
                             }
-
                         }
 
                     }
