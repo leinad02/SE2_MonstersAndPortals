@@ -103,7 +103,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, sensor, 1000000);
 
 
         Intent i = this.getIntent();
@@ -230,7 +230,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private void gameHandlerClient() {
-                rollClient.setOnClickListener(new View.OnClickListener() {
+        rollClient.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     gameTurnClient();
@@ -250,7 +250,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     public void gameTurnServer(){
         if (updateServer.getReadyForTurnServer() == 0) {
-            Toast.makeText(GameActivity.this, "Bitte warten, der Client ist noch am Zug.", Toast.LENGTH_LONG).show();
+            Toast.makeText(GameActivity.this, "Bitte warten, der Client ist noch am Zug.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (userPosition <= 47 && rivalPosition <= 47) {
@@ -279,7 +279,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     public void gameTurnClient(){
         if (updateClient.getReadyForTurnClient() == 0) {
-            Toast.makeText(GameActivity.this, "Bitte warten, der Server ist noch am Zug.", Toast.LENGTH_LONG).show();
+            Toast.makeText(GameActivity.this, "Bitte warten, der Server ist noch am Zug.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -630,34 +630,46 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        float x = event.values[0];
-        float y = event.values[1];
-        float z = event.values[2];
-        long curTime = System.currentTimeMillis();
 
-        if ((curTime - lastUpdate) > 100) {
-            long diffTime = (curTime - lastUpdate);
-            lastUpdate = curTime;
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+                long curTime = System.currentTimeMillis();
 
-            float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+                if ((curTime - lastUpdate) > 100) {
+                    long diffTime = (curTime - lastUpdate);
+                    lastUpdate = curTime;
 
-            if (speed > SHAKE_THRESHOLD) {
+                    float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
-                if (type.equalsIgnoreCase("Client")){
-                    gameTurnClient();
+                    if (speed > SHAKE_THRESHOLD) {
+
+                        if (type.equalsIgnoreCase("Client")) {
+                            try {
+                                gameTurnClient();
+                                wait(5000);
+                            } catch(InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        if (type.equalsIgnoreCase("Server")) {
+                            try {
+                                gameTurnServer();
+                                wait(5000);
+                            } catch(InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+
+                    last_x = x;
+                    last_y = y;
+                    last_z = z;
                 }
-
-                if (type.equalsIgnoreCase("Server")){
-                    gameTurnServer();
-                }
-
             }
 
-            last_x = x;
-            last_y = y;
-            last_z = z;
-        }
-    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -670,7 +682,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         if (sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).size()!=0){
             Sensor sensor = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
-            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this, sensor, 1000000);
         }
     }
 
