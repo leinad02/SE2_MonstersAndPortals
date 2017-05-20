@@ -156,6 +156,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
                 if(rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40){
                     if(riskServer.isCheckField() == 0){
+                        updateServer.setActiveSensorServer(0);
                         rollServer.setVisibility(View.INVISIBLE);
                         Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist noch beim Beantworten!", Toast.LENGTH_SHORT).show();
                         isRisk = 1;
@@ -170,6 +171,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         }
                         rollServer.setVisibility(View.VISIBLE);
                         resetRiskValues();
+                        updateServer.setActiveSensorServer(1);
                     }
                 }
                 gameHandlerServer();
@@ -195,6 +197,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
                 if(userPosition == 10 || userPosition == 26 || userPosition == 40){
                     if(riskClient.isCheckFieldClient() == 0){
+                        updateClient.setActiveSensorClient(0);
                         rollClient.setVisibility(View.INVISIBLE);
                         Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist noch beim Beantworten!", Toast.LENGTH_SHORT).show();
                         isRisk = 1;
@@ -209,6 +212,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         }
                         rollClient.setVisibility(View.VISIBLE);
                         resetRiskValues();
+                        updateClient.setActiveSensorClient(1);
                     }
                 }
                 gameHandlerClient();
@@ -645,21 +649,23 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     if (speed > SHAKE_THRESHOLD) {
 
                         if (type.equalsIgnoreCase("Client")) {
-                            try {
+                            if(updateClient.getActiveSensorClient() == 1){
                                 gameTurnClient();
-                                wait(5000);
-                            } catch(InterruptedException e) {
-                                e.printStackTrace();
+                                updateClient.setActiveSensorClient(0);
+                            } else{
+                                Toast.makeText(GameActivity.this, "Server noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
                             }
+
                         }
 
                         if (type.equalsIgnoreCase("Server")) {
-                            try {
+                            if(updateServer.getActiveSensorServer() == 1){
                                 gameTurnServer();
-                                wait(5000);
-                            } catch(InterruptedException e) {
-                                e.printStackTrace();
+                                updateServer.setActiveSensorServer(0);
+                            } else{
+                                Toast.makeText(GameActivity.this, "Client noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
                             }
+
                         }
 
                     }
