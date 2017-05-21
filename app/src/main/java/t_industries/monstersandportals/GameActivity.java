@@ -183,6 +183,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         updateServer.setActiveSensorServer(1);
                     }
                 }
+
+                if (rivalPosition == 47) {
+                    showDialogLose();
+                }
+
                 gameHandlerServer();
             } else {
                 startRunnableServer();
@@ -224,6 +229,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         updateClient.setActiveSensorClient(1);
                     }
                 }
+
+                if (userPosition == 47) {
+                    showDialogLose();
+                }
+
                 gameHandlerClient();
             } else {
                 startRunnableClient();
@@ -284,9 +294,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
         if (userPosition == 47) {
-            Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
-        } else if (rivalPosition == 47) {
-            Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
+            showDialogWin();
         }
     }
 
@@ -312,10 +320,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             startRunnableClient();
         }
 
-        if (userPosition == 47) {
-            Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
-        } else if (rivalPosition == 47) {
-            Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
+        if (rivalPosition == 47) {
+            showDialogWin();
         }
     }
 
@@ -487,7 +493,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private void showDialogRivalMonster(){
         sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
-        dialog.setContentView(R.layout.monsterRival);
+        dialog.setContentView(R.layout.monster_rival);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
@@ -527,7 +533,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private void showDialogRivalPortal(){
         sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
-        dialog.setContentView(R.layout.portalRival);
+        dialog.setContentView(R.layout.portal_rival);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
@@ -544,9 +550,59 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         });
     }
 
+    private void showDialogWin(){
+        sound = new SoundPlayer(this);
+        dialog = new Dialog(GameActivity.this);
+        dialog.setContentView(R.layout.win);
+        dialog.show();
+
+        //Beim Öffnen des Dialogs Sound abspielen
+        sound.playWinningSound();
+
+        Button back = (Button) dialog.findViewById(R.id.backBtn);
+        back.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                endGameConnection();
+                startActivity(new Intent(GameActivity.this, EndActivity.class));
+            }
+        });
+    }
+
+    private void showDialogLose(){
+        sound = new SoundPlayer(this);
+        dialog = new Dialog(GameActivity.this);
+        dialog.setContentView(R.layout.lose);
+        dialog.show();
+
+        //Beim Öffnen des Dialogs Sound abspielen
+        sound.playLosingSound();
+
+        Button back = (Button) dialog.findViewById(R.id.backBtn);
+        back.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                endGameConnection();
+                startActivity(new Intent(GameActivity.this, EndActivity.class));
+            }
+        });
+    }
+
+    private void endGameConnection(){
+        if(type.equalsIgnoreCase("client")){
+            client.disconnect();
+        } else {
+            server.stopServer();
+        }
+    }
 
 
-   public void drawRiskcardClient(){
+
+    public void drawRiskcardClient(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog.Builder builderfalse = new AlertDialog.Builder(this);
 
