@@ -72,7 +72,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     Dialog dialog;
     //Initialisiere SoundPlayer zur Verwaltung von Audiodateien
     private SoundPlayer sound;
-    private SoundPlayer sound2;
+    
 
 
 
@@ -465,13 +465,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private void showDialogRivalMonster(){
-        sound2 = new SoundPlayer(this);
+        sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
         dialog.setContentView(R.layout.monster_rival);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
-        sound2.playRivalMonsterSound();
+        sound.playRivalMonsterSound();
 
         Button portal = (Button) dialog.findViewById(R.id.monsterBtn);
         portal.setOnClickListener(new View.OnClickListener() {
@@ -505,13 +505,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private void showDialogRivalPortal(){
-        sound2 = new SoundPlayer(this);
+        sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
         dialog.setContentView(R.layout.portal_rival);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
-        sound2.playRivalPortalSound();
+        sound.playRivalPortalSound();
 
         Button portal = (Button) dialog.findViewById(R.id.portalBtn);
         portal.setOnClickListener(new View.OnClickListener() {
@@ -546,13 +546,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private void showDialogLose(){
-        sound2 = new SoundPlayer(this);
+        sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
         dialog.setContentView(R.layout.lose);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
-        sound2.playLosingSound();
+        sound.playLosingSound();
 
         Button back = (Button) dialog.findViewById(R.id.backBtn);
         back.setOnClickListener(new View.OnClickListener() {
