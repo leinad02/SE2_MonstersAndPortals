@@ -29,6 +29,7 @@ import t_industries.monstersandportals.myclient.MyClient;
 import t_industries.monstersandportals.myserver.MyServer;
 
 import static java.lang.String.valueOf;
+import static java.security.AccessController.getContext;
 
 /**
  * Created by micha on 22.04.2017.
@@ -247,8 +248,20 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
                 if (userPosition == 47) {
                     Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
+
+                    if (type.equalsIgnoreCase("server")){
+                        showDialogWin();
+                    }else{
+                        showDialogLose();
+                    }
                 } else if (rivalPosition == 47) {
                     Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
+
+                    if (type.equalsIgnoreCase("client")){
+                        showDialogWin();
+                    }else{
+                        showDialogLose();
+                    }
                 }
 
             }
@@ -282,8 +295,20 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
                 if (userPosition == 47) {
                     Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
+
+                    if (type.equalsIgnoreCase("server")){
+                        showDialogWin();
+                    }else{
+                        showDialogLose();
+                    }
                 } else if (rivalPosition == 47) {
                     Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
+
+                    if (type.equalsIgnoreCase("client")){
+                        showDialogWin();
+                    }else{
+                        showDialogLose();
+                    }
                 }
             }
         });
@@ -458,7 +483,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private void showDialogRivalMonster(){
         sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
-        dialog.setContentView(R.layout.monsterRival);
+        dialog.setContentView(R.layout.monster_rival);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
@@ -498,7 +523,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private void showDialogRivalPortal(){
         sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
-        dialog.setContentView(R.layout.portalRival);
+        dialog.setContentView(R.layout.portal_rival);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
@@ -515,9 +540,54 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         });
     }
 
+    private void showDialogWin(){
+        sound = new SoundPlayer(this);
+        dialog = new Dialog(GameActivity.this);
+        dialog.setContentView(R.layout.win);
+        dialog.show();
+
+        //Beim Öffnen des Dialogs Sound abspielen
+        sound.playWinningSound();
+
+        Button back = (Button) dialog.findViewById(R.id.backBtn);
+        back.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                dialog.cancel();
+                server.stopServer();
+                client.disconnect();
+                startActivity(new Intent(GameActivity.this, EndActivity.class));
+            }
+        });
+    }
+
+    private void showDialogLose(){
+        sound = new SoundPlayer(this);
+        dialog = new Dialog(GameActivity.this);
+        dialog.setContentView(R.layout.lose);
+        dialog.show();
+
+        //Beim Öffnen des Dialogs Sound abspielen
+        sound.playLosingSound();
+
+        Button back = (Button) dialog.findViewById(R.id.backBtn);
+        back.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                dialog.cancel();
+                server.stopServer();
+                client.disconnect();
+                startActivity(new Intent(GameActivity.this, EndActivity.class));
+                }
+        });
+    }
 
 
-   public void drawRiskcardClient(){
+    public void drawRiskcardClient(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog.Builder builderfalse = new AlertDialog.Builder(this);
 
