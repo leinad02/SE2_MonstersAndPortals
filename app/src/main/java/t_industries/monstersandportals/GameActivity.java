@@ -183,6 +183,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         updateServer.setActiveSensorServer(1);
                     }
                 }
+
+                if (rivalPosition == 47) {
+                    showDialogLose();
+                }
+
                 gameHandlerServer();
             } else {
                 startRunnableServer();
@@ -224,6 +229,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         updateClient.setActiveSensorClient(1);
                     }
                 }
+
+                if (userPosition == 47) {
+                    showDialogLose();
+                }
+
                 gameHandlerClient();
             } else {
                 startRunnableClient();
@@ -284,14 +294,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
         if (userPosition == 47) {
-            Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
-            if (type.equalsIgnoreCase("server")){
-                showDialogWin();
-            }else{
-                showDialogLose();
-            }
-        } else if (rivalPosition == 47) {
-            Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
+            showDialogWin();
         }
     }
 
@@ -317,15 +320,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             startRunnableClient();
         }
 
-        if (userPosition == 47) {
-            Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
-            if (type.equalsIgnoreCase("server")){
-                showDialogWin();
-            }else{
-                showDialogLose();
-            }
-        } else if (rivalPosition == 47) {
-            Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
+        if (rivalPosition == 47) {
+            showDialogWin();
         }
     }
 
