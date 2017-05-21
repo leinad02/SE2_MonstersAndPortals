@@ -25,6 +25,7 @@ public class EndActivity extends AppCompatActivity implements View.OnClickListen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         againBtn = (Button) findViewById(R.id.againBtn);
+        againBtn.setOnClickListener(this);
     }
 
     @Override

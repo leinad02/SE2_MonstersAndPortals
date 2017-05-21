@@ -164,6 +164,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         resetRiskValues();
                     }
                 }
+
+                if (rivalPosition == 47) {
+                    showDialogLose();
+                }
+
                 gameHandlerServer();
             } else {
                 startRunnableServer();
@@ -203,6 +208,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         resetRiskValues();
                     }
                 }
+
+                if (userPosition == 47) {
+                    showDialogLose();
+                }
+
                 gameHandlerClient();
             } else {
                 startRunnableClient();
@@ -246,22 +256,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     startRunnableClient();
                 }
 
-                if (userPosition == 47) {
-                    Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
-
-                    if (type.equalsIgnoreCase("server")){
-                        showDialogWin();
-                    }else{
-                        showDialogLose();
-                    }
-                } else if (rivalPosition == 47) {
-                    Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
-
-                    if (type.equalsIgnoreCase("client")){
-                        showDialogWin();
-                    }else{
-                        showDialogLose();
-                    }
+                if (rivalPosition == 47) {
+                    showDialogWin();
                 }
 
             }
@@ -294,21 +290,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
 
                 if (userPosition == 47) {
-                    Toast.makeText(GameActivity.this, "Winner is the HOST!", Toast.LENGTH_LONG).show();
-
-                    if (type.equalsIgnoreCase("server")){
-                        showDialogWin();
-                    }else{
-                        showDialogLose();
-                    }
-                } else if (rivalPosition == 47) {
-                    Toast.makeText(GameActivity.this, "Winner is the GUEST!", Toast.LENGTH_LONG).show();
-
-                    if (type.equalsIgnoreCase("client")){
-                        showDialogWin();
-                    }else{
-                        showDialogLose();
-                    }
+                    showDialogWin();
                 }
             }
         });
@@ -554,10 +536,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
             @Override
             public void onClick(View v) {
-
                 dialog.cancel();
-                server.stopServer();
-                client.disconnect();
+                endGameConnection();
                 startActivity(new Intent(GameActivity.this, EndActivity.class));
             }
         });
@@ -577,13 +557,19 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
             @Override
             public void onClick(View v) {
-
                 dialog.cancel();
-                server.stopServer();
-                client.disconnect();
+                endGameConnection();
                 startActivity(new Intent(GameActivity.this, EndActivity.class));
                 }
         });
+    }
+
+    private void endGameConnection(){
+        if(type.equalsIgnoreCase("client")){
+            client.disconnect();
+        } else {
+            server.stopServer();
+        }
     }
 
 
