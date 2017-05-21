@@ -63,6 +63,7 @@ public class MyClientListener extends Listener implements Serializable {
             ACKServer ackServer = (ACKServer) object;
             System.out.println(ackServer.getText());
             this.updateClient.setReadyForTurnClient(1);
+            this.updateClient.setActiveSensorClient(1);
         } else if(object instanceof RiskClient){
             RiskClient riskClient = (RiskClient) object;
             if(riskClient.getText().equalsIgnoreCase("fail")){

@@ -5,8 +5,9 @@ package t_industries.monstersandportals.NetworkClasses;
  */
 
 public class UpdateServer {
-    int position;
-    int readyForTurnServer;
+    private int position;
+    private int readyForTurnServer;
+    private int activeSensorServer;
 
     public int getPosition() {
         return position;
@@ -22,5 +23,13 @@ public class UpdateServer {
 
     public void setReadyForTurnServer(int readyForTurnClient) {
         this.readyForTurnServer = readyForTurnClient;
+    }
+
+    public int getActiveSensorServer() {
+        return activeSensorServer;
+    }
+
+    public void setActiveSensorServer(int activeSensorServer) {
+        this.activeSensorServer = activeSensorServer;
     }
 }

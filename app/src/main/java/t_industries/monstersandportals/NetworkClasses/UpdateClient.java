@@ -5,8 +5,9 @@ package t_industries.monstersandportals.NetworkClasses;
  */
 
 public class UpdateClient {
-    int position;
-    int readyForTurnClient = 1;
+    private int position;
+    private int readyForTurnClient = 1;
+    private int activeSensorClient = 1;
 
     public int getPosition() {
         return position;
@@ -22,5 +23,13 @@ public class UpdateClient {
 
     public void setReadyForTurnClient(int readyForTurnClient) {
         this.readyForTurnClient = readyForTurnClient;
+    }
+
+    public int getActiveSensorClient() {
+        return activeSensorClient;
+    }
+
+    public void setActiveSensorClient(int activeSensorClient) {
+        this.activeSensorClient = activeSensorClient;
     }
 }
