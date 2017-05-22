@@ -79,6 +79,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     //Randomzahl zwischen 1 und 10
     private String num = valueOf(number);
     private int isRisk = 0; //wenn richtig, den Player 4 Positionen vor schicken
+    private int isActiveOrderServer = 0;
+    private int isActiveOrderClient = 0;
     private String type;
     //Dialoge für Monster,Portale,Gewonnen,Verloren
     Dialog dialog;
@@ -130,7 +132,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 closeServer.setOnClickListener(this);
                 setBoard();
                 rollServer.setVisibility(View.VISIBLE);
-                startRunnableServer();
+                startRunnableGameOrderServer();
 
             } else if (type.equalsIgnoreCase("client")) {
                 String ip = bundle.getString("ip");
@@ -140,7 +142,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 disconnect.setOnClickListener(this);
                 setBoard();
                 rollClient.setVisibility(View.VISIBLE);
-                gameHandlerClient();
+                startRunnableGameOrderClient();
             }
 
         } else {
@@ -148,6 +150,64 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
     }
+
+    private void setToastMessageStart(){
+        if(type.equalsIgnoreCase("client")){
+            if(updateClient.getReadyForTurnClient() == 0){
+                Toast.makeText(GameActivity.this, "Schade, der Gegner beginnt!", Toast.LENGTH_SHORT).show();
+                startRunnableClient();
+            } else if(updateClient.getReadyForTurnClient() == 1){
+                Toast.makeText(GameActivity.this, "Glückwunsch, du darfst beginnen!", Toast.LENGTH_SHORT).show();
+                gameHandlerClient();
+            }
+        } else {
+            if(updateServer.getReadyForTurnServer() == 0){
+                Toast.makeText(GameActivity.this, "Schade, der Gegner beginnt!", Toast.LENGTH_SHORT).show();
+                startRunnableServer();
+            } else if(updateServer.getReadyForTurnServer() == 1){
+                Toast.makeText(GameActivity.this, "Glückwunsch, du darfst beginnen!", Toast.LENGTH_SHORT).show();
+                gameHandlerServer();
+            }
+        }
+    }
+
+    private void startRunnableGameOrderServer(){
+        handler.postDelayed(runnableOrderServer, 1000);
+    }
+
+    private Runnable runnableOrderServer = new Runnable() {
+        @Override
+        public void run() {
+            if(updateServer.getCheckRandomNrServer() == 0){
+                if(isActiveOrderServer == 0){
+                    new randomStartServer().execute();
+                    isActiveOrderServer = 1;
+                }
+                startRunnableGameOrderServer();
+            } else {
+                setToastMessageStart();
+            }
+        }
+    };
+
+    private void startRunnableGameOrderClient(){
+        handler.postDelayed(runnableOrderClient, 1000);
+    }
+
+    private Runnable runnableOrderClient = new Runnable() {
+        @Override
+        public void run() {
+            if(updateClient.getCheckRandomNrClient() == 0){
+                if(isActiveOrderClient == 0){
+                    new randomStartClient(updateClient).execute();
+                    isActiveOrderClient = 1;
+                }
+                startRunnableGameOrderClient();
+            } else {
+                setToastMessageStart();
+            }
+        }
+    };
 
     private void startRunnableServer() {
         handler.postDelayed(runnableServer, 1000);
@@ -1015,6 +1075,37 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             } else {
                 server.sendRiskField();
             }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private class randomStartClient extends AsyncTask<Void, Void, Void> {
+        UpdateClient updateClient;
+        public randomStartClient(UpdateClient updateClient) {
+            this.updateClient = updateClient;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            client.sendRandomNumber(this.updateClient);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private class randomStartServer extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            server.sendACKRandom();
             return null;
         }
 

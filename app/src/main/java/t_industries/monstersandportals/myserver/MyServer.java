@@ -15,6 +15,9 @@ import t_industries.monstersandportals.NetworkClasses.ForServer;
 import t_industries.monstersandportals.NetworkClasses.LoginRequest;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
 import t_industries.monstersandportals.NetworkClasses.Message;
+import t_industries.monstersandportals.NetworkClasses.RandomACK;
+import t_industries.monstersandportals.NetworkClasses.RandomNumberOne;
+import t_industries.monstersandportals.NetworkClasses.RandomNumberZero;
 import t_industries.monstersandportals.NetworkClasses.RiskClient;
 import t_industries.monstersandportals.NetworkClasses.RiskServer;
 import t_industries.monstersandportals.NetworkClasses.ServerName;
@@ -99,6 +102,12 @@ public class MyServer implements Serializable{
         server.sendToAllTCP(riskClient);
     }
 
+    public void sendACKRandom(){
+        RandomACK randomACK = new RandomACK();
+        randomACK.setRandomCheck(1);
+        server.sendToAllTCP(randomACK);
+    }
+
     private void registerKryoClasses(){
         kryo.register(LoginRequest.class);
         kryo.register(LoginResponse.class);
@@ -114,6 +123,9 @@ public class MyServer implements Serializable{
         kryo.register(ACKServer.class);
         kryo.register(RiskServer.class);
         kryo.register(RiskClient.class);
+        kryo.register(RandomNumberOne.class);
+        kryo.register(RandomNumberZero.class);
+        kryo.register(RandomACK.class);
     }
 
 }

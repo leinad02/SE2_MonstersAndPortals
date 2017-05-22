@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Client;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Random;
 
 import t_industries.monstersandportals.NetworkClasses.ACKClient;
 import t_industries.monstersandportals.NetworkClasses.ACKServer;
@@ -15,6 +16,9 @@ import t_industries.monstersandportals.NetworkClasses.ForServer;
 import t_industries.monstersandportals.NetworkClasses.LoginRequest;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
 import t_industries.monstersandportals.NetworkClasses.Message;
+import t_industries.monstersandportals.NetworkClasses.RandomACK;
+import t_industries.monstersandportals.NetworkClasses.RandomNumberOne;
+import t_industries.monstersandportals.NetworkClasses.RandomNumberZero;
 import t_industries.monstersandportals.NetworkClasses.RiskClient;
 import t_industries.monstersandportals.NetworkClasses.RiskServer;
 import t_industries.monstersandportals.NetworkClasses.ServerName;
@@ -29,6 +33,7 @@ public class MyClient implements Serializable{
     private int TCP_PORT, UDP_PORT, TIMEOUT;
     private Client client;
     private Kryo kryo;
+    private Random random;
 
     public MyClient(int tcp, int udp, int timeout){
         this.TCP_PORT = tcp;
@@ -112,6 +117,23 @@ public class MyClient implements Serializable{
         client.sendTCP(riskServer);
     }
 
+    public void sendRandomNumber(UpdateClient updateClient){
+        random = new Random();
+        int number = random.nextInt(2);
+
+        if(number == 0){
+            RandomNumberZero randomNumberZero = new RandomNumberZero();
+            randomNumberZero.setRandomNumber(0);
+            client.sendTCP(randomNumberZero);
+        } else {
+            RandomNumberOne randomNumberOne = new RandomNumberOne();
+            randomNumberOne.setRandomNumber(1);
+            client.sendTCP(randomNumberOne);
+            updateClient.setActiveSensorClient(1);
+            updateClient.setReadyForTurnClient(1);
+        }
+    }
+
     private void registerKryoClasses(){
         kryo.register(LoginRequest.class);
         kryo.register(LoginResponse.class);
@@ -127,5 +149,8 @@ public class MyClient implements Serializable{
         kryo.register(ACKServer.class);
         kryo.register(RiskServer.class);
         kryo.register(RiskClient.class);
+        kryo.register(RandomNumberOne.class);
+        kryo.register(RandomNumberZero.class);
+        kryo.register(RandomACK.class);
     }
 }
