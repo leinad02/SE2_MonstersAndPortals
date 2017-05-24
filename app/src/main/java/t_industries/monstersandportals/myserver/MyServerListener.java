@@ -12,6 +12,8 @@ import t_industries.monstersandportals.NetworkClasses.ForServer;
 import t_industries.monstersandportals.NetworkClasses.LoginRequest;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
 import t_industries.monstersandportals.NetworkClasses.Message;
+import t_industries.monstersandportals.NetworkClasses.RandomNumberOne;
+import t_industries.monstersandportals.NetworkClasses.RandomNumberZero;
 import t_industries.monstersandportals.NetworkClasses.RiskServer;
 import t_industries.monstersandportals.NetworkClasses.UpdateClient;
 import t_industries.monstersandportals.NetworkClasses.UpdateServer;
@@ -83,6 +85,16 @@ public class MyServerListener extends Listener implements Serializable {
                 this.riskServer.setFailCounterServer(1);
             }
             this.riskServer.setCheckFieldServer(1);
+        } else if(object instanceof RandomNumberZero){
+            RandomNumberZero randomNumberZero = (RandomNumberZero) object;
+            System.out.println(randomNumberZero.getRandomNumber());
+            this.updateServer.setReadyForTurnServer(1);
+            this.updateServer.setActiveSensorServer(1);
+            this.updateServer.setCheckRandomNrServer(1);
+        } else if(object instanceof  RandomNumberOne){
+            RandomNumberOne randomNumberOne = (RandomNumberOne) object;
+            System.out.println(randomNumberOne.getRandomNumber());
+            this.updateServer.setCheckRandomNrServer(1);
         }
 
     }

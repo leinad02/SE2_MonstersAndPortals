@@ -6,8 +6,9 @@ package t_industries.monstersandportals.NetworkClasses;
 
 public class UpdateClient {
     private int position;
-    private int readyForTurnClient = 1;
-    private int activeSensorClient = 1;
+    private int readyForTurnClient = 0;
+    private int activeSensorClient = 0;
+    private int checkRandomNrClient = 0;
 
     public int getPosition() {
         return position;
@@ -31,5 +32,13 @@ public class UpdateClient {
 
     public void setActiveSensorClient(int activeSensorClient) {
         this.activeSensorClient = activeSensorClient;
+    }
+
+    public int getCheckRandomNrClient() {
+        return checkRandomNrClient;
+    }
+
+    public void setCheckRandomNrClient(int checkRandomNrClient) {
+        this.checkRandomNrClient = checkRandomNrClient;
     }
 }

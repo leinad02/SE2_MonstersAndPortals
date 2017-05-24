@@ -9,6 +9,7 @@ import t_industries.monstersandportals.NetworkClasses.ACKServer;
 import t_industries.monstersandportals.NetworkClasses.ClientRegister;
 import t_industries.monstersandportals.NetworkClasses.ForClient;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
+import t_industries.monstersandportals.NetworkClasses.RandomACK;
 import t_industries.monstersandportals.NetworkClasses.RiskClient;
 import t_industries.monstersandportals.NetworkClasses.ServerName;
 import t_industries.monstersandportals.NetworkClasses.UpdateClient;
@@ -70,6 +71,10 @@ public class MyClientListener extends Listener implements Serializable {
                 this.riskClient.setFailCounterClient(1);
             }
             this.riskClient.setCheckFieldClient(1);
+        } else if(object instanceof RandomACK){
+            RandomACK randomACK = (RandomACK) object;
+            System.out.println(randomACK.getRandomCheck());
+            this.updateClient.setCheckRandomNrClient(1);
         }
     }
 
