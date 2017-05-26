@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MonstersAndPortals2.iml" filepath="$PROJECT_DIR$/MonstersAndPortals2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SE2_25_05_17_Master_AudioProblem.iml" filepath="$PROJECT_DIR$/SE2_25_05_17_Master_AudioProblem.iml" />
       <module fileurl="file://$PROJECT_DIR$/SE2_MAP_160517.iml" filepath="$PROJECT_DIR$/SE2_MAP_160517.iml" />
       <module fileurl="file://$PROJECT_DIR$/SE2_MAP_Master21_05_17.iml" filepath="$PROJECT_DIR$/SE2_MAP_Master21_05_17.iml" />
       <module fileurl="file://$PROJECT_DIR$/SE2_MonstersAndPortals.iml" filepath="$PROJECT_DIR$/SE2_MonstersAndPortals.iml" />
@@ -10,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/SE2_MonstersAndPortals_0805.iml" filepath="$PROJECT_DIR$/SE2_MonstersAndPortals_0805.iml" />
       <module fileurl="file://$PROJECT_DIR$/SE2_MonstersAndPortals_BetaVersion.iml" filepath="$PROJECT_DIR$/SE2_MonstersAndPortals_BetaVersion.iml" />
       <module fileurl="file://$PROJECT_DIR$/SE2_MonstersAndPortals_NEW_BetaVersion26_04_17.iml" filepath="$PROJECT_DIR$/SE2_MonstersAndPortals_NEW_BetaVersion26_04_17.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SE2_MonstersAndPortalsneu.iml" filepath="$PROJECT_DIR$/SE2_MonstersAndPortalsneu.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
