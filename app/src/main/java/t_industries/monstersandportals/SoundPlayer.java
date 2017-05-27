@@ -13,7 +13,7 @@ import android.os.Build;
 public class SoundPlayer {
 
     private AudioAttributes audioAttributes;
-    final int SOUND_POOL_MAX = 2;
+    final int SOUND_POOL_MAX = 7;
 
     private static SoundPool soundPool;
     private static int monsterSound,portalSound,winningSound1,winningSound2;
