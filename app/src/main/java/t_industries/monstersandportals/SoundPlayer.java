@@ -83,5 +83,14 @@ public class SoundPlayer {
         soundPool.play(monsterRivalSound, 1.0f, 1.0f, 1, 0, 1.0f);
     }
 
+    public void stopSound(){
+        soundPool.stop(monsterSound);
+        soundPool.stop(monsterRivalSound);
+        soundPool.stop(portalSound);
+        soundPool.stop(portalRivalSound);
+        soundPool.stop(winningSound1);
+        soundPool.stop(winningSound2);
+        soundPool.stop(losingSound);
+    }
 
 }

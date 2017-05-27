@@ -547,6 +547,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             public void onClick(View v) {
 
                 dialog.cancel();
+                sound.stopSound();
             }
         });
     }
@@ -567,6 +568,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             public void onClick(View v) {
 
                 dialog.cancel();
+                sound2.stopSound();
             }
         });
     }
@@ -587,6 +589,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             public void onClick(View v) {
 
                 dialog.cancel();
+                sound.stopSound();
             }
         });
     }
@@ -607,6 +610,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             public void onClick(View v) {
 
                 dialog.cancel();
+                sound2.stopSound();
             }
         });
     }
@@ -626,6 +630,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             @Override
             public void onClick(View v) {
                 dialog.cancel();
+                sound.stopSound();
                 endGameConnection();
                 startActivity(new Intent(GameActivity.this, EndActivity.class));
             }
@@ -647,6 +652,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             @Override
             public void onClick(View v) {
                 dialog.cancel();
+                sound2.stopSound();
                 endGameConnection();
                 startActivity(new Intent(GameActivity.this, EndActivity.class));
             }
