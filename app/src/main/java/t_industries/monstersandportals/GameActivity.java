@@ -404,7 +404,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             gameBoard[userPosition] = "H";
         }
         System.out.println("Hostposition ist: " + userPosition);
-        userPosition = checkMonsterOrPortalOrRiskServer(userPosition);
+        userPosition = checkFieldtypeServer(userPosition);
     }
 
     public void newrivalPosition(int rolledNo) {             // Bewegt den Gast
@@ -426,10 +426,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             gameBoard[rivalPosition] = "G";
         }
         System.out.println("Die Position des Gastspielers ist: " + rivalPosition);
-        rivalPosition = checkMonsterOrPortalOrRiskClient(rivalPosition);
+        rivalPosition = checkFieldtypeClient(rivalPosition);
     }
 
-    private int checkMonsterOrPortalOrRiskServer(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
+    private int checkFieldtypeServer(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
         for ( int i = 0; i < 3; i++) {
             if (position == monster[i]) {
                 System.out.println("Ohhh Nein! Ein MONSTER greift dich an!");
@@ -479,7 +479,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         return position;
     }
 
-    private int checkMonsterOrPortalOrRiskClient(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
+    private int checkFieldtypeClient(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
         for ( int i = 0; i < 3; i++) {
             if (position == monster[i]) {
                 System.out.println("Ohhh Nein! Ein MONSTER greift dich an!");
