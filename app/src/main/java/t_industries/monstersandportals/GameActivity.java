@@ -574,7 +574,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             public void onClick(View v) {
 
                 dialog.cancel();
-                mpMonster.pause();
+                mpMonster.pause(); //Sound anhalten bis zum nächsten Aufruf
             }
         });
     }
