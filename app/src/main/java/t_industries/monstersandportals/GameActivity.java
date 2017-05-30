@@ -71,7 +71,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     ImageView rollServer;
 
     Random random = new Random();
-    private int number = (random.nextInt(10) + 1);
+    private int number = (random.nextInt(1000) + 1);
     //Randomzahl zwischen 1 und 10
     private String num = valueOf(number);
     private int isRisk = 0; //wenn richtig, den Player 4 Positionen vor schicken
@@ -221,8 +221,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
                 if(rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40){
                     turn(4);
-                }else if(rivalPosition == 2){
-                    turn(6);
+                }else if(rivalPosition == 2 || rivalPosition == 18 || rivalPosition == 34){
+                    if(cheatserver==0) {
+                        turn(6);
+                    }
                 }
                 if (rivalPosition == 47) {
                     showDialogLose();
@@ -251,8 +253,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
                 if(userPosition == 10 || userPosition == 26 || userPosition == 40){
                    turn(4);
-                }else if(userPosition == 2){
-                   turn(6);
+                }else if(userPosition == 2 || userPosition == 18 || userPosition == 34){
+                    if(cheatclient==0) {
+                        turn(6);
+                    }
                 }
                 if (userPosition == 47) {
                     showDialogLose();
@@ -312,7 +316,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
             if (userPosition == 10 || userPosition == 26 || userPosition == 40) {
                 drawRiskcardServer();
-            }else if(userPosition == 2){
+            }else if(userPosition == 2 || userPosition == 18 || userPosition == 34){
                 if(cheatserver==0){
                     Cheat();
                 }
@@ -333,7 +337,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
         if (userPosition <= 47 && rivalPosition <= 47) {
-            int rolledNo = 1;//rollDice();
+            int rolledNo = rollDice();
             setDiceClient(rolledNo);
             System.out.println("Client zieht weiter:");
             new MessageClient(rolledNo).execute();
@@ -344,7 +348,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             if (rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40) {
                 drawRiskcardClient();
             }
-            else if(rivalPosition == 2){
+            else if(rivalPosition == 2 || rivalPosition == 18 || rivalPosition == 34){
                 if(cheatclient==0){
                     Cheat();
                 }
@@ -837,7 +841,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 if(riskClient.getFailCounterClient() == 0){
                     newUserPosition(num);
                     checkBoard();
-                    Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet und darf 4 Felder vorwärts!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(GameActivity.this, "Der Gegner ist zu dumm, um die Frage zu beantworten!", Toast.LENGTH_SHORT).show();
                 }
@@ -856,7 +860,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 if(riskServer.getFailCounterServer() == 0){
                     newrivalPosition(num);
                     checkBoard();
-                    Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet und darf 4 Felder vorwärts!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(GameActivity.this, "Der Gegner ist zu dumm, um die Frage zu beantworten!", Toast.LENGTH_SHORT).show();
                 }
