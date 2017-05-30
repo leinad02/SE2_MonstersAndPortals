@@ -13,7 +13,7 @@ import android.os.Build;
 public class SoundPlayer {
 
     private AudioAttributes audioAttributes;
-    final int SOUND_POOL_MAX = 2;
+    final int SOUND_POOL_MAX = 7;
 
     private static SoundPool soundPool;
     private static int monsterSound,portalSound,winningSound1,winningSound2;
@@ -83,5 +83,14 @@ public class SoundPlayer {
         soundPool.play(monsterRivalSound, 1.0f, 1.0f, 1, 0, 1.0f);
     }
 
+    public void stopSound(){
+        soundPool.stop(monsterSound);
+        soundPool.stop(monsterRivalSound);
+        soundPool.stop(portalSound);
+        soundPool.stop(portalRivalSound);
+        soundPool.stop(winningSound1);
+        soundPool.stop(winningSound2);
+        soundPool.stop(losingSound);
+    }
 
 }
