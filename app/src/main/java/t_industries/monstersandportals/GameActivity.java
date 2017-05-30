@@ -14,6 +14,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -60,6 +61,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private static final int SHAKE_THRESHOLD = 800;
 
 
+
+
     static String[] gameBoard = new String[48]; // 8 x 6 Spielfeld
     static int[] monster = {12, 31, 46, 5, 25, 19};
     static int[] portal = {7, 22, 33, 16, 28, 41};
@@ -84,8 +87,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private String type;
     //Dialoge für Monster,Portale,Gewonnen,Verloren
     Dialog dialog;
-    //Initialisiere SoundPlayer zur Verwaltung von Audiodateien
-    private SoundPlayer sound;
+    //neue Alternative für die Sounds,Initialisiere MediaPlayer zur Verwaltung von Audiodateien
+    private MediaPlayer mpLaugh, mpMonster, mpPortal, mpPunch, mpUoh, mpWoo, mpYeah;
 
 
     @Override
@@ -133,6 +136,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 setBoard();
                 rollServer.setVisibility(View.VISIBLE);
                 startRunnableGameOrderServer();
+                new MPSounds().execute();
 
             } else if (type.equalsIgnoreCase("client")) {
                 String ip = bundle.getString("ip");
@@ -143,12 +147,23 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 setBoard();
                 rollClient.setVisibility(View.VISIBLE);
                 startRunnableGameOrderClient();
+                new MPSounds().execute();
             }
 
         } else {
             Toast.makeText(GameActivity.this, "Keine Daten vorhanden!", Toast.LENGTH_LONG).show();
         }
 
+    }
+    //Spunds werden in den Variablen gespeichert
+    private void createMPSounds(){
+        mpLaugh = MediaPlayer.create(this, R.raw.laugh);
+        mpMonster = MediaPlayer.create(this, R.raw.monster2);
+        mpPortal = MediaPlayer.create(this, R.raw.portal);
+        mpPunch = MediaPlayer.create(this, R.raw.punch);
+        mpUoh = MediaPlayer.create(this, R.raw.uoh);
+        mpWoo = MediaPlayer.create(this, R.raw.woo);
+        mpYeah = MediaPlayer.create(this, R.raw.yeah);
     }
 
     private void setToastMessageStart(){
@@ -314,21 +329,21 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     private void gameHandlerClient() {
         rollClient.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gameTurnClient();
-                }
-            });
+            @Override
+            public void onClick(View v) {
+                gameTurnClient();
+            }
+        });
     }
 
 
     private void gameHandlerServer() {
-            rollServer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gameTurnServer();
-                }
-            });
+        rollServer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gameTurnServer();
+            }
+        });
     }
 
     public void gameTurnServer(){
@@ -435,9 +450,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 System.out.println("Ohhh Nein! Ein MONSTER greift dich an!");
 
                 if (gameBoard[monster[i]] == "H G"){
-                        gameBoard[monster[i]] = "G";
-                    } else {
-                        gameBoard[monster[i]] = ""; }
+                    gameBoard[monster[i]] = "G";
+                } else {
+                    gameBoard[monster[i]] = ""; }
 
                 if (type.equalsIgnoreCase("server")){
                     showDialogMonster();
@@ -448,17 +463,17 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 position = monster[i+3];             // der derzeitige Spieler betritt einen Monsterfeld
 
                 if (gameBoard[monster[i+3]] == "G"){
-                        gameBoard[monster[i+3]] = "H G";
-                    } else {
-                        gameBoard[monster[i+3]] = "H"; }
+                    gameBoard[monster[i+3]] = "H G";
+                } else {
+                    gameBoard[monster[i+3]] = "H"; }
 
 
             } else if (position == portal[i]) {     // Hier wird in der Zukunft die Klasse Portal ausgeführt
 
                 if (gameBoard[portal[i]] == "H G"){
-                        gameBoard[portal[i]] = "G";
-                    } else {
-                        gameBoard[portal[i]] = ""; }
+                    gameBoard[portal[i]] = "G";
+                } else {
+                    gameBoard[portal[i]] = ""; }
 
                 if (type.equalsIgnoreCase("server")){
                     showDialogPortal();
@@ -469,9 +484,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 position = portal[i+3];             // der derzeitige Spieler geht durch den Portal
 
                 if (gameBoard[portal[i+3]] == "G"){
-                        gameBoard[portal[i+3]] = "H G";
-                    } else {
-                        gameBoard[portal[i+3]] = "H"; }
+                    gameBoard[portal[i+3]] = "H G";
+                } else {
+                    gameBoard[portal[i+3]] = "H"; }
 
 
             }
@@ -485,10 +500,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 System.out.println("Ohhh Nein! Ein MONSTER greift dich an!");
 
                 if ( gameBoard[monster[i]] == "H G"){
-                        gameBoard[monster[i]] = "H";
-                    } else {
-                        gameBoard[monster[i]] = "";
-                    }
+                    gameBoard[monster[i]] = "H";
+                } else {
+                    gameBoard[monster[i]] = "";
+                }
 
                 if (type.equalsIgnoreCase("client")){
                     showDialogMonster();
@@ -499,18 +514,18 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 position = monster[i+3];             // der derzeitige Spieler betritt einen Monsterfeld
 
                 if ( gameBoard[monster[i+3]] == "H"){
-                        gameBoard[monster[i+3]] = "H G";
-                    } else {
-                        gameBoard[monster[i+3]] = "G";
-                    }
+                    gameBoard[monster[i+3]] = "H G";
+                } else {
+                    gameBoard[monster[i+3]] = "G";
+                }
 
             } else if (position == portal[i]) {     // Hier wird in der Zukunft die Klasse Portal ausgeführt
 
                 if ( gameBoard[portal[i]] == "H G"){
-                        gameBoard[portal[i]] = "H";
-                    } else {
-                        gameBoard[portal[i]] = "";
-                    }
+                    gameBoard[portal[i]] = "H";
+                } else {
+                    gameBoard[portal[i]] = "";
+                }
                 if (type.equalsIgnoreCase("client")){
                     showDialogPortal();
                 }else{
@@ -520,24 +535,37 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 position = portal[i+3];             // der derzeitige Spieler geht durch den Portal
 
                 if ( gameBoard[portal[i+3]] == "H"){
-                        gameBoard[portal[i+3]] = "H G";
-                    } else {
-                        gameBoard[portal[i+3]] = "G";
-                    }
+                    gameBoard[portal[i+3]] = "H G";
+                } else {
+                    gameBoard[portal[i+3]] = "G";
+                }
 
             }
         }
         return position;
     }
 
+    //Um Speicherplatz wieder frei zu geben
+    @Override
+    protected void onDestroy() {
+        mpLaugh.release();
+        mpMonster.release();
+        mpPortal.release();
+        mpPunch.release();
+        mpUoh.release();
+        mpWoo.release();
+        mpYeah.release();
+        super.onDestroy();
+    }
+
     private void showDialogMonster(){
-        sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
         dialog.setContentView(R.layout.monster);
         dialog.show();
 
-        //Beim Öffnen des Dialogs Sound abspielen
-        sound.playMonsterSound();
+        //Beim Öffnen des Dialogs Sound zurücksetzen und anschließend abspielen
+        mpMonster.seekTo(0);
+        mpMonster.start();
 
         Button portal = (Button) dialog.findViewById(R.id.monsterBtn);
         portal.setOnClickListener(new View.OnClickListener() {
@@ -546,18 +574,19 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             public void onClick(View v) {
 
                 dialog.cancel();
+                mpMonster.pause(); //Sound anhalten bis zum nächsten Aufruf
             }
         });
     }
 
     private void showDialogRivalMonster(){
-        sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
         dialog.setContentView(R.layout.monster_rival);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
-        sound.playRivalMonsterSound();
+        mpLaugh.seekTo(0);
+        mpLaugh.start();
 
         Button portal = (Button) dialog.findViewById(R.id.monsterBtn);
         portal.setOnClickListener(new View.OnClickListener() {
@@ -566,18 +595,19 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             public void onClick(View v) {
 
                 dialog.cancel();
+                mpLaugh.pause();
             }
         });
     }
 
     private void showDialogPortal(){
-        sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
         dialog.setContentView(R.layout.portal);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
-        sound.playPortalSound();
+        mpPortal.seekTo(0);
+        mpPortal.start();
 
         Button portal = (Button) dialog.findViewById(R.id.portalBtn);
         portal.setOnClickListener(new View.OnClickListener() {
@@ -586,18 +616,19 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             public void onClick(View v) {
 
                 dialog.cancel();
+                mpPortal.pause();
             }
         });
     }
 
     private void showDialogRivalPortal(){
-        sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
         dialog.setContentView(R.layout.portal_rival);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
-        sound.playRivalPortalSound();
+        mpUoh.seekTo(0);
+        mpUoh.start();
 
         Button portal = (Button) dialog.findViewById(R.id.portalBtn);
         portal.setOnClickListener(new View.OnClickListener() {
@@ -606,18 +637,21 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             public void onClick(View v) {
 
                 dialog.cancel();
+                mpUoh.pause();
             }
         });
     }
 
     private void showDialogWin(){
-        sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
         dialog.setContentView(R.layout.win);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
-        sound.playWinningSound();
+        mpYeah.seekTo(0);
+        mpYeah.start();
+        mpWoo.seekTo(0);
+        mpWoo.start();
 
         Button back = (Button) dialog.findViewById(R.id.backBtn);
         back.setOnClickListener(new View.OnClickListener() {
@@ -625,6 +659,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             @Override
             public void onClick(View v) {
                 dialog.cancel();
+                mpYeah.pause();
+                mpWoo.pause();
                 endGameConnection();
                 startActivity(new Intent(GameActivity.this, EndActivity.class));
             }
@@ -632,13 +668,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private void showDialogLose(){
-        sound = new SoundPlayer(this);
         dialog = new Dialog(GameActivity.this);
         dialog.setContentView(R.layout.lose);
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
-        sound.playLosingSound();
+        mpPunch.seekTo(0);
+        mpPunch.start();
 
         Button back = (Button) dialog.findViewById(R.id.backBtn);
         back.setOnClickListener(new View.OnClickListener() {
@@ -646,6 +682,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             @Override
             public void onClick(View v) {
                 dialog.cancel();
+                mpPunch.pause();
                 endGameConnection();
                 startActivity(new Intent(GameActivity.this, EndActivity.class));
             }
@@ -864,49 +901,49 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-                float x = event.values[0];
-                float y = event.values[1];
-                float z = event.values[2];
-                long curTime = System.currentTimeMillis();
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+        long curTime = System.currentTimeMillis();
 
-                if ((curTime - lastUpdate) > 100) {
-                    long diffTime = (curTime - lastUpdate);
-                    lastUpdate = curTime;
+        if ((curTime - lastUpdate) > 100) {
+            long diffTime = (curTime - lastUpdate);
+            lastUpdate = curTime;
 
-                    float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+            float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
-                    if (speed > SHAKE_THRESHOLD) {
+            if (speed > SHAKE_THRESHOLD) {
 
-                        if (type.equalsIgnoreCase("Client")) {
-                            if(updateClient.getActiveSensorClient() == 1){
-                                gameTurnClient();
-                                updateClient.setActiveSensorClient(0);
-                            } else {
-                                if (speed > 2000) {
-                                    Toast.makeText(GameActivity.this, "Server noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
+                if (type.equalsIgnoreCase("Client")) {
+                    if(updateClient.getActiveSensorClient() == 1){
+                        gameTurnClient();
+                        updateClient.setActiveSensorClient(0);
+                    } else {
+                        if (speed > 2000) {
+                            Toast.makeText(GameActivity.this, "Server noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
                         }
-
-                        if (type.equalsIgnoreCase("Server")) {
-                            if(updateServer.getActiveSensorServer() == 1){
-                                gameTurnServer();
-                                updateServer.setActiveSensorServer(0);
-                            } else {
-                                if (speed > 2000) {
-                                    Toast.makeText(GameActivity.this, "Client noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-
                     }
 
-                    last_x = x;
-                    last_y = y;
-                    last_z = z;
                 }
+
+                if (type.equalsIgnoreCase("Server")) {
+                    if(updateServer.getActiveSensorServer() == 1){
+                        gameTurnServer();
+                        updateServer.setActiveSensorServer(0);
+                    } else {
+                        if (speed > 2000) {
+                            Toast.makeText(GameActivity.this, "Client noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
             }
+
+            last_x = x;
+            last_y = y;
+            last_z = z;
+        }
+    }
 
 
     @Override
@@ -1043,7 +1080,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private class CheckRiskClient extends AsyncTask<Void, Void, Void> {
         String decision;
         public CheckRiskClient(String decision) {
-           this.decision = decision;
+            this.decision = decision;
         }
 
         @Override
@@ -1106,6 +1143,19 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         @Override
         protected Void doInBackground(Void... params) {
             server.sendACKRandom();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private class MPSounds extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            createMPSounds();
             return null;
         }
 
