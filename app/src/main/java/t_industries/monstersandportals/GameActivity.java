@@ -74,7 +74,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     static int rivalPosition = 0;
 
     ImageButton [] buttons;
-    Button roll;
+    // Button roll;
 
     ImageView rollClient;
     ImageView rollServer;
@@ -845,8 +845,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         for (int i = 0; i < 48; i++) {
 
-            for ( int j = 0; j <3; j++){                                // soll verhindern, dass eine der Eventfelder eine neue Zeichnung bekommt
-                if ( i == monster[j] || i == portal[j] || i == risk[j]){
+            for ( int j = 0; j <3; j++){                                // soll verhindern, dass die Eventfelder neue Zeichnungen bekommen
+                if ( i == monster[j] || i == portal[j] || i == risk[j] || i == 47){
                     i++;
                 }
             }
@@ -881,8 +881,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             buttons[monster[i]].setBackgroundColor(Color.RED);          // Monsterfelder
             buttons[0].setImageResource(R.drawable. m_field);
 
-            buttons[risk[i]].setBackgroundColor(Color.GREEN);           // Eventfelder
-            buttons[0].setImageResource(R.drawable. r_field);
+            // buttons[risk[i]].setBackgroundColor(Color.GREEN);           // Eventfelder
 
             buttons[portal[i]].setBackgroundColor(Color.BLUE);          // Portalfelder
             buttons[0].setImageResource(R.drawable. p_field);
@@ -901,6 +900,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         buttons[47].setImageResource(R.drawable. end_field);            // letzter Feld bekommt eine Zeichnung
 
+        checkBoard();                                                   // Images für die Felder laden
     }
 
     @Override
