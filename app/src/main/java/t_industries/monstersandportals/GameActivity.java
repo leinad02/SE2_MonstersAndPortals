@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ import t_industries.monstersandportals.NetworkClasses.UpdateServer;
 import t_industries.monstersandportals.myclient.MyClient;
 import t_industries.monstersandportals.myserver.MyServer;
 
+import static android.R.id.icon;
 import static java.lang.String.valueOf;
 
 /**
@@ -71,8 +73,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     static int userPosition = 0;
     static int rivalPosition = 0;
 
-    Button [] buttons;
-    Button roll;
+    ImageButton [] buttons;
+    // Button roll;
 
     ImageView rollClient;
     ImageView rollServer;
@@ -842,20 +844,33 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     public void checkBoard(){                                           //checkt wo Host & Gast sich gerade befinden
 
         for (int i = 0; i < 48; i++) {
-            String idName = "f" + i;
-            buttons[i].setText(gameBoard[i]);
-        }
 
+            for ( int j = 0; j <3; j++){                                // soll verhindern, dass die Eventfelder neue Zeichnungen bekommen
+                if ( i == monster[j] || i == portal[j] || i == risk[j] || i == 47){
+                    i++;
+                }
+            }
+
+            if (gameBoard[i] == "H" ){
+                buttons[i].setImageResource(R.drawable. player_host);
+            } else if (gameBoard[i] == "G") {
+                buttons[i].setImageResource(R.drawable. player_guest);
+            } else if  (gameBoard[i] == "H G") {
+                buttons[i].setImageResource(R.drawable.player_both);
+            } else if (gameBoard[i] == "") {
+                buttons[i].setImageResource(R.drawable.grass);
+            }
+        }
     }
 
     public void setBoard(){                                             //Die buttons aus dem Layout werden ins code übernommen
 
-        buttons = new Button[48];
+        buttons = new ImageButton[48];
 
         Resources res = getResources();                                 //if you are in an activity
         for (int i = 0; i < 48; i++) {
             String idName = "f" + i;
-            buttons[i] = (Button) findViewById(res.getIdentifier(idName, "id", getPackageName()));
+            buttons[i] = (ImageButton) findViewById(res.getIdentifier(idName, "id", getPackageName()));
         }
 
 
@@ -864,8 +879,12 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         for (int i = 0; i < 3; i++) {
             buttons[monster[i]].setBackgroundColor(Color.RED);          // Monsterfelder
-            buttons[risk[i]].setBackgroundColor(Color.GREEN);           // Eventfelder
+            buttons[0].setImageResource(R.drawable. m_field);
+
+            // buttons[risk[i]].setBackgroundColor(Color.GREEN);           // Eventfelder
+
             buttons[portal[i]].setBackgroundColor(Color.BLUE);          // Portalfelder
+            buttons[0].setImageResource(R.drawable. p_field);
 
             buttons[monster[i+3]].setBackgroundColor(Color.DKGRAY);     // Monsterfelder Ausgang
             buttons[portal[i+3]].setBackgroundColor(Color.CYAN);        // Portalfelder Ausgang
@@ -877,8 +896,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
         gameBoard[0] = "H G";                                           // Spieler werden auf den ersten Feld gesetzt
-        buttons[0].setText(gameBoard[0]);
+        buttons[0].setImageResource(R.drawable. player_both);
 
+        buttons[47].setImageResource(R.drawable. end_field);            // letzter Feld bekommt eine Zeichnung
+
+        checkBoard();                                                   // Images für die Felder laden
     }
 
     @Override
