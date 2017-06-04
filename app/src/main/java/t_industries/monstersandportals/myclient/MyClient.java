@@ -33,7 +33,6 @@ public class MyClient implements Serializable{
     private int TCP_PORT, UDP_PORT, TIMEOUT;
     private Client client;
     private Kryo kryo;
-    private Random random;
 
     public MyClient(int tcp, int udp, int timeout){
         this.TCP_PORT = tcp;
@@ -117,10 +116,7 @@ public class MyClient implements Serializable{
         client.sendTCP(riskServer);
     }
 
-    public void sendRandomNumber(UpdateClient updateClient){
-        random = new Random();
-        int number = random.nextInt(2);
-
+    public void sendRandomNumber(UpdateClient updateClient, int number){
         if(number == 0){
             RandomNumberZero randomNumberZero = new RandomNumberZero();
             randomNumberZero.setRandomNumber(0);

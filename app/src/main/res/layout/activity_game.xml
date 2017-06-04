@@ -30,14 +30,12 @@
                     android:id="@+id/nameServer"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=""
                     android:gravity="center"
                     android:text="TextView"
                     android:layout_margin="30dp"/>
 
                 <ImageView
                     android:id="@+id/picServer"
-                    android:src="@drawable/d0"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_gravity="center"
@@ -408,14 +406,12 @@
                                 android:id="@+id/nameClient"
                                 android:layout_width="70dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=""
                                 android:gravity="center"
                                 android:text="TextView"
                                 android:layout_margin="30dp"/>
 
                                 <ImageView
                                     android:id="@+id/picClient"
-                                    android:src="@drawable/d0"
                                     android:layout_width="70dp"
                                     android:layout_height="70dp"
                                     android:layout_gravity="center"

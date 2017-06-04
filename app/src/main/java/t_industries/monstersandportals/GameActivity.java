@@ -86,6 +86,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private int isRisk = 0; //wenn richtig, den Player 4 Positionen vor schicken
     private int isActiveOrderServer = 0;
     private int isActiveOrderClient = 0;
+    private int numberForOrder;
     private String type;
     //Dialoge für Monster,Portale,Gewonnen,Verloren
     Dialog dialog;
@@ -216,12 +217,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         public void run() {
             if(updateClient.getCheckRandomNrClient() == 0){
                 if(isActiveOrderClient == 0){
-                    new randomStartClient(updateClient).execute();
+                    numberForOrder = random.nextInt(2);
+                    new randomStartClient(updateClient, numberForOrder).execute();
                     isActiveOrderClient = 1;
                 }
                 startRunnableGameOrderClient();
             } else {
                 setToastMessageStart();
+                new randomStartClient(updateClient, numberForOrder).execute();
             }
         }
     };
@@ -878,16 +881,16 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         roll.setText("Würfel");*/
 
         for (int i = 0; i < 3; i++) {
-            buttons[monster[i]].setBackgroundColor(Color.RED);          // Monsterfelder
+            // buttons[monster[i]].setBackgroundColor(Color.RED);          // Monsterfelder
             buttons[0].setImageResource(R.drawable. m_field);
 
             // buttons[risk[i]].setBackgroundColor(Color.GREEN);           // Eventfelder
 
-            buttons[portal[i]].setBackgroundColor(Color.BLUE);          // Portalfelder
+            // buttons[portal[i]].setBackgroundColor(Color.BLUE);          // Portalfelder
             buttons[0].setImageResource(R.drawable. p_field);
 
-            buttons[monster[i+3]].setBackgroundColor(Color.DKGRAY);     // Monsterfelder Ausgang
-            buttons[portal[i+3]].setBackgroundColor(Color.CYAN);        // Portalfelder Ausgang
+            // buttons[monster[i+3]].setBackgroundColor(Color.DKGRAY);     // Monsterfelder Ausgang
+            // buttons[portal[i+3]].setBackgroundColor(Color.CYAN);        // Portalfelder Ausgang
 
         }
 
@@ -1145,13 +1148,15 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     private class randomStartClient extends AsyncTask<Void, Void, Void> {
         UpdateClient updateClient;
-        public randomStartClient(UpdateClient updateClient) {
+        int number;
+        public randomStartClient(UpdateClient updateClient, int numberForOrder) {
             this.updateClient = updateClient;
+            this.number = numberForOrder;
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            client.sendRandomNumber(this.updateClient);
+            client.sendRandomNumber(this.updateClient, this.number);
             return null;
         }
 
