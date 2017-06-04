@@ -358,7 +358,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
         if (userPosition <= 47 && rivalPosition <= 47) {
             int rolledNo = rollDice();
-            setDiceServer(rolledNo);
+            setDiceServer();
             System.out.println("Host zieht weiter:");
             //if(newUserPosition(rolledNo) == 20)
             new MessageServer(rolledNo).execute();
@@ -386,7 +386,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         if (userPosition <= 47 && rivalPosition <= 47) {
             int rolledNo = rollDice();
-            setDiceClient(rolledNo);
+            setDiceClient();
             System.out.println("Client zieht weiter:");
             new MessageClient(rolledNo).execute();
             System.out.println("Host ist dran:");
@@ -971,9 +971,25 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
 
+    private int rollDice() {
+        Random random_d = new Random();
+        rolledNumber = random_d.nextInt(6) + 1;
+        return rolledNumber;
+    }
+
+    private void setDiceServer() {
+        int diceImageServer = getResources().getIdentifier("d" + rolledNumber, "drawable", "t_industries.monstersandportals");
+        rollServer.setImageResource(diceImageServer);
+    }
+
+    private void setDiceClient() {
+        int diceImageClient = getResources().getIdentifier("d" + rolledNumber, "drawable", "t_industries.monstersandportals");
+        rollClient.setImageResource(diceImageClient);
+    }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+        //wird nicht gebraucht
     }
 
     @Override
@@ -1192,45 +1208,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     }
 
-    private int rollDice() {
-        Random random_d = new Random();
-        rolledNumber = random_d.nextInt(6) + 1;
-        return rolledNumber;
-    }
-
-
-    private void setDiceServer(int rolledNo) {
-
-        if (rolledNo == 1) {
-            rollServer.setImageResource(R.drawable.d1);
-        } else if (rolledNo == 2) {
-            rollServer.setImageResource(R.drawable.d2);
-        } else if (rolledNo == 3) {
-            rollServer.setImageResource(R.drawable.d3);
-        } else if (rolledNo == 4) {
-            rollServer.setImageResource(R.drawable.d4);
-        } else if (rolledNo == 5) {
-            rollServer.setImageResource(R.drawable.d5);
-        } else if (rolledNo == 6) {
-            rollServer.setImageResource(R.drawable.d6);
-        }
-    }
-
-    private void setDiceClient(int rolledNo) {
-        if (rolledNo == 1) {
-            rollClient.setImageResource(R.drawable.d1);
-        } else if (rolledNo == 2) {
-            rollClient.setImageResource(R.drawable.d2);
-        } else if (rolledNo == 3) {
-            rollClient.setImageResource(R.drawable.d3);
-        } else if (rolledNo == 4) {
-            rollClient.setImageResource(R.drawable.d4);
-        } else if (rolledNo == 5) {
-            rollClient.setImageResource(R.drawable.d5);
-        } else if (rolledNo == 6) {
-            rollClient.setImageResource(R.drawable.d6);
-        }
-    }
 
 
 }
