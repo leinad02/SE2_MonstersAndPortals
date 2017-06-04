@@ -878,16 +878,16 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         roll.setText("Würfel");*/
 
         for (int i = 0; i < 3; i++) {
-            buttons[monster[i]].setBackgroundColor(Color.RED);          // Monsterfelder
+            // buttons[monster[i]].setBackgroundColor(Color.RED);          // Monsterfelder
             buttons[0].setImageResource(R.drawable. m_field);
 
             // buttons[risk[i]].setBackgroundColor(Color.GREEN);           // Eventfelder
 
-            buttons[portal[i]].setBackgroundColor(Color.BLUE);          // Portalfelder
+            // buttons[portal[i]].setBackgroundColor(Color.BLUE);          // Portalfelder
             buttons[0].setImageResource(R.drawable. p_field);
 
-            buttons[monster[i+3]].setBackgroundColor(Color.DKGRAY);     // Monsterfelder Ausgang
-            buttons[portal[i+3]].setBackgroundColor(Color.CYAN);        // Portalfelder Ausgang
+            // buttons[monster[i+3]].setBackgroundColor(Color.DKGRAY);     // Monsterfelder Ausgang
+            // buttons[portal[i+3]].setBackgroundColor(Color.CYAN);        // Portalfelder Ausgang
 
         }
 
