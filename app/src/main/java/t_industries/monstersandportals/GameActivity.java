@@ -852,13 +852,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             }
 
             if (gameBoard[i] == "H" ){
-                buttons[i].setImageResource(R.drawable. player_host.jpg);
+                buttons[i].setImageResource(R.drawable. player_host);
             } else if (gameBoard[i] == "G") {
-                buttons[i].setImageResource(R.drawable. player_guest.jpg);
+                buttons[i].setImageResource(R.drawable. player_guest);
             } else if  (gameBoard[i] == "H G") {
-                buttons[i].setImageResource(R.drawable.player_both.jpg);
+                buttons[i].setImageResource(R.drawable. player_both);
             } else if (gameBoard[i] == "") {
-                buttons[i].setImageResource(R.drawable.grass.jpg);
+                buttons[i].setImageResource(R.drawable. grass);
             }
         }
     }
@@ -879,12 +879,12 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         for (int i = 0; i < 3; i++) {
             buttons[monster[i]].setBackgroundColor(Color.RED);          // Monsterfelder
-            buttons[0].setImageResource(R.drawable. m_field.jpg);
+            buttons[0].setImageResource(R.drawable. m_field);
 
             // buttons[risk[i]].setBackgroundColor(Color.GREEN);           // Eventfelder
 
             buttons[portal[i]].setBackgroundColor(Color.BLUE);          // Portalfelder
-            buttons[0].setImageResource(R.drawable. p_field.jpg);
+            buttons[0].setImageResource(R.drawable. p_field);
 
             buttons[monster[i+3]].setBackgroundColor(Color.DKGRAY);     // Monsterfelder Ausgang
             buttons[portal[i+3]].setBackgroundColor(Color.CYAN);        // Portalfelder Ausgang
@@ -896,9 +896,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
         gameBoard[0] = "H G";                                           // Spieler werden auf den ersten Feld gesetzt
-        buttons[0].setImageResource(R.drawable. player_both.jpg);
+        buttons[0].setImageResource(R.drawable. player_both);
 
-        buttons[47].setImageResource(R.drawable. end_field.jpg);            // letzter Feld bekommt eine Zeichnung
+        buttons[47].setImageResource(R.drawable. end_field);            // letzter Feld bekommt eine Zeichnung
 
         checkBoard();                                                   // Images für die Felder laden
     }
