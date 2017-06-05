@@ -12,8 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="7">
+        android:layout_weight="7"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,39 +22,39 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:layout_weight="7"
-                android:weightSum="10"
-                android:background="@drawable/wall">
+                android:background="@drawable/wall"
+                android:orientation="vertical"
+                android:weightSum="10">
 
                 <TextView
                     android:id="@+id/nameServer"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="30dp"
                     android:layout_weight=""
                     android:gravity="center"
-                    android:text="TextView"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp" />
+                    android:text="TextView" />
 
                 <ImageView
                     android:id="@+id/picServer"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginTop="5dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/knight_red"/>
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/knight_red" />
 
 
                 <ImageView
                     android:id="@+id/rollServer"
-                    android:src="@drawable/d0"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="20dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/d0"
                     android:visibility="invisible" />
 
                 <Button
@@ -62,9 +62,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
+                    android:layout_weight="center"
                     android:text="risk2"
-                    android:textColor="@color/colorBlack"
-                    android:layout_weight="center" />
+                    android:textColor="@color/colorBlack" />
 
             </LinearLayout>
 
@@ -72,227 +72,299 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:weightSum="7"
                 android:layout_weight="4"
-                android:background="@drawable/sky">
+                android:background="@drawable/sky"
+                android:orientation="vertical"
+                android:weightSum="7">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="1"
-        android:layout_marginBottom="10dp">
-
-
-        <Button
-            android:id="@+id/serverClose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/serverClose"
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/disconnect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/disconnect"
-            android:visibility="invisible" />
-
-
-            </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:weightSum="8"
+                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:baselineAligned="false">
+                    android:weightSum="3"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/platzhalter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="invisible" />
+
+
+                    <Button
+                        android:id="@+id/serverClose"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/serverClose"
+                        android:visibility="invisible" />
+
+                    <Button
+                        android:id="@+id/disconnect"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/disconnect"
+                        android:visibility="invisible" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:baselineAligned="false"
+                    android:weightSum="8">
 
                     <ImageButton
                         android:id="@+id/f47"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/end_field"/>
+
                     <ImageButton
                         android:id="@+id/f46"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/m_field"/>
+
                     <ImageButton
                         android:id="@+id/f45"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f44"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f43"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f42"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f41"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/gras_p"/>
+
                     <ImageButton
                         android:id="@+id/f40"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:weightSum="8"
-                    android:layout_weight="1" >
+                    android:layout_weight="1"
+                    android:weightSum="8">
+
                     <ImageButton
                         android:id="@+id/f32"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f33"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/p_field"/>
+
                     <ImageButton
                         android:id="@+id/f34"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f35"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f36"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f37"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f38"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f39"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:weightSum="8"
-                    android:layout_weight="1" >
+                    android:layout_weight="1"
+                    android:weightSum="8">
+
                     <ImageButton
                         android:id="@+id/f31"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/m_field"/>
+
                     <ImageButton
                         android:id="@+id/f30"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f29"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f28"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/gras_p"/>
+
                     <ImageButton
                         android:id="@+id/f27"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f26"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f25"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/gras_m"/>
+
                     <ImageButton
                         android:id="@+id/f24"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:weightSum="8"
-                    android:layout_weight="1" >
+                    android:layout_weight="1"
+                    android:weightSum="8">
+
                     <ImageButton
                         android:id="@+id/f16"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/gras_p"/>
+
                     <ImageButton
                         android:id="@+id/f17"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f18"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f19"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/gras_m"/>
+
                     <ImageButton
                         android:id="@+id/f20"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f21"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f22"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/p_field"/>
+
                     <ImageButton
                         android:id="@+id/f23"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -305,162 +377,186 @@
                         android:id="@+id/f15"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:background="@drawable/grass"/>
 
                     <ImageButton
                         android:id="@+id/f14"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:background="@drawable/grass"/>
 
                     <ImageButton
                         android:id="@+id/f13"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:background="@drawable/grass"/>
 
                     <ImageButton
                         android:id="@+id/f12"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:background="@drawable/m_field"/>
 
                     <ImageButton
                         android:id="@+id/f11"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:background="@drawable/grass"/>
 
                     <ImageButton
                         android:id="@+id/f10"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:background="@drawable/grass"/>
 
                     <ImageButton
                         android:id="@+id/f9"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:background="@drawable/grass"/>
 
                     <ImageButton
                         android:id="@+id/f8"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:background="@drawable/grass"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:weightSum="8"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:weightSum="8">
+
                     <ImageButton
                         android:id="@+id/f0"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/player_both"/>
+
                     <ImageButton
                         android:id="@+id/f1"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f2"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f3"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f4"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f5"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/gras_m"/>
+
                     <ImageButton
                         android:id="@+id/f6"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/grass"/>
+
                     <ImageButton
                         android:id="@+id/f7"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent" />
+                        android:background="@drawable/p_field"/>
                 </LinearLayout>
 
 
-                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_weight="7">
+                        android:layout_weight="7"
+                        android:background="@drawable/wall_r"
+                        android:orientation="vertical"
+                        android:weightSum="10">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/nameClient"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_weight=""
+                            android:gravity="center"
+                            android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/picClient"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/knight_blue" />
+
+
+                        <ImageView
+                            android:id="@+id/rollClient"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/d0"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/risk1"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                android:layout_weight="7"
-                                android:weightSum="10"
-                                android:background="@drawable/wall_r">
-
-                            <TextView
-                                android:id="@+id/nameClient"
-                                android:layout_width="70dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=""
-                                android:gravity="center"
-                                android:text="TextView"
-                                android:layout_marginTop="30dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginRight="30dp" />
-
-                                <ImageView
-                                    android:id="@+id/picClient"
-                                    android:layout_width="100dp"
-                                    android:layout_height="100dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_gravity="center"
-                                    android:background="@drawable/knight_blue"/>
-
-
-                            <ImageView
-                                android:id="@+id/rollClient"
-                                android:src="@drawable/d0"
-                                android:layout_width="70dp"
-                                android:layout_height="70dp"
-                                android:layout_weight="1"
-                                android:layout_marginTop="20dp"
-                                android:layout_gravity="center"
-                                android:visibility="invisible" />
-
-                                <Button
-                                    android:id="@+id/risk1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="40dp"
-                                    android:text="risk1"
-                                    android:textColor="@color/colorBlack"
-                                    android:layout_weight="center" />
-                        </LinearLayout>
-
-
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:layout_weight="center"
+                            android:text="risk1"
+                            android:textColor="@color/colorBlack" />
                     </LinearLayout>
+
+
                 </LinearLayout>
-         </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
