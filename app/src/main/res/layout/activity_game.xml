@@ -53,9 +53,18 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="20dp"
                     android:layout_gravity="center"
                     android:visibility="invisible" />
+
+                <Button
+                    android:id="@+id/risk2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="risk2"
+                    android:textColor="@color/colorBlack"
+                    android:layout_weight="center" />
 
             </LinearLayout>
 
@@ -435,9 +444,18 @@
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
                                 android:layout_weight="1"
-                                android:layout_marginTop="50dp"
+                                android:layout_marginTop="20dp"
                                 android:layout_gravity="center"
                                 android:visibility="invisible" />
+
+                                <Button
+                                    android:id="@+id/risk1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="40dp"
+                                    android:text="risk1"
+                                    android:textColor="@color/colorBlack"
+                                    android:layout_weight="center" />
                         </LinearLayout>
 
 
