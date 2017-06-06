@@ -152,8 +152,12 @@
                 android:id="@+id/txtCredits"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="hdasjhdslkahdjlkahdkashdskajshkadsdhakjhadkdalkjlkhhhhhhhhhhkhkhkjhjgff.
-    "
+                android:text="T_Industries besteht aus:
+                             Michael Kloss - Architektur Lead​
+                             Engin Orhan - GUI Lead​
+                             Daniel Rieder - Test Lead​
+                             Jasmin Stuck - Projektmanagement Lead​
+                             Sarah Wachter - Development Lead​"
                 tools:layout_editor_absoluteX="150dp"
                 tools:layout_editor_absoluteY="255dp"></TextView>
         </ScrollView>
