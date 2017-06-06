@@ -25,6 +25,13 @@
         app:layout_constraintVertical_bias="0.125">
 
         <Button
+            android:id="@+id/anleitungBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/anleitung" />
+
+        <Button
             android:id="@+id/server"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/client" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -38,7 +37,6 @@ import t_industries.monstersandportals.NetworkClasses.UpdateServer;
 import t_industries.monstersandportals.myclient.MyClient;
 import t_industries.monstersandportals.myserver.MyServer;
 
-import static android.R.id.icon;
 import static java.lang.String.valueOf;
 
 /**
@@ -658,7 +656,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         mpWoo.seekTo(0);
         mpWoo.start();
 
-        Button back = (Button) dialog.findViewById(R.id.backBtn);
+        Button back = (Button) dialog.findViewById(R.id.backMenuBtn);
         back.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -681,7 +679,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         mpPunch.seekTo(0);
         mpPunch.start();
 
-        Button back = (Button) dialog.findViewById(R.id.backBtn);
+        Button back = (Button) dialog.findViewById(R.id.backMenuBtn);
         back.setOnClickListener(new View.OnClickListener() {
 
             @Override

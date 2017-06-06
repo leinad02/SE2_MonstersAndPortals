@@ -1,5 +1,6 @@
 package t_industries.monstersandportals;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +11,8 @@ import android.widget.Button;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button serverBtn, clientBtn;
+    private Button serverBtn, clientBtn, anleitungBtn;
+    Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /*Die Titelleiste (Akku etc.) wird ausgeblendet wichtig, dies muss vor setContentView geschehen, sonst schmeißt
@@ -27,6 +29,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         serverBtn.setOnClickListener(this);
         clientBtn = (Button) findViewById(R.id.client);
         clientBtn.setOnClickListener(this);
+        anleitungBtn = (Button) findViewById(R.id.anleitungBtn);
+        anleitungBtn.setOnClickListener(this);
+
     }
 
     @Override
@@ -39,6 +44,22 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.client:
                 startActivity(new Intent(this, ClientActivity.class));
+                break;
+
+            case R.id.anleitungBtn:
+                dialog = new Dialog(MenuActivity.this);
+                dialog.setContentView(R.layout.anleitung);
+                dialog.show();
+                Button backMenuBtn = (Button) dialog.findViewById(R.id.backMenuBtn);
+                backMenuBtn.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+
+                        dialog.cancel();
+                       }
+                });
+
                 break;
 
             default:

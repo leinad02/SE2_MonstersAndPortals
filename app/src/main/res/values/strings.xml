@@ -12,4 +12,5 @@
     <string name="serverClose">Server schließen</string>
     <string name="disconnect">Disconnect</string>
     <string name="roll">Würfle!</string>
+    <string name="anleitung">Spielanleitung</string>
 </resources>
