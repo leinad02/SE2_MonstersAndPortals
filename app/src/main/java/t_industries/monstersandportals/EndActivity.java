@@ -8,9 +8,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-public class EndActivity extends AppCompatActivity implements View.OnClickListener{
+public class EndActivity extends AppCompatActivity {
 
-    private Button againBtn;
+    //private Button againBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +24,12 @@ public class EndActivity extends AppCompatActivity implements View.OnClickListen
         // Der Screen wird noch auf Fullscreen gesetzt
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        againBtn = (Button) findViewById(R.id.againBtn);
-        againBtn.setOnClickListener(this);
+        /**vielleicht für später
+         * againBtn = (Button) findViewById(R.id.againBtn);
+        againBtn.setOnClickListener(this);*/
     }
 
+   /**
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -39,5 +41,5 @@ public class EndActivity extends AppCompatActivity implements View.OnClickListen
             default:
                 break;
         }
-    }
+    }*/
 }
