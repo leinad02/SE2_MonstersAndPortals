@@ -164,7 +164,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         mpMonster = MediaPlayer.create(this, R.raw.monster2);
         mpPortal = MediaPlayer.create(this, R.raw.portal);
         mpPunch = MediaPlayer.create(this, R.raw.punch);
-        mpUoh = MediaPlayer.create(this, R.raw.uoh);
+        mpUoh = MediaPlayer.create(this, R.raw.ouh);
         mpWoo = MediaPlayer.create(this, R.raw.woo);
         mpYeah = MediaPlayer.create(this, R.raw.yeah);
     }
