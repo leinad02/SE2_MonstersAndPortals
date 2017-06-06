@@ -656,7 +656,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         mpWoo.seekTo(0);
         mpWoo.start();
 
-        Button back = (Button) dialog.findViewById(R.id.backMenuBtn);
+        Button back = (Button) dialog.findViewById(R.id.backMenuBtnn);
         back.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -679,7 +679,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         mpPunch.seekTo(0);
         mpPunch.start();
 
-        Button back = (Button) dialog.findViewById(R.id.backMenuBtn);
+        Button back = (Button) dialog.findViewById(R.id.backMenuBtnn);
         back.setOnClickListener(new View.OnClickListener() {
 
             @Override

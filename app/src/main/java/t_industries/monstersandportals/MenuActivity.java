@@ -4,15 +4,19 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button serverBtn, clientBtn, anleitungBtn;
     Dialog dialog;
+    //TextView anleitung, credits;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /*Die Titelleiste (Akku etc.) wird ausgeblendet wichtig, dies muss vor setContentView geschehen, sonst schmeißt
@@ -31,6 +35,39 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         clientBtn.setOnClickListener(this);
         anleitungBtn = (Button) findViewById(R.id.anleitungBtn);
         anleitungBtn.setOnClickListener(this);
+
+
+        /* String txtAnl="badshgadkjfgdskfgdshgfdslkhglfslhfglsfjhgfslhgf böböaka" +
+                "dbdkbdskfbskbfkbfskbfsfs" +
+                "dkshfdkjfhkjfhsdjkhfjshfslfjhfskl" +
+                "fkjdsfkds" +
+                "sfddffd" +
+                "sfdfsdf" +
+                "sfdfsfsdf" +
+                "sfdfssdgfdsg" +
+                "sgdgdsg" +
+                "sdgdgdgsg" +
+                "sdgdgdg";
+
+        String txtCr="dgsdgsss" +
+                "dgsgdd" +
+                "sgdsggsddggd" +
+                "sgdgdgdggds" +
+                "sddggsgd" +
+                "dsfsdfffffffffffffff" +
+                "fffffffffffff" +
+                "fffffffffffff" +
+                "ffffffffffffff" +
+                "fffffffffff";
+
+        anleitung = (TextView)findViewById(R.id.txtAnleitung);
+        anleitung.setText(txtAnl);
+        anleitung.setMovementMethod(new ScrollingMovementMethod());
+
+        credits = (TextView)findViewById(R.id.txtAnleitung);
+        credits.setText(txtCr);
+        credits.setMovementMethod(new ScrollingMovementMethod());*/
+
 
     }
 
