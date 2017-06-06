@@ -158,7 +158,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
     }
-    //Spunds werden in den Variablen gespeichert
+    //Sounds werden in den Variablen gespeichert
     private void createMPSounds(){
         mpLaugh = MediaPlayer.create(this, R.raw.laugh);
         mpMonster = MediaPlayer.create(this, R.raw.monster2);
