@@ -109,7 +109,8 @@ public class GameActivityTest {
 
     }
 
-    //testet ob die Bilder richtig zugeteilt wurden, funktioniert auch noch nicht richtig, Probleme beim Zugriff auf die Ressource
+    //testet ob die Bilder richtig zugeteilt wurden, funktioniert auch noch nicht richtig,
+    // >>>Probleme beim Zugriff auf die Ressource bzw. Vergleich des Pfads
     @Test
     public void checkBoard() throws Exception {
         GameActivity testGame = new GameActivity();
