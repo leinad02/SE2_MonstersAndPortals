@@ -6,6 +6,8 @@ import com.esotericsoftware.kryonet.Listener;
 import java.io.Serializable;
 
 import t_industries.monstersandportals.NetworkClasses.ACKClient;
+import t_industries.monstersandportals.NetworkClasses.CheatClient;
+import t_industries.monstersandportals.NetworkClasses.CheatServer;
 import t_industries.monstersandportals.NetworkClasses.ClientName;
 import t_industries.monstersandportals.NetworkClasses.ClientRegister;
 import t_industries.monstersandportals.NetworkClasses.ForServer;
@@ -30,13 +32,15 @@ public class MyServerListener extends Listener implements Serializable {
     ForServer forServer;
     UpdateServer updateServer;
     RiskServer riskServer;
+    CheatServer cheatServer;
 
     public MyServerListener(){
     }
 
-    public MyServerListener(UpdateServer updateServer, RiskServer riskServer){
+    public MyServerListener(UpdateServer updateServer, RiskServer riskServer, CheatServer cheatServer){
         this.updateServer = updateServer;
         this.riskServer = riskServer;
+        this.cheatServer = cheatServer;
     }
 
     public MyServerListener(ClientRegister clientRegister, String name, ForServer forServer) {
@@ -95,6 +99,19 @@ public class MyServerListener extends Listener implements Serializable {
             RandomNumberOne randomNumberOne = (RandomNumberOne) object;
             System.out.println(randomNumberOne.getRandomNumber());
             this.updateServer.setCheckRandomNrServer(1);
+        } else if(object instanceof CheatServer){
+            CheatServer cheatServer = (CheatServer) object;
+            if(cheatServer.getTextCheat().equalsIgnoreCase("detect")){
+                this.cheatServer.setDetectCheat(1);
+                this.cheatServer.setReadyCheatServer(0);
+            } else if(cheatServer.getTextCheat().equalsIgnoreCase("cheaten")){
+                this.cheatServer.setClientCheat(1);
+                this.riskServer.setCheckFieldServer(1);
+                this.cheatServer.setSuccessCheatClient(1);
+            } else if(cheatServer.getTextCheat().equalsIgnoreCase("failcheat")){
+                this.riskServer.setFailCounterServer(1);
+                this.cheatServer.setSuccessCheatClient(1);
+            }
         }
 
     }
