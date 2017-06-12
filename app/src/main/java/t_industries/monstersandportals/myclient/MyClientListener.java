@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Listener;
 import java.io.Serializable;
 
 import t_industries.monstersandportals.NetworkClasses.ACKServer;
+import t_industries.monstersandportals.NetworkClasses.CheatClient;
 import t_industries.monstersandportals.NetworkClasses.ClientRegister;
 import t_industries.monstersandportals.NetworkClasses.ForClient;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
@@ -23,11 +24,13 @@ public class MyClientListener extends Listener implements Serializable {
     ForClient forClient;
     UpdateClient updateClient;
     RiskClient riskClient;
+    CheatClient cheatClient;
     public MyClientListener(){}
 
-    public MyClientListener(UpdateClient updateClient, RiskClient riskClient){
+    public MyClientListener(UpdateClient updateClient, RiskClient riskClient, CheatClient cheatClient){
         this.updateClient = updateClient;
         this.riskClient = riskClient;
+        this.cheatClient = cheatClient;
     }
 
     public MyClientListener(ForClient forClient) {
@@ -75,6 +78,19 @@ public class MyClientListener extends Listener implements Serializable {
             RandomACK randomACK = (RandomACK) object;
             System.out.println(randomACK.getRandomCheck());
             this.updateClient.setCheckRandomNrClient(1);
+        } else if(object instanceof CheatClient){
+            CheatClient cheatClient = (CheatClient) object;
+            if(cheatClient.getTextCheat().equalsIgnoreCase("detect")){
+                this.cheatClient.setDetectCheat(1);
+                this.cheatClient.setReadyCheatClient(0);
+            } else if(cheatClient.getTextCheat().equalsIgnoreCase("cheaten")){
+                this.cheatClient.setServerCheat(1);
+                this.riskClient.setCheckFieldClient(1);
+                this.cheatClient.setSuccessCheatServer(1);
+            } else if(cheatClient.getTextCheat().equalsIgnoreCase("failcheat")){
+                this.riskClient.setFailCounterClient(1);
+                this.cheatClient.setSuccessCheatServer(1);
+            }
         }
     }
 

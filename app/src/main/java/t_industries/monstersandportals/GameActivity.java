@@ -30,6 +30,8 @@ import android.widget.Toast;
 import java.io.Serializable;
 import java.util.Random;
 
+import t_industries.monstersandportals.NetworkClasses.CheatClient;
+import t_industries.monstersandportals.NetworkClasses.CheatServer;
 import t_industries.monstersandportals.NetworkClasses.RiskClient;
 import t_industries.monstersandportals.NetworkClasses.RiskServer;
 import t_industries.monstersandportals.NetworkClasses.UpdateClient;
@@ -54,15 +56,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     UpdateServer updateServer;
     RiskServer riskServer; //für die Kommunikation
     RiskClient riskClient;
+    CheatClient cheatClient;
+    CheatServer cheatServer;
     private SensorManager sensorManager;
     private Sensor sensor;
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
     private static final int SHAKE_THRESHOLD = 800;
-
-
-
-
     static String[] gameBoard = new String[48]; // 8 x 6 Spielfeld
     static int[] monster = {12, 31, 46, 5, 25, 19};
     static int[] portal = {7, 22, 33, 16, 28, 41};
@@ -76,6 +76,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     ImageView rollClient;
     ImageView rollServer;
+    ImageView btnCheatClient, btnCheatServer;
 
     Random random = new Random();
     private int number = (random.nextInt(10) + 1);
@@ -85,7 +86,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private int isActiveOrderServer = 0;
     private int isActiveOrderClient = 0;
     private int numberForOrder;
-    private String type;
+    private String type, decisionType;
     //Dialoge für Monster,Portale,Gewonnen,Verloren
     Dialog dialog;
     //neue Alternative für die Sounds,Initialisiere MediaPlayer zur Verwaltung von Audiodateien
@@ -110,10 +111,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         disconnect = (Button) findViewById(R.id.disconnect);
         rollClient = (ImageView) findViewById(R.id.rollClient);
         rollServer = (ImageView) findViewById(R.id.rollServer);
+        btnCheatClient = (ImageView) findViewById(R.id.btnCheatClient);
+        btnCheatServer = (ImageView) findViewById(R.id.btnCheatServer);
         updateServer = new UpdateServer();
         updateClient = new UpdateClient();
         riskServer = new RiskServer();
         riskClient = new RiskClient();
+        cheatClient = new CheatClient();
+        cheatServer = new CheatServer();
         handler = new Handler();
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -134,6 +139,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 new MyTaskServer().execute();
                 closeServer.setVisibility(View.VISIBLE);
                 closeServer.setOnClickListener(this);
+                btnCheatServer.setOnClickListener(this);
                 setBoard();
                 rollServer.setVisibility(View.VISIBLE);
                 startRunnableGameOrderServer();
@@ -145,6 +151,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 new MyTaskClient(ip).execute();
                 disconnect.setVisibility(View.VISIBLE);
                 disconnect.setOnClickListener(this);
+                btnCheatClient.setOnClickListener(this);
                 setBoard();
                 rollClient.setVisibility(View.VISIBLE);
                 startRunnableGameOrderClient();
@@ -233,41 +240,50 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     private Runnable runnableServer = new Runnable() {
         public void run() {
-            int getReady = updateServer.getReadyForTurnServer();
-            int rolledNrRival = updateServer.getPosition();
-            if (getReady == 1) {
-                if(isRisk == 0){
-                    newrivalPosition(rolledNrRival);
-                    checkBoard();
-                    Toast.makeText(GameActivity.this, "Client würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
-                }
-                if(rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40){
-                    if(riskServer.isCheckField() == 0){
-                        updateServer.setActiveSensorServer(0);
-                        rollServer.setVisibility(View.INVISIBLE);
-                        Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist noch beim Beantworten!", Toast.LENGTH_SHORT).show();
-                        isRisk = 1;
-                        startRunnableServer();
-                    } else {
-                        if(riskServer.getFailCounterServer() == 0){
-                            newrivalPosition(4);
-                            checkBoard();
-                            Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet und darf 4 Felder vorwärts!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(GameActivity.this, "Der Gegner ist zu dumm, um die Frage zu beantworten!", Toast.LENGTH_SHORT).show();
-                        }
-                        rollServer.setVisibility(View.VISIBLE);
-                        resetRiskValues();
-                        updateServer.setActiveSensorServer(1);
+            if(cheatServer.getDetectCheat() == 0){
+                int getReady = updateServer.getReadyForTurnServer();
+                int rolledNrRival = updateServer.getPosition();
+                if (getReady == 1) {
+                    if(isRisk == 0){
+                        newrivalPosition(rolledNrRival);
+                        checkBoard();
+                        Toast.makeText(GameActivity.this, "Client würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
                     }
-                }
+                    if(rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40){
+                        turn(4);
+                    }else if(rivalPosition == 2 || rivalPosition == 18 || rivalPosition == 34){
+                        if(cheatServer.getSuccessCheatClient() == 0 && cheatServer.getAllowFurtherClient() == 1){
+                            isRisk = 1;
+                            Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist beim Beantworten", Toast.LENGTH_SHORT).show();
+                            startRunnableServer();
+                        } else {
+                            if(cheatServer.getClientCheat() == 1){
+                                turn(6);
+                            }
+                            isRisk = 0;
+                            cheatServer.setSuccessCheatClient(0);
+                        }
+                    }
 
-                if (rivalPosition == 47) {
-                    showDialogLose();
-                }
+                    if(rivalPosition == 8 || rivalPosition == 24 || rivalPosition == 40){
+                        if(cheatServer.getClientCheat() == 1){
+                            btnCheatServer.setVisibility(View.VISIBLE);
+                            startTimerButton();
+                            cheatServer.setClientCheat(0);
+                        }
+                    }
 
-                gameHandlerServer();
-            } else {
+                    if (rivalPosition == 47) {
+                        showDialogLose();
+                    }
+
+                    gameHandlerServer();
+                } else {
+                    startRunnableServer();
+                }
+            } else{
+                Toast.makeText(GameActivity.this, "Der Gegner hat dich entlarvt, du darfst jetzt nicht mehr schummeln!", Toast.LENGTH_SHORT).show();
+                cheatServer.setDetectCheat(0);
                 startRunnableServer();
             }
         }
@@ -279,43 +295,74 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     private Runnable runnableClient = new Runnable() {
         public void run() {
-            int getReady = updateClient.getReadyForTurnClient();
-            int rolledNrRival = updateClient.getPosition();
-            if (getReady == 1) {
-                if(isRisk == 0){
-                    newUserPosition(rolledNrRival);
-                    checkBoard();
-                    Toast.makeText(GameActivity.this, "Server würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
-                }
-                if(userPosition == 10 || userPosition == 26 || userPosition == 40){
-                    if(riskClient.isCheckFieldClient() == 0){
-                        updateClient.setActiveSensorClient(0);
-                        rollClient.setVisibility(View.INVISIBLE);
-                        Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist noch beim Beantworten!", Toast.LENGTH_SHORT).show();
-                        isRisk = 1;
-                        startRunnableClient();
-                    } else{
-                        if(riskClient.getFailCounterClient() == 0){
-                            newUserPosition(4);
-                            checkBoard();
-                            Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet und darf 4 Felder vorwärts!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(GameActivity.this, "Der Gegner ist zu dumm, um die Frage zu beantworten!", Toast.LENGTH_SHORT).show();
-                        }
-                        rollClient.setVisibility(View.VISIBLE);
-                        resetRiskValues();
-                        updateClient.setActiveSensorClient(1);
+            if(cheatClient.getDetectCheat() == 0){
+                int getReady = updateClient.getReadyForTurnClient();
+                int rolledNrRival = updateClient.getPosition();
+                if (getReady == 1) {
+                    if(isRisk == 0){
+                        newUserPosition(rolledNrRival);
+                        checkBoard();
+                        Toast.makeText(GameActivity.this, "Server würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
                     }
-                }
+                    if(userPosition == 10 || userPosition == 26 || userPosition == 40){
+                        turn(4);
+                    }else if(userPosition == 2 || userPosition == 18 || userPosition == 34){
+                        if(cheatClient.getSuccessCheatServer() == 0 && cheatClient.getAllowFurtherServer() == 1){
+                            isRisk = 1;
+                            Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist beim Beantworten", Toast.LENGTH_SHORT).show();
+                            startRunnableClient();
+                        } else {
+                            if(cheatClient.getServerCheat() == 1){
+                                turn(6);
+                            }
+                            isRisk = 0;
+                            cheatClient.setSuccessCheatServer(0);
+                        }
+                    }
 
-                if (userPosition == 47) {
-                    showDialogLose();
-                }
+                    if(userPosition == 8 || userPosition == 24 || userPosition == 40){
+                        if(cheatClient.getServerCheat() == 1){
+                            btnCheatClient.setVisibility(View.VISIBLE);
+                            startTimerButton();
+                            cheatClient.setServerCheat(0);
+                        }
+                    }
 
-                gameHandlerClient();
+                    if (userPosition == 47) {
+                        showDialogLose();
+                    }
+
+                    gameHandlerClient();
+                } else {
+                    startRunnableClient();
+                }
             } else {
+                Toast.makeText(GameActivity.this, "Der Gegner hat dich entlarvt, du darfst jetzt nicht mehr schummeln!", Toast.LENGTH_SHORT).show();
+                cheatClient.setDetectCheat(0);
                 startRunnableClient();
             }
+        }
+    };
+
+    private void startTimerButton() {
+        if(type.equalsIgnoreCase("client")){
+            handler.postDelayed(endTimerClient, 1000);
+        } else {
+            handler.postDelayed(endTimerServer, 1000);
+        }
+    }
+
+    private Runnable endTimerServer = new Runnable(){
+        @Override
+        public void run() {
+            btnCheatServer.setVisibility(View.INVISIBLE);
+        }
+    };
+
+    private Runnable endTimerClient = new Runnable(){
+        @Override
+        public void run() {
+            btnCheatClient.setVisibility(View.INVISIBLE);
         }
     };
 
@@ -355,7 +402,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             return;
         }
         if (userPosition <= 47 && rivalPosition <= 47) {
-            int rolledNo = rollDice();
+            int rolledNo = 2;
             setDiceServer();
             System.out.println("Host zieht weiter:");
             //if(newUserPosition(rolledNo) == 20)
@@ -367,6 +414,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             if (userPosition == 10 || userPosition == 26 || userPosition == 40) {
                 drawRiskcardServer();
             }
+
+            if(userPosition == 2 || userPosition == 18 || userPosition == 34){
+                if(cheatServer.getReadyCheatServer() == 1){
+                    cheat();
+                }
+            }
+
             new ACKServer(updateServer).execute();
             startRunnableServer();
         }
@@ -383,7 +437,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
         if (userPosition <= 47 && rivalPosition <= 47) {
-            int rolledNo = rollDice();
+            int rolledNo = 1;
             setDiceClient();
             System.out.println("Client zieht weiter:");
             new MessageClient(rolledNo).execute();
@@ -394,6 +448,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             if (rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40) {
                 drawRiskcardClient();
             }
+
+            if(rivalPosition == 2 || rivalPosition == 18 || rivalPosition == 34){
+                if(cheatClient.getReadyCheatClient() == 1){
+                    cheat();
+                }
+            }
+
             new ACKClient(updateClient).execute();
             startRunnableClient();
         }
@@ -422,7 +483,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             gameBoard[userPosition] = "H";
         }
         System.out.println("Hostposition ist: " + userPosition);
-        userPosition = checkMonsterOrPortalOrRiskServer(userPosition);
+        userPosition = checkFieldtypeServer(userPosition);
     }
 
     public void newrivalPosition(int rolledNo) {             // Bewegt den Gast
@@ -444,10 +505,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             gameBoard[rivalPosition] = "G";
         }
         System.out.println("Die Position des Gastspielers ist: " + rivalPosition);
-        rivalPosition = checkMonsterOrPortalOrRiskClient(rivalPosition);
+        rivalPosition = checkFieldtypeClient(rivalPosition);
     }
 
-    private int checkMonsterOrPortalOrRiskServer(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
+    private int checkFieldtypeServer(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
         for ( int i = 0; i < 3; i++) {
             if (position == monster[i]) {
                 System.out.println("Ohhh Nein! Ein MONSTER greift dich an!");
@@ -497,7 +558,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         return position;
     }
 
-    private int checkMonsterOrPortalOrRiskClient(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
+    private int checkFieldtypeClient(int position) {       // überprüft ob das Feld, welches man Betreten hat, eines der Eventfelder ist
         for ( int i = 0; i < 3; i++) {
             if (position == monster[i]) {
                 System.out.println("Ohhh Nein! Ein MONSTER greift dich an!");
@@ -818,6 +879,103 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     }
 
+    public void cheat(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builderfalse = new AlertDialog.Builder(this);
+
+        // Hilfsklasse für Dialogfenster erstellen
+
+        //cheatclient/server hier als ober if machen, um sicher zu sein, dass das nur bei 0 angezeigt wird?
+        builder.setMessage("Willst du deinem Gegner eines auswischen?");
+
+        final DialogInterface.OnClickListener goListener = new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sendRiskMessageFailCheat();
+                dialog.dismiss();
+            }
+        };
+
+        DialogInterface.OnClickListener positivListenerClient = new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sendRiskMessageSuccessCheat();
+                dialog.dismiss();
+            }
+        };
+        builder.setPositiveButton("schummeln",positivListenerClient);
+        builder.setNegativeButton("jetzt nicht", goListener);
+        builder.show();
+
+    }
+
+    public void turn(int num){
+        if(type.equalsIgnoreCase("client")){
+            if(riskClient.isCheckFieldClient() == 0){
+                updateClient.setActiveSensorClient(0);
+                rollClient.setVisibility(View.INVISIBLE);
+                Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist noch beim Beantworten!", Toast.LENGTH_SHORT).show();
+                isRisk = 1;
+                startRunnableClient();
+            } else{
+                if(riskClient.getFailCounterClient() == 0){
+                    newUserPosition(num);
+                    checkBoard();
+                    Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GameActivity.this, "Der Gegner ist zu dumm, um die Frage zu beantworten!", Toast.LENGTH_SHORT).show();
+                }
+                rollClient.setVisibility(View.VISIBLE);
+                resetRiskValues();
+                updateClient.setActiveSensorClient(1);
+            }
+        }else{
+            if(riskServer.isCheckField() == 0){
+                updateServer.setActiveSensorServer(0);
+                rollServer.setVisibility(View.INVISIBLE);
+                Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist noch beim Beantworten!", Toast.LENGTH_SHORT).show();
+                isRisk = 1;
+                startRunnableServer();
+            } else {
+                if(riskServer.getFailCounterServer() == 0){
+                    newrivalPosition(num);
+                    checkBoard();
+                    Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GameActivity.this, "Der Gegner ist zu dumm, um die Frage zu beantworten!", Toast.LENGTH_SHORT).show();
+                }
+                rollServer.setVisibility(View.VISIBLE);
+                resetRiskValues();
+                updateServer.setActiveSensorServer(1);
+            }
+
+        }
+    }
+
+    public void sendRiskMessageSuccessCheat() {
+            String decision = "successcheat";
+            if (type.equalsIgnoreCase("client")) {
+                newrivalPosition(6);
+                checkBoard();
+                new CheckRiskClient(decision).execute();
+                new MessageClient(6).execute();
+            } else {
+                newUserPosition(6);
+                checkBoard();
+                new CheckRiskServer(decision).execute();
+                new MessageServer(6).execute();
+            }
+    }
+
+    public void sendRiskMessageFailCheat(){
+        String decision = "failcheat";
+        if(type.equalsIgnoreCase("client")){
+            new CheckRiskClient(decision).execute();
+        } else{
+            new CheckRiskServer(decision).execute();
+        }
+    }
+
     public void sendRiskMessageSuccess(){
         String decision = "success";
         if(type.equalsIgnoreCase("client")){
@@ -916,6 +1074,16 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 client.disconnect();
                 break;
 
+            case R.id.btnCheatServer:
+                Toast.makeText(GameActivity.this, "Glückwunsch, du hast den Gegner beim Schummeln erwischt!", Toast.LENGTH_SHORT).show();
+                new serverDetectCheat(cheatServer).execute();
+                break;
+
+            case R.id.btnCheatClient:
+                Toast.makeText(GameActivity.this, "Glückwunsch, du hast den Gegner beim Schummeln erwischt!", Toast.LENGTH_SHORT).show();
+                new clientDetectCheat(cheatClient).execute();
+                break;
+
             default:
                 break;
         }
@@ -1010,7 +1178,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         @Override
         protected Void doInBackground(Void... params) {
-            server.startServerNew(updateServer, riskServer);
+            server.startServerNew(updateServer, riskServer, cheatServer);
             return null;
         }
 
@@ -1029,7 +1197,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         @Override
         protected Void doInBackground(Void... params) {
-            client.connectNew(this.ip, updateClient, riskClient);
+            client.connectNew(this.ip, updateClient, riskClient, cheatClient);
             client.sendWelcomeMessage();
             return null;
         }
@@ -1126,8 +1294,12 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         protected Void doInBackground(Void... params) {
             if(decision.equalsIgnoreCase("fail")){
                 client.sendRiskFail();
-            } else {
+            } else if(decision.equalsIgnoreCase("success")) {
                 client.sendRiskField();
+            } else if(decision.equalsIgnoreCase("successcheat")){
+                client.sendCheatMessage();
+            } else {
+                client.sendCheatMessageFail();
             }
             return null;
         }
@@ -1148,8 +1320,12 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         protected Void doInBackground(Void... params) {
             if(decision.equalsIgnoreCase("fail")){
                 server.sendRiskFail();
-            } else {
+            } else if(decision.equalsIgnoreCase("success")) {
                 server.sendRiskField();
+            } else if(decision.equalsIgnoreCase("successcheat")){
+                server.sendCheatMessage();
+            } else {
+                server.sendCheatMessageFail();
             }
             return null;
         }
@@ -1197,6 +1373,43 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         @Override
         protected Void doInBackground(Void... params) {
             createMPSounds();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private class serverDetectCheat extends AsyncTask<Void, Void, Void> {
+        CheatServer cheatServer;
+
+        public serverDetectCheat(CheatServer cheatServer) {
+            this.cheatServer = cheatServer;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            server.sendDetectMessage(this.cheatServer);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private class clientDetectCheat extends AsyncTask<Void, Void, Void> {
+        CheatClient cheatClient;
+        public clientDetectCheat(CheatClient cheatClient) {
+         this.cheatClient = cheatClient;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            client.sendDetectMessage(this.cheatClient);
             return null;
         }
 
