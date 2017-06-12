@@ -46,7 +46,6 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/knight_red" />
 
-
                 <ImageView
                     android:id="@+id/rollServer"
                     android:layout_width="70dp"
@@ -58,13 +57,14 @@
                     android:visibility="invisible" />
 
                 <Button
-                    android:id="@+id/risk2"
+                    android:id="@+id/btnCheatServer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:layout_weight="center"
-                    android:text="risk2"
-                    android:textColor="@color/colorBlack" />
+                    android:text="Enttarnen"
+                    android:textColor="@color/colorBlack"
+                    android:visibility="invisible"/>
 
             </LinearLayout>
 
@@ -545,14 +545,16 @@
                             android:visibility="invisible" />
 
                         <Button
-                            android:id="@+id/risk1"
+                            android:id="@+id/btnCheatClient"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="40dp"
                             android:layout_weight="center"
                             android:text="risk1"
-                            android:textColor="@color/colorBlack" />
+                            android:textColor="@color/colorBlack"
+                            android:visibility="invisible"/>
                     </LinearLayout>
+                            
 
 
                 </LinearLayout>

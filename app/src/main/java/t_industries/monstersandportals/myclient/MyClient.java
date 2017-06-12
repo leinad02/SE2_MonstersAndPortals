@@ -9,6 +9,8 @@ import java.util.Random;
 
 import t_industries.monstersandportals.NetworkClasses.ACKClient;
 import t_industries.monstersandportals.NetworkClasses.ACKServer;
+import t_industries.monstersandportals.NetworkClasses.CheatClient;
+import t_industries.monstersandportals.NetworkClasses.CheatServer;
 import t_industries.monstersandportals.NetworkClasses.ClientName;
 import t_industries.monstersandportals.NetworkClasses.ClientRegister;
 import t_industries.monstersandportals.NetworkClasses.ForClient;
@@ -33,7 +35,6 @@ public class MyClient implements Serializable{
     private int TCP_PORT, UDP_PORT, TIMEOUT;
     private Client client;
     private Kryo kryo;
-    private Random random;
 
     public MyClient(int tcp, int udp, int timeout){
         this.TCP_PORT = tcp;
@@ -67,11 +68,11 @@ public class MyClient implements Serializable{
 
     }
 
-    public void connectNew(String ip, UpdateClient updateClient, RiskClient riskClient){
+    public void connectNew(String ip, UpdateClient updateClient, RiskClient riskClient, CheatClient cheatClient){
         try {
             client.start();
             client.connect(TIMEOUT, ip, TCP_PORT, UDP_PORT);
-            client.addListener(new MyClientListener(updateClient, riskClient));
+            client.addListener(new MyClientListener(updateClient, riskClient, cheatClient));
             LoginRequest req = new LoginRequest();
             req.setMessageText("Hallo");
             client.sendTCP(req);
@@ -117,10 +118,26 @@ public class MyClient implements Serializable{
         client.sendTCP(riskServer);
     }
 
-    public void sendRandomNumber(UpdateClient updateClient){
-        random = new Random();
-        int number = random.nextInt(2);
+    public void sendCheatMessage(){
+        CheatServer cheatServer = new CheatServer();
+        cheatServer.setTextCheat("cheaten");
+        client.sendTCP(cheatServer);
+    }
 
+    public void sendCheatMessageFail(){
+        CheatServer cheatServer = new CheatServer();
+        cheatServer.setTextCheat("failcheat");
+        client.sendTCP(cheatServer);
+    }
+
+    public void sendDetectMessage(CheatClient cheatClient){
+        CheatServer cheatServer = new CheatServer();
+        cheatServer.setTextCheat("detect");
+        client.sendTCP(cheatServer);
+        cheatClient.setAllowFurtherServer(0);
+    }
+
+    public void sendRandomNumber(UpdateClient updateClient, int number){
         if(number == 0){
             RandomNumberZero randomNumberZero = new RandomNumberZero();
             randomNumberZero.setRandomNumber(0);
@@ -152,5 +169,7 @@ public class MyClient implements Serializable{
         kryo.register(RandomNumberOne.class);
         kryo.register(RandomNumberZero.class);
         kryo.register(RandomACK.class);
+        kryo.register(CheatServer.class);
+        kryo.register(CheatClient.class);
     }
 }

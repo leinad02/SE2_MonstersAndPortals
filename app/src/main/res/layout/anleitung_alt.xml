@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="25dp"
+    tools:layout_editor_absoluteX="0dp"
+    >
+
+
+    <Button
+        android:id="@+id/backMenuBtn"
+        android:layout_width="112dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Zurück =)"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:layout_marginTop="8dp"
+        app:layout_constraintVertical_bias="0.947" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="272dp"
+        android:layout_marginBottom="14dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+
+        app:layout_constraintBottom_toTopOf="@+id/backMenuBtn"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.555">
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Spielanleitung:"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textAreaScroller"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.045"></TextView>
+
+
+        <ScrollView
+            android:id="@+id/textAreaScroller"
+            android:layout_width="match_parent"
+            android:layout_height="126dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_x="0px"
+            android:layout_y="25px"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/TextView02"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TextView01"
+            app:layout_constraintVertical_bias="0.0">
+
+
+            <TextView
+                android:id="@+id/TextView03"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="
+    Vorbereitung:
+    Ein Spieler stellt mit seinem Smartphone einen Hotspot bereit und
+    der Mitspieler verbindet sich dann via WLAN mit diesem Smartphone.
+    Nachdem Start der App stellt ein Spieler den Server bereit und drückt
+    auf den Button 'Server'.
+    Der Mitspieler kann dem Spiel beitreten indem er auf den Button 'Client'
+    drückt und die IP-Adresse des Anderen eingibt.
+    Diese ist bei dem Hotspot-gebenden Handy in etwa unter:
+    'Einstellungen > Anbindung und mobiler Hotspot > Einstellungen
+    für WLAN-Hotspot > Verbundene Geräte' zu finden.
+
+    Spielablauf:
+    Ziel des Spieles ist es als Erster das Ziel in der linken oberen
+    Ecke zu erreichen.
+    Es wird per Zufall ausgewählt welcher Spieler beginnen darf.
+    Zum Würfeln kann entweder das Handy geschüttelt werden, oder einfach
+    auf das '?-Zeichen' bzw. den Würfel gedrückt werden.
+    Doch Vorsicht! Auf dem Weg begegnet man entweder Portalen,
+    Monstern oder Ereignisfeldern.
+    Portale sind sehr nützlich, mit ihrer Hilfe kann man sich von einem
+    Ort zum nächsten teleportieren und darf daher mehrere Felder vorrücken.
+    Monster hingegen sind keine Hilfe, du musst vor ihnen flüchten
+    um nicht gefressen zu werden. Daher muss man hier mehrere Felder
+    zurücksetzen.
+    Bei einem Ereignisfeld musst man eine gewisse Frage beantworten,
+    macht man dies richtig, darf man 4 Felder vor.
+    Falls man hier versagt, muss man 4 Felder zurückgehen.
+    Aber Achtung. Bei einem Ereignisfeld hat man die Möglichkeit zu
+    schummeln, indem man einfach noch mehr als die 4 Felder vorgeht.
+    Doch wer erwischt wird. Muss eine Runde aussetzen!
+    An der Seite des Spielfelds findet man den Button zum aufdecken.
+    Diesen kann man drücken, wenn man die Vermutung hat, dass der Gegner
+    schummelt. Doch drückt man diesen und der Gegner hat nicht geschummelt,
+    dann muss man selbst eine Runde aussetzen!
+    Und nun VIEL SPAß beim SPIELEN!!! :)
+    "
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="17dp"></TextView>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/TextView02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:text="Credits:"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textAreaScroller2"
+            app:layout_constraintHorizontal_bias="0.157"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textAreaScroller"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintRight_toRightOf="parent"></TextView>
+
+        <ScrollView
+            android:id="@+id/textAreaScroller2"
+            android:layout_width="match_parent"
+            android:layout_height="129dp"
+            android:layout_marginBottom="272dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_x="0px"
+            android:layout_y="25px"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TextView02">
+
+
+            <TextView
+                android:id="@+id/txtCredits"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="T_Industries besteht aus:
+                         Michael Kloss - Architektur Lead​
+                         Engin Orhan - GUI Lead​
+                         Daniel Rieder - Test Lead​
+                         Jasmin Stuck - Projektmanagement Lead​
+                         Sarah Wachter - Development Lead​"
+                tools:layout_editor_absoluteX="150dp"
+                tools:layout_editor_absoluteY="255dp"></TextView>
+        </ScrollView>
+
+    </LinearLayout>
+
+
+
+
+</android.support.constraint.ConstraintLayout>

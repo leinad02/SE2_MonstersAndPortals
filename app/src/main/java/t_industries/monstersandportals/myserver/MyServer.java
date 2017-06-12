@@ -8,6 +8,8 @@ import java.io.Serializable;
 
 import t_industries.monstersandportals.NetworkClasses.ACKClient;
 import t_industries.monstersandportals.NetworkClasses.ACKServer;
+import t_industries.monstersandportals.NetworkClasses.CheatClient;
+import t_industries.monstersandportals.NetworkClasses.CheatServer;
 import t_industries.monstersandportals.NetworkClasses.ClientName;
 import t_industries.monstersandportals.NetworkClasses.ClientRegister;
 import t_industries.monstersandportals.NetworkClasses.ForClient;
@@ -61,11 +63,11 @@ public class MyServer implements Serializable{
         server.sendToAllTCP(serverName);
         }
 
-    public void startServerNew(UpdateServer updateServer, RiskServer riskServer){
+    public void startServerNew(UpdateServer updateServer, RiskServer riskServer, CheatServer cheatServer){
         server.start();
         try {
             server.bind(TCP_PORT, UDP_PORT);
-            MyServerListener listener = new MyServerListener(updateServer, riskServer);
+            MyServerListener listener = new MyServerListener(updateServer, riskServer, cheatServer);
             server.addListener(listener);
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,6 +104,25 @@ public class MyServer implements Serializable{
         server.sendToAllTCP(riskClient);
     }
 
+    public void sendCheatMessage(){
+        CheatClient cheatClient = new CheatClient();
+        cheatClient.setTextCheat("cheaten");
+        server.sendToAllTCP(cheatClient);
+    }
+
+    public void sendCheatMessageFail(){
+        CheatClient cheatClient = new CheatClient();
+        cheatClient.setTextCheat("failcheat");
+        server.sendToAllTCP(cheatClient);
+    }
+
+    public void sendDetectMessage(CheatServer cheatServer){
+        CheatClient cheatClient = new CheatClient();
+        cheatClient.setTextCheat("detect");
+        server.sendToAllTCP(cheatClient);
+        cheatServer.setAllowFurtherClient(0);
+    }
+
     public void sendACKRandom(){
         RandomACK randomACK = new RandomACK();
         randomACK.setRandomCheck(1);
@@ -126,6 +147,8 @@ public class MyServer implements Serializable{
         kryo.register(RandomNumberOne.class);
         kryo.register(RandomNumberZero.class);
         kryo.register(RandomACK.class);
+        kryo.register(CheatServer.class);
+        kryo.register(CheatClient.class);
     }
 
 }
