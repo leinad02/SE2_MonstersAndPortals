@@ -89,7 +89,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     //Dialoge für Monster,Portale,Gewonnen,Verloren
     Dialog dialog;
     //neue Alternative für die Sounds,Initialisiere MediaPlayer zur Verwaltung von Audiodateien
-    private MediaPlayer mpLaugh, mpMonster, mpPortal, mpPunch, mpUoh, mpWoo, mpYeah;
+    protected MediaPlayer mpLaugh, mpMonster, mpPortal, mpPunch, mpUoh, mpWoo, mpYeah;
 
 
     @Override
