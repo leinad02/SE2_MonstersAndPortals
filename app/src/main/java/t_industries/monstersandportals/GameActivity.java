@@ -403,7 +403,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             return;
         }
         if (userPosition <= 47 && rivalPosition <= 47) {
-            int rolledNo = 2;
+            int rolledNo = rollDice();
             setDiceServer();
             System.out.println("Host zieht weiter:");
             new MessageServer(rolledNo).execute();
@@ -437,7 +437,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
         if (userPosition <= 47 && rivalPosition <= 47) {
-            int rolledNo = 1;
+            int rolledNo = rollDice();
             setDiceClient();
             System.out.println("Client zieht weiter:");
             new MessageClient(rolledNo).execute();
