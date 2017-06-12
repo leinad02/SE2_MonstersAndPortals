@@ -22,29 +22,67 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="0.475"
-        app:layout_constraintVertical_bias="0.125">
+        app:layout_constraintVertical_bias="0.125"
+        android:weightSum="6">
 
-        <Button
-            android:id="@+id/anleitungBtn"
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/anleitung" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/server"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/server"
-           />
+            android:layout_marginRight="10dp"
+            android:orientation="vertical"
+            android:layout_gravity="right"
+            android:weightSum="15">
 
-        <Button
-            android:id="@+id/client"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/client" />
+            <Button
+                android:id="@+id/server"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/server"
+                android:textColor="#F3AE1B"/>
+
+            <Button
+                android:id="@+id/client"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/client"
+                android:textColor="#F3AE1B"/>
+
+            <Button
+                android:id="@+id/anleitungBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Anleitung"
+                android:textColor="#F3AE1B"/>
+        </LinearLayout>
 
     </LinearLayout>
 

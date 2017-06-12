@@ -72,17 +72,16 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     static int rivalPosition = 0;
 
     ImageButton [] buttons;
-    // Button roll;
+
 
     ImageView rollClient;
     ImageView rollServer;
     ImageView btnCheatClient, btnCheatServer;
 
     Random random = new Random();
-    private int number = (random.nextInt(10) + 1);
-    //Randomzahl zwischen 1 und 10
+    private int number = (random.nextInt(10) + 1);                  //Randomzahl zwischen 1 und 10
     private String num = valueOf(number);
-    private int isRisk = 0; //wenn richtig, den Player 4 Positionen vor schicken
+    private int isRisk = 0;                                         //wenn richtig, den Player 4 Positionen vor schicken
     private int isActiveOrderServer = 0;
     private int isActiveOrderClient = 0;
     private int numberForOrder;
@@ -163,6 +162,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
     }
+                                                                                    //Spunds werden in den Variablen gespeichert
+
     //Sounds werden in den Variablen gespeichert
     private void createMPSounds(){
         mpLaugh = MediaPlayer.create(this, R.raw.laugh);
@@ -1002,22 +1003,38 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     public void checkBoard(){                                           //checkt wo Host & Gast sich gerade befinden
 
-        for (int i = 0; i < 48; i++) {
+        for (int i = 0; i < 47; i++) {
 
-            for ( int j = 0; j <3; j++){                                // soll verhindern, dass die Eventfelder neue Zeichnungen bekommen
-                if ( i == monster[j] || i == portal[j] || i == risk[j] || i == 47){
+            for ( int j = 0; j <3; j++){                                // Schleife soll verhindern, dass die Eventfelder neue Zeichnungen bekommen
+                if ( i == monster[j] || i == portal[j] || i == risk[j]){
                     i++;
                 }
             }
 
             if (gameBoard[i] == "H" ){
-                buttons[i].setImageResource(R.drawable. player_host);
+                if ( i == monster[3] || i == monster[4] || i == monster[5]){
+                    buttons[i].setImageResource(R.drawable. gras_m_h);
+                } else if ( i == portal[3] || i == portal[4] || i == portal[5]){
+                    buttons[i].setImageResource(R.drawable. gras_p_h);
+                } else buttons[i].setImageResource(R.drawable. player_host);
             } else if (gameBoard[i] == "G") {
-                buttons[i].setImageResource(R.drawable. player_guest);
+                if ( i == monster[3] || i == monster[4] || i == monster[5]){
+                    buttons[i].setImageResource(R.drawable. gras_m_g);
+                } else if ( i == portal[3] || i == portal[4] || i == portal[5]){
+                    buttons[i].setImageResource(R.drawable. gras_p_g);
+                } else buttons[i].setImageResource(R.drawable. player_guest);
             } else if  (gameBoard[i] == "H G") {
-                buttons[i].setImageResource(R.drawable. player_both);
+                if ( i == monster[3] || i == monster[4] || i == monster[5]){
+                    buttons[i].setImageResource(R.drawable. gras_m_b);
+                } else if ( i == portal[3] || i == portal[4] || i == portal[5]){
+                    buttons[i].setImageResource(R.drawable. gras_p_b);
+                } else buttons[i].setImageResource(R.drawable. player_both);
             } else if (gameBoard[i] == "") {
-                buttons[i].setImageResource(R.drawable. grass);
+                if ( i == monster[3] || i == monster[4] || i == monster[5]){
+                buttons[i].setImageResource(R.drawable. gras_m);
+            } else if ( i == portal[3] || i == portal[4] || i == portal[5]){
+                buttons[i].setImageResource(R.drawable. gras_p);
+            } else buttons[i].setImageResource(R.drawable. grass);
             }
         }
     }
@@ -1033,22 +1050,15 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
 
-        /*roll = (Button) findViewById(R.id.roll);
-        roll.setText("Würfel");*/
 
         for (int i = 0; i < 3; i++) {
-            // buttons[monster[i]].setBackgroundColor(Color.RED);          // Monsterfelder
-            buttons[0].setImageResource(R.drawable. m_field);
+            buttons[monster[i]].setImageResource(R.drawable. m_field);              // Monsterfelder
+            buttons[portal[i]].setImageResource(R.drawable. p_field);               // Portalfelder
 
-            // buttons[risk[i]].setBackgroundColor(Color.GREEN);           // Eventfelder
-
-            // buttons[portal[i]].setBackgroundColor(Color.BLUE);          // Portalfelder
-            buttons[0].setImageResource(R.drawable. p_field);
-
-            // buttons[monster[i+3]].setBackgroundColor(Color.DKGRAY);     // Monsterfelder Ausgang
-            // buttons[portal[i+3]].setBackgroundColor(Color.CYAN);        // Portalfelder Ausgang
-
+            buttons[monster[i+3]].setImageResource(R.drawable. gras_m);             // Monsterfeld Ausgänge
+            buttons[portal[i+3]].setImageResource(R.drawable. gras_p);              // Portalfeld Ausgänge
         }
+
 
         for (int i = 0; i < gameBoard.length; i++ ){                    // Board Array wird gecleart
             gameBoard[i] = "";
@@ -1284,6 +1294,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     }
 
+
+
+
     private class CheckRiskClient extends AsyncTask<Void, Void, Void> {
         String decision;
         public CheckRiskClient(String decision) {
@@ -1310,6 +1323,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     }
 
+
+
+
     private class CheckRiskServer extends AsyncTask<Void, Void, Void> {
         String decision;
         public CheckRiskServer(String decision) {
@@ -1335,6 +1351,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             super.onPostExecute(result);
         }
     }
+
+
+
 
     private class randomStartClient extends AsyncTask<Void, Void, Void> {
         UpdateClient updateClient;
