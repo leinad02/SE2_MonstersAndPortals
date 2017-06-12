@@ -1082,8 +1082,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         buttons[47].setImageResource(R.drawable. end_field);            // letzter Feld bekommt eine Zeichnung
 
-        for (int i = 0; i < buttons.length; i++){
-            for(int j = 0; j < 3; j++){
+        for (int i = 0; i < buttons.length; i++){                       // Das Array, welches für die jeweiligen Gras-Felder zuständig ist,
+            for(int j = 0; j < 3; j++){                                 // bekommt die Werte 1-4 zugeteilt für die Jeweiligen Felder
                 if (i != monster[j] || i != portal[j] || i != monster[j+3] || i != portal[j+3]){
                     gras[i] = (int) (Math.random() * 4) + 1;
                 }
