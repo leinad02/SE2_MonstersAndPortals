@@ -76,7 +76,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     ImageView rollClient;
     ImageView rollServer;
-    ImageView btnCheatClient, btnCheatServer;
+    Button btnCheatClient, btnCheatServer;
 
     Random random = new Random();
     private int number = (random.nextInt(10) + 1);                  //Randomzahl zwischen 1 und 10
@@ -85,7 +85,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private int isActiveOrderServer = 0;
     private int isActiveOrderClient = 0;
     private int numberForOrder;
-    private String type, decisionType;
+    private String type;
     //Dialoge für Monster,Portale,Gewonnen,Verloren
     Dialog dialog;
     //neue Alternative für die Sounds,Initialisiere MediaPlayer zur Verwaltung von Audiodateien
@@ -110,8 +110,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         disconnect = (Button) findViewById(R.id.disconnect);
         rollClient = (ImageView) findViewById(R.id.rollClient);
         rollServer = (ImageView) findViewById(R.id.rollServer);
-        btnCheatClient = (ImageView) findViewById(R.id.btnCheatClient);
-        btnCheatServer = (ImageView) findViewById(R.id.btnCheatServer);
+        btnCheatClient = (Button) findViewById(R.id.btnCheatClient);
+        btnCheatServer = (Button) findViewById(R.id.btnCheatServer);
         updateServer = new UpdateServer();
         updateClient = new UpdateClient();
         riskServer = new RiskServer();
@@ -406,7 +406,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             int rolledNo = 2;
             setDiceServer();
             System.out.println("Host zieht weiter:");
-            //if(newUserPosition(rolledNo) == 20)
             new MessageServer(rolledNo).execute();
             System.out.println("Client ist dran:");
             newUserPosition(rolledNo);
