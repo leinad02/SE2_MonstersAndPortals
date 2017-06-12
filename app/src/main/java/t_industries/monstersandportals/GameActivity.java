@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,7 +70,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     static int userPosition = 0;
     static int rivalPosition = 0;
 
-    ImageButton [] buttons;
+    ImageView [] buttons;
+    int [] gras = new int [48];                                     // für zufällige Grasbilder
 
 
     ImageView rollClient;
@@ -532,7 +532,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     gameBoard[monster[i+3]] = "H"; }
 
 
-            } else if (position == portal[i]) {     // Hier wird in der Zukunft die Klasse Portal ausgeführt
+            } else if (position == portal[i]) {     // Hier wird das Portal ausgeführt
 
                 if (gameBoard[portal[i]] == "H G"){
                     gameBoard[portal[i]] = "G";
@@ -584,6 +584,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
 
             } else if (position == portal[i]) {     // Hier wird in der Zukunft die Klasse Portal ausgeführt
+                System.out.println("Yeah, du hast einen Portal betreten!");
 
                 if ( gameBoard[portal[i]] == "H G"){
                     gameBoard[portal[i]] = "H";
@@ -1032,20 +1033,33 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 if ( i == monster[3] || i == monster[4] || i == monster[5]){
                 buttons[i].setImageResource(R.drawable. gras_m);
             } else if ( i == portal[3] || i == portal[4] || i == portal[5]){
-                buttons[i].setImageResource(R.drawable. gras_p);
-            } else buttons[i].setImageResource(R.drawable. grass);
+                buttons[i].setImageResource(R.drawable. gras_p);                    // nimmt wieder die Ursprüngliche Grasform an
+            } else if (gras[i] == 1){
+                    buttons[i].setImageResource(R.drawable. gras_1);
+            } else if (gras[i] == 2) {
+                    buttons[i].setImageResource(R.drawable. gras_2);
+            } else if (gras[i] == 3) {
+                    buttons[i].setImageResource(R.drawable. gras_3);
+            } else if (gras[i] == 4) {
+                    buttons[i].setImageResource(R.drawable. gras_4);
+            }
+                if ( i == 47) {
+                    buttons[i].setImageResource(R.drawable. end_field);             // das letzte Feld behält die Zeichnung
+                }
+
             }
         }
     }
 
     public void setBoard(){                                             //Die buttons aus dem Layout werden ins code übernommen
 
-        buttons = new ImageButton[48];
+        buttons = new ImageView[48];
+
 
         Resources res = getResources();                                 //if you are in an activity
         for (int i = 0; i < 48; i++) {
             String idName = "f" + i;
-            buttons[i] = (ImageButton) findViewById(res.getIdentifier(idName, "id", getPackageName()));
+            buttons[i] = (ImageView) findViewById(res.getIdentifier(idName, "id", getPackageName()));
         }
 
 
@@ -1067,6 +1081,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         buttons[0].setImageResource(R.drawable. player_both);
 
         buttons[47].setImageResource(R.drawable. end_field);            // letzter Feld bekommt eine Zeichnung
+
+        for (int i = 0; i < buttons.length; i++){
+            for(int j = 0; j < 3; j++){
+                if (i != monster[j] || i != portal[j] || i != monster[j+3] || i != portal[j+3]){
+                    gras[i] = (int) (Math.random() * 4) + 1;
+                }
+            }
+        }
 
         checkBoard();                                                   // Images für die Felder laden
     }
