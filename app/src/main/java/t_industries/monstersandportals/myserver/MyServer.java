@@ -12,6 +12,8 @@ import t_industries.monstersandportals.NetworkClasses.CheatClient;
 import t_industries.monstersandportals.NetworkClasses.CheatServer;
 import t_industries.monstersandportals.NetworkClasses.ClientName;
 import t_industries.monstersandportals.NetworkClasses.ClientRegister;
+import t_industries.monstersandportals.NetworkClasses.DisconnectedClient;
+import t_industries.monstersandportals.NetworkClasses.DisconnectedServer;
 import t_industries.monstersandportals.NetworkClasses.ForClient;
 import t_industries.monstersandportals.NetworkClasses.ForServer;
 import t_industries.monstersandportals.NetworkClasses.LoginRequest;
@@ -129,6 +131,13 @@ public class MyServer implements Serializable{
         server.sendToAllTCP(randomACK);
     }
 
+    public void sendEndConnection(UpdateServer updateServer){
+        DisconnectedClient disconnectedClient = new DisconnectedClient();
+        disconnectedClient.setTextDisconnect("disconnect");
+        server.sendToAllTCP(disconnectedClient);
+        updateServer.setIsConnectedServer(0);
+    }
+
     private void registerKryoClasses(){
         kryo.register(LoginRequest.class);
         kryo.register(LoginResponse.class);
@@ -149,6 +158,8 @@ public class MyServer implements Serializable{
         kryo.register(RandomACK.class);
         kryo.register(CheatServer.class);
         kryo.register(CheatClient.class);
+        kryo.register(DisconnectedClient.class);
+        kryo.register(DisconnectedServer.class);
     }
 
 }

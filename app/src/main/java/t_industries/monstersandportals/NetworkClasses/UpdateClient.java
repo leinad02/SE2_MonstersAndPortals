@@ -9,6 +9,7 @@ public class UpdateClient {
     private int readyForTurnClient = 0;
     private int activeSensorClient = 0;
     private int checkRandomNrClient = 0;
+    private int isConnectedClient = 1;
 
     public int getPosition() {
         return position;
@@ -40,5 +41,13 @@ public class UpdateClient {
 
     public void setCheckRandomNrClient(int checkRandomNrClient) {
         this.checkRandomNrClient = checkRandomNrClient;
+    }
+
+    public int getIsConnectedClient() {
+        return isConnectedClient;
+    }
+
+    public void setIsConnectedClient(int isConnectedClient) {
+        this.isConnectedClient = isConnectedClient;
     }
 }
