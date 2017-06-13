@@ -30,9 +30,11 @@ public class GameActivityTest {
 
     @Test
     public void setBoardFirst() {
-        String[]testGameArray = new String[47];
 
-
+        int lowerBoundInclusive=1;
+        int upperBoundInclusive=48;
+        int arraySize = new Random().nextInt(upperBoundInclusive)+lowerBoundInclusive; //Zufällige Arraygröße
+        String[]testGameArray = new String[arraySize];
         //assertTrue(Arrays.equals(testGameArray,GameActivity.gameBoard));
 
         try {
