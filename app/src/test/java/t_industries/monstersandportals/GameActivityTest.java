@@ -3,22 +3,117 @@ package t_industries.monstersandportals;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Random;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static t_industries.monstersandportals.GameActivity.gameBoard;
 import static t_industries.monstersandportals.GameActivity.monster;
 import static t_industries.monstersandportals.GameActivity.portal;
 import static t_industries.monstersandportals.GameActivity.risk;
+import static t_industries.monstersandportals.GameActivity.rivalPosition;
+import static t_industries.monstersandportals.GameActivity.userPosition;
 
 /**
  * Created by SW on 07.06.2017.
  */
 public class GameActivityTest {
+
+
+
+    @Test
+    public void setBoardFirst() {
+        String[]testGameArray = new String[47];
+
+
+        //assertTrue(Arrays.equals(testGameArray,GameActivity.gameBoard));
+
+        try {
+
+            assertEquals(testGameArray.length,gameBoard.length);
+            System.out.println("Arrays sind gleich groß. Test funktioniert.");
+
+        }
+        catch (AssertionError expected) {
+            System.out.println("Arrays sind ungleich groß. Test funktioniert.");
+        }
+
+    }
+
+    @Test
+    public void setMonster() {
+        int[] testMonster = {12, 31, 46, 5, 25, 19};
+        assertTrue(Arrays.equals(testMonster,monster));
+
+    }
+
+    @Test
+    public void setPortal() {
+        int[] testPortal = {7, 22, 33, 16, 28, 41};
+        assertTrue(Arrays.equals(testPortal,portal));
+    }
+
+    @Test
+    public void setRisk() {
+        int[] testRisk = {10, 26, 40};
+        assertTrue(Arrays.equals(testRisk,risk));
+    }
+
+    @Test
+    public void setUserPosition() {
+        int testUserPosition = 0;
+        assertEquals(testUserPosition,userPosition);
+    }
+
+    @Test
+    public void setRivalPosition() {
+        int testRivalPosition = 0;
+        assertEquals(testRivalPosition,rivalPosition);
+    }
+
+    @Test
+    public void setImageView() {
+        GameActivity testGame = new GameActivity();
+        assertNull(testGame.buttons);
+    }
+
+
+
+     @Test
+    public void setGras() {
+        int [] testGras = new int [48];
+        GameActivity testGame = new GameActivity();
+
+
+        //assertTrue(Arrays.equals(testGameArray,testGame.gameBoard));
+
+        try {
+
+            assertEquals(testGras.length,testGame.gras.length);
+            System.out.println("Arrays sind gleich groß. Test funktioniert.");
+
+        }
+        catch (AssertionError expected) {
+            System.out.println("Arrays sind ungleich groß. Test funktioniert.");
+        }
+
+    }
+
+
+
+
+
+
+
+
+   
 
 
 

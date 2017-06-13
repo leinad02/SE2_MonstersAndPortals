@@ -62,7 +62,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
     private static final int SHAKE_THRESHOLD = 800;
-    static String[] gameBoard = new String[48]; // 8 x 6 Spielfeld
+
+
+
+    static String[] gameBoard = new String[48];  // 8 x 6 Spielfeld;;
     static int[] monster = {12, 31, 46, 5, 25, 19};
     static int[] portal = {7, 22, 33, 16, 28, 41};
     static int[] risk = {10, 26, 40};
@@ -73,10 +76,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     ImageView [] buttons;
     int [] gras = new int [48];                                     // für zufällige Grasbilder
 
-
     ImageView rollClient;
     ImageView rollServer;
     Button btnCheatClient, btnCheatServer;
+
+
 
     Random random = new Random();
     private int number = (random.nextInt(10) + 1);                  //Randomzahl zwischen 1 und 10
@@ -103,6 +107,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         // Der Screen wird noch auf Fullscreen gesetzt
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 
         tvServerName = (TextView) findViewById(R.id.nameServer);
         tvClientName = (TextView) findViewById(R.id.nameClient);
