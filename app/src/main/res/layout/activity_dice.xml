@@ -4,28 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="t_industries.monstersandportals.DiceActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    tools:context="t_industries.monstersandportals.DiceActivity">
 
 
     <ImageView
         android:id="@+id/dicepreview"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:srcCompat="@drawable/d0"
-        android:scaleType="centerInside"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="195dp" />
+        android:layout_marginTop="195dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/d0" />
 
     <Button
         android:id="@+id/b_roll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/roll"
-        android:layout_marginTop="22dp"
         android:layout_below="@+id/dicepreview"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:text="@string/roll" />
 
 
 </RelativeLayout>

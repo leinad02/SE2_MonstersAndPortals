@@ -11,7 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
+public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
     protected Button serverBtn, clientBtn, anleitungBtn;
     Dialog dialog;
@@ -60,7 +60,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(View v) {
 
                         dialog.cancel();
-                       }
+                    }
                 });
 
                 break;
