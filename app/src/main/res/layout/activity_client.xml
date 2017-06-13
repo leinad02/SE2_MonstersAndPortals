@@ -22,7 +22,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/name"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/colorYellow"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +48,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/ip"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/colorYellow"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textfieldNameClient" />
