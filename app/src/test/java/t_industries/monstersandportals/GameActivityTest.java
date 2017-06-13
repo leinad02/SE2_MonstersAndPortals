@@ -120,7 +120,7 @@ public class GameActivityTest {
 
     }
 
-
+/*
     @Test
     public void checkBoard() throws Exception {
         GameActivity testGame = new GameActivity();
@@ -206,7 +206,7 @@ public class GameActivityTest {
                         testButtons[i].setImageResource(R.drawable. gras_4);
 
                     }*/
-
+/*
                     if (i == 47) {
 
                         testButtons[i].setImageResource(R.drawable.end_field);             // das letzte Feld behält die Zeichnung
@@ -300,7 +300,7 @@ public class GameActivityTest {
                        assertEquals(testButtons[i].getResources(),testGame.buttons[i].getResources());
 
                     }*/
-
+/*
                         if (i == 47) {
 
                             assertEquals(testButtons[i].getResources(), testGame.buttons[i].getResources());             // das letzte Feld behält die Zeichnung
@@ -320,7 +320,7 @@ public class GameActivityTest {
         }
     }
 
-
+/*
 
 
 
