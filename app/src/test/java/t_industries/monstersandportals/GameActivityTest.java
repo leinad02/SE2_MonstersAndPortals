@@ -82,6 +82,7 @@ public class GameActivityTest {
         testGame.newrivalPosition(rolledNr);
         assertTrue(testGame.rivalPosition==rolledNr);
         }catch (NullPointerException e){
+            e.printStackTrace();
 
         }
     }
@@ -120,9 +121,11 @@ public class GameActivityTest {
 
     }
 
-/*
+
     @Test
     public void checkBoard() throws Exception {
+        /*
+    }
         GameActivity testGame = new GameActivity();
         testGame.setBoard();
         ImageView[] testButtons = new ImageView[48];
@@ -378,8 +381,8 @@ public class GameActivityTest {
             fail("Exception sollte geworden werden, da Bilder nicht richtig zugeordnet sind" );
         }
         catch (IllegalArgumentException expected) {
-        }
-    } */
+        }*/
+    }
 
 
     @Test
