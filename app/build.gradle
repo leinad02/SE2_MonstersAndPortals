@@ -21,6 +21,7 @@ android {
     {
         cruncherEnabled = false
     }
+
 }
 
 dependencies {

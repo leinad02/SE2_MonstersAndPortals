@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button serverBtn, clientBtn, anleitungBtn;
+    protected Button serverBtn, clientBtn, anleitungBtn;
     Dialog dialog;
 
     @Override
