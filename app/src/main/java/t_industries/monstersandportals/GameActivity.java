@@ -1006,7 +1006,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         for (int i = 0; i < 47; i++) {
 
             for ( int j = 0; j <3; j++){                                // Schleife soll verhindern, dass die Eventfelder neue Zeichnungen bekommen
-                if ( i == monster[j] || i == portal[j] || i == risk[j]){
+                if ( i == monster[j] || i == portal[j] ){
                     i++;
                 }
             }

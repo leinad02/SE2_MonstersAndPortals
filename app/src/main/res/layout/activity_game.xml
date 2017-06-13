@@ -63,7 +63,7 @@
                     android:layout_marginTop="40dp"
                     android:text="Enttarnen"
                     android:textColor="@color/colorBlack"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
 
             </LinearLayout>
 
@@ -82,8 +82,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:weightSum="3"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
                     <Button
                         android:id="@+id/platzhalter"
@@ -124,56 +124,56 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/end_field"/>
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f46"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/m_field"/>
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f45"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_1"/>
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f44"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f43"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_1"/>
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f42"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_4"/>
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f41"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_p"/>
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f40"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_3"/>
+                        android:background="@drawable/ground_bot_l_g" />
 
                 </LinearLayout>
 
@@ -188,56 +188,56 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_bot_r_g" />
 
                     <ImageView
                         android:id="@+id/f33"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/p_field"/>
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f34"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_3"/>
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f35"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_1"/>
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f36"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_4"/>
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f37"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f38"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_3"/>
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f39"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_top_l_g" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -251,56 +251,56 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/m_field"/>
+                        android:background="@drawable/ground_top_r_g" />
 
                     <ImageView
                         android:id="@+id/f30"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f29"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_1"/>
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f28"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_p"/>
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f27"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_4"/>
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f26"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f25"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_m"/>
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f24"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_3"/>
+                        android:background="@drawable/ground_bot_l_g" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -314,56 +314,56 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_p"/>
+                        android:background="@drawable/ground_bot_l_g" />
 
                     <ImageView
                         android:id="@+id/f17"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_3"/>
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f18"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f19"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_m"/>
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f20"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_4"/>
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f21"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_1"/>
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f22"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/p_field"/>
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f23"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_top_l_g" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -377,56 +377,56 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_1"/>
+                        android:background="@drawable/ground_top_l_g" />
 
                     <ImageView
                         android:id="@+id/f14"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f13"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_3"/>
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f12"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/m_field"/>
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f11"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_4"/>
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f10"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f9"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_3"/>
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f8"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_1"/>
+                        android:background="@drawable/ground_bot_l_g" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -440,56 +440,56 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/player_both"/>
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_1"/>
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_4"/>
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_2"/>
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_m"/>
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f6"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gras_1"/>
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f7"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/p_field"/>
+                        android:background="@drawable/ground_top_l_g" />
                 </LinearLayout>
 
 
