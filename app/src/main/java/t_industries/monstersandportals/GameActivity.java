@@ -290,7 +290,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
             } else{
                 server.stopServer();
-                startActivity(new Intent(getApplicationContext(), MenuActivity.class));
+                //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
             }
 
         }
@@ -351,7 +351,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
             } else {
                 client.disconnect();
-                startActivity(new Intent(getApplicationContext(), MenuActivity.class));
+                //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
             }
 
         }
@@ -1089,11 +1089,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
             case R.id.serverClose:
                 new serverEndConnection(updateServer).execute();
+                server.stopServer();
+                //Hier für Sarah: Dialog einbinden: "Du hast das Spiel beendet....."
                 break;
 
             case R.id.disconnect:
                 new clientEndConnection(updateClient).execute();
                 client.disconnect();
+                //Hier für Sarah: Dialog einbinden: "Du hast das Spiel beendet....."
                 break;
 
             case R.id.btnCheatServer:
