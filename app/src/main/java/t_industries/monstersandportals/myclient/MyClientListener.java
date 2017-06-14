@@ -8,6 +8,7 @@ import java.io.Serializable;
 import t_industries.monstersandportals.NetworkClasses.ACKServer;
 import t_industries.monstersandportals.NetworkClasses.CheatClient;
 import t_industries.monstersandportals.NetworkClasses.ClientRegister;
+import t_industries.monstersandportals.NetworkClasses.DisconnectedClient;
 import t_industries.monstersandportals.NetworkClasses.ForClient;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
 import t_industries.monstersandportals.NetworkClasses.RandomACK;
@@ -91,6 +92,10 @@ public class MyClientListener extends Listener implements Serializable {
                 this.riskClient.setFailCounterClient(1);
                 this.cheatClient.setSuccessCheatServer(1);
             }
+        } else if(object instanceof DisconnectedClient){
+            DisconnectedClient disconnectedClient = (DisconnectedClient) object;
+            System.out.println(disconnectedClient.getTextDisconnect());
+            this.updateClient.setIsConnectedClient(0);
         }
     }
 

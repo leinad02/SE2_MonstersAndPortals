@@ -246,52 +246,58 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     private Runnable runnableServer = new Runnable() {
         public void run() {
-            if(cheatServer.getDetectCheat() == 0){
-                int getReady = updateServer.getReadyForTurnServer();
-                int rolledNrRival = updateServer.getPosition();
-                if (getReady == 1) {
-                    if(isRisk == 0){
-                        newrivalPosition(rolledNrRival);
-                        checkBoard();
-                        Toast.makeText(GameActivity.this, "Client würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
-                    }
-                    if(rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40){
-                        turn(4);
-                    }else if(rivalPosition == 2 || rivalPosition == 18 || rivalPosition == 34){
-                        if(cheatServer.getSuccessCheatClient() == 0 && cheatServer.getAllowFurtherClient() == 1){
-                            isRisk = 1;
-                            Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist beim Beantworten", Toast.LENGTH_SHORT).show();
-                            startRunnableServer();
-                        } else {
-                            if(cheatServer.getClientCheat() == 1){
-                                turn(6);
+            if(updateServer.getIsConnectedServer() == 1){
+                if(cheatServer.getDetectCheat() == 0){
+                    int getReady = updateServer.getReadyForTurnServer();
+                    int rolledNrRival = updateServer.getPosition();
+                    if (getReady == 1) {
+                        if(isRisk == 0){
+                            newrivalPosition(rolledNrRival);
+                            checkBoard();
+                            Toast.makeText(GameActivity.this, "Client würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
+                        }
+                        if(rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40){
+                            turn(4);
+                        }else if(rivalPosition == 2 || rivalPosition == 18 || rivalPosition == 34){
+                            if(cheatServer.getSuccessCheatClient() == 0 && cheatServer.getAllowFurtherClient() == 1){
+                                isRisk = 1;
+                                Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist beim Beantworten", Toast.LENGTH_SHORT).show();
+                                startRunnableServer();
+                            } else {
+                                if(cheatServer.getClientCheat() == 1){
+                                    turn(6);
+                                }
+                                isRisk = 0;
+                                cheatServer.setSuccessCheatClient(0);
                             }
-                            isRisk = 0;
-                            cheatServer.setSuccessCheatClient(0);
                         }
-                    }
 
-                    if(rivalPosition == 8 || rivalPosition == 24 || rivalPosition == 40){
-                        if(cheatServer.getClientCheat() == 1){
-                            btnCheatServer.setVisibility(View.VISIBLE);
-                            startTimerButton();
-                            cheatServer.setClientCheat(0);
+                        if(rivalPosition == 8 || rivalPosition == 24 || rivalPosition == 40){
+                            if(cheatServer.getClientCheat() == 1){
+                                btnCheatServer.setVisibility(View.VISIBLE);
+                                startTimerButton();
+                                cheatServer.setClientCheat(0);
+                            }
                         }
-                    }
 
-                    if (rivalPosition == 47) {
-                        showDialogLose();
-                    }
+                        if (rivalPosition == 47) {
+                            showDialogLose();
+                        }
 
-                    gameHandlerServer();
-                } else {
+                        gameHandlerServer();
+                    } else {
+                        startRunnableServer();
+                    }
+                } else{
+                    Toast.makeText(GameActivity.this, "Der Gegner hat dich entlarvt, du darfst jetzt nicht mehr schummeln!", Toast.LENGTH_SHORT).show();
+                    cheatServer.setDetectCheat(0);
                     startRunnableServer();
                 }
             } else{
-                Toast.makeText(GameActivity.this, "Der Gegner hat dich entlarvt, du darfst jetzt nicht mehr schummeln!", Toast.LENGTH_SHORT).show();
-                cheatServer.setDetectCheat(0);
-                startRunnableServer();
+                server.stopServer();
+                //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
             }
+
         }
     };
 
@@ -301,52 +307,58 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     private Runnable runnableClient = new Runnable() {
         public void run() {
-            if(cheatClient.getDetectCheat() == 0){
-                int getReady = updateClient.getReadyForTurnClient();
-                int rolledNrRival = updateClient.getPosition();
-                if (getReady == 1) {
-                    if(isRisk == 0){
-                        newUserPosition(rolledNrRival);
-                        checkBoard();
-                        Toast.makeText(GameActivity.this, "Server würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
-                    }
-                    if(userPosition == 10 || userPosition == 26 || userPosition == 40){
-                        turn(4);
-                    }else if(userPosition == 2 || userPosition == 18 || userPosition == 34){
-                        if(cheatClient.getSuccessCheatServer() == 0 && cheatClient.getAllowFurtherServer() == 1){
-                            isRisk = 1;
-                            Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist beim Beantworten", Toast.LENGTH_SHORT).show();
-                            startRunnableClient();
-                        } else {
-                            if(cheatClient.getServerCheat() == 1){
-                                turn(6);
+            if(updateClient.getIsConnectedClient() == 1){
+                if(cheatClient.getDetectCheat() == 0){
+                    int getReady = updateClient.getReadyForTurnClient();
+                    int rolledNrRival = updateClient.getPosition();
+                    if (getReady == 1) {
+                        if(isRisk == 0){
+                            newUserPosition(rolledNrRival);
+                            checkBoard();
+                            Toast.makeText(GameActivity.this, "Server würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
+                        }
+                        if(userPosition == 10 || userPosition == 26 || userPosition == 40){
+                            turn(4);
+                        }else if(userPosition == 2 || userPosition == 18 || userPosition == 34){
+                            if(cheatClient.getSuccessCheatServer() == 0 && cheatClient.getAllowFurtherServer() == 1){
+                                isRisk = 1;
+                                Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist beim Beantworten", Toast.LENGTH_SHORT).show();
+                                startRunnableClient();
+                            } else {
+                                if(cheatClient.getServerCheat() == 1){
+                                    turn(6);
+                                }
+                                isRisk = 0;
+                                cheatClient.setSuccessCheatServer(0);
                             }
-                            isRisk = 0;
-                            cheatClient.setSuccessCheatServer(0);
                         }
-                    }
 
-                    if(userPosition == 8 || userPosition == 24 || userPosition == 40){
-                        if(cheatClient.getServerCheat() == 1){
-                            btnCheatClient.setVisibility(View.VISIBLE);
-                            startTimerButton();
-                            cheatClient.setServerCheat(0);
+                        if(userPosition == 8 || userPosition == 24 || userPosition == 40){
+                            if(cheatClient.getServerCheat() == 1){
+                                btnCheatClient.setVisibility(View.VISIBLE);
+                                startTimerButton();
+                                cheatClient.setServerCheat(0);
+                            }
                         }
-                    }
 
-                    if (userPosition == 47) {
-                        showDialogLose();
-                    }
+                        if (userPosition == 47) {
+                            showDialogLose();
+                        }
 
-                    gameHandlerClient();
+                        gameHandlerClient();
+                    } else {
+                        startRunnableClient();
+                    }
                 } else {
+                    Toast.makeText(GameActivity.this, "Der Gegner hat dich entlarvt, du darfst jetzt nicht mehr schummeln!", Toast.LENGTH_SHORT).show();
+                    cheatClient.setDetectCheat(0);
                     startRunnableClient();
                 }
             } else {
-                Toast.makeText(GameActivity.this, "Der Gegner hat dich entlarvt, du darfst jetzt nicht mehr schummeln!", Toast.LENGTH_SHORT).show();
-                cheatClient.setDetectCheat(0);
-                startRunnableClient();
+                client.disconnect();
+                //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
             }
+
         }
     };
 
@@ -1103,11 +1115,15 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         switch (v.getId()) {
 
             case R.id.serverClose:
+                new serverEndConnection(updateServer).execute();
                 server.stopServer();
+                //Hier für Sarah: Dialog einbinden: "Du hast das Spiel beendet....."
                 break;
 
             case R.id.disconnect:
+                new clientEndConnection(updateClient).execute();
                 client.disconnect();
+                //Hier für Sarah: Dialog einbinden: "Du hast das Spiel beendet....."
                 break;
 
             case R.id.btnCheatServer:
@@ -1455,6 +1471,42 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         @Override
         protected Void doInBackground(Void... params) {
             client.sendDetectMessage(this.cheatClient);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private class clientEndConnection extends AsyncTask<Void, Void, Void> {
+        UpdateClient updateClient;
+        public clientEndConnection(UpdateClient updateClient) {
+            this.updateClient = updateClient;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            client.sendEndConnection(this.updateClient);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private class serverEndConnection extends AsyncTask<Void, Void, Void> {
+        UpdateServer updateServer;
+        public serverEndConnection(UpdateServer updateServer) {
+            this.updateServer = updateServer;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            server.sendEndConnection(this.updateServer);
             return null;
         }
 

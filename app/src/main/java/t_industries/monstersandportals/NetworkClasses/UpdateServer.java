@@ -9,6 +9,7 @@ public class UpdateServer {
     private int readyForTurnServer = 0;
     private int activeSensorServer = 0;
     private int checkRandomNrServer = 0;
+    private int isConnectedServer = 1;
 
     public int getPosition() {
         return position;
@@ -40,5 +41,13 @@ public class UpdateServer {
 
     public void setCheckRandomNrServer(int checkRandomNrServer) {
         this.checkRandomNrServer = checkRandomNrServer;
+    }
+
+    public int getIsConnectedServer() {
+        return isConnectedServer;
+    }
+
+    public void setIsConnectedServer(int isConnectedServer) {
+        this.isConnectedServer = isConnectedServer;
     }
 }

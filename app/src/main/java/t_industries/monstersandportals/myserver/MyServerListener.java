@@ -10,6 +10,7 @@ import t_industries.monstersandportals.NetworkClasses.CheatClient;
 import t_industries.monstersandportals.NetworkClasses.CheatServer;
 import t_industries.monstersandportals.NetworkClasses.ClientName;
 import t_industries.monstersandportals.NetworkClasses.ClientRegister;
+import t_industries.monstersandportals.NetworkClasses.DisconnectedServer;
 import t_industries.monstersandportals.NetworkClasses.ForServer;
 import t_industries.monstersandportals.NetworkClasses.LoginRequest;
 import t_industries.monstersandportals.NetworkClasses.LoginResponse;
@@ -112,6 +113,10 @@ public class MyServerListener extends Listener implements Serializable {
                 this.riskServer.setFailCounterServer(1);
                 this.cheatServer.setSuccessCheatClient(1);
             }
+        } else if(object instanceof DisconnectedServer){
+            DisconnectedServer disconnectedServer = (DisconnectedServer) object;
+            System.out.println(disconnectedServer.getTextDisconnect());
+            this.updateServer.setIsConnectedServer(0);
         }
 
     }
