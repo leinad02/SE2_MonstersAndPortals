@@ -512,24 +512,38 @@ public class GameActivityTest {
 
 
     @Test
-    public void onSensorUpdate(SensorEvent event, long curTime) throws Exception {
+    public void calculateSensor() throws Exception {
 
         final GameActivity SensorTest = new GameActivity();
 
-        SensorManager sensorManager = (SensorManager) RuntimeEnvironment.application.getSystemService(Context.SENSOR_SERVICE);
-        ShadowSensorManager shadow = shadowOf(sensorManager);
+        float x = 100;
+        float y = 200;
+        float z = 150;
+        float last_x = 80;
+        float last_y = 230;
+        float last_z = 400;
+        float diffTime = 1000;
 
-        Sensor sensor = Shadow.newInstanceOf(Sensor.class);
-        shadow.addSensor(Sensor.TYPE_ACCELEROMETER, sensor);
+        float testSpeed = SensorTest.calculateSensor(100, 200, 150, 80, 230, 400, 1000);
+        float Speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
-
-        float testSpeed = SensorTest.onSensorUpdate(event, curTime);
-        float Speed = 0;
-
-        assertTrue("speed sollte ident sein!", Speed == testSpeed);
+        assertTrue("speed ist ident!", Speed == testSpeed);
+        System.out.println("Ergebnis: " + Speed + "=" + testSpeed);
 
     }
 
+    @Test
+    public void rollDice() throws Exception {
+
+        GameActivity rollDice = new GameActivity();
+
+        for (int i = 0; i < 100000; i++) {
+            int diceCount = rollDice.rollDice();
+            assertTrue("Zahl muss zwischen 1 und 6 liegen: " + diceCount, 1 <= diceCount && diceCount <= 6);
+            System.out.println(diceCount);
+
+        }
+    }
 
     @Test
     public void onAccuracyChanged() throws Exception {

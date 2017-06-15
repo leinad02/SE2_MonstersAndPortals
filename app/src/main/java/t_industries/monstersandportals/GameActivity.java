@@ -48,6 +48,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private TextView tvServerName, tvClientName;
     private Button closeServer, disconnect;
     int rolledNumber;
+    float speed;
     Handler handler;
     MyServer server;
     MyClient client;
@@ -1144,11 +1145,15 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     @Override
     public void onSensorChanged(SensorEvent event) {
 
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+
         long curTime = System.currentTimeMillis();
 
         if ((curTime - lastUpdate) > 100) {
 
-            if (onSensorUpdate(event, curTime) > SHAKE_THRESHOLD) {
+            if (calculateSensor(x, y, z, last_x, last_y, last_z,curTime) > SHAKE_THRESHOLD) {
 
                 if (type.equalsIgnoreCase("Client")) {
 
@@ -1156,7 +1161,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         gameTurnClient();
                         updateClient.setActiveSensorClient(0);
                     } else {
-                        if (onSensorUpdate(event, curTime) > 2000) {
+                        if (calculateSensor(x, y, z, last_x, last_y, last_z,curTime) > 2000) {
                             Toast.makeText(GameActivity.this, "Server noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -1167,45 +1172,27 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         gameTurnServer();
                         updateServer.setActiveSensorServer(0);
                     } else {
-                        if (onSensorUpdate(event, curTime) > 2000) {
+                        if (calculateSensor(x, y, z, last_x, last_y, last_z,curTime) > 2000) {
                             Toast.makeText(GameActivity.this, "Client noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
                         }
+
                     }
                 }
 
-                updateSensorCoordinates(last_x,last_y,last_z);
+                last_x = x;
+                last_y = y;
+                last_z = z;
             }
         }
-
-
-
     }
 
-
-    protected float onSensorUpdate(SensorEvent event, long curTime) {
-
-        float x = event.values[0];
-        float y = event.values[1];
-        float z = event.values[2];
+    protected float calculateSensor(float x, float y, float z, float last_x, float last_y, float last_z, long curTime) {
 
         long diffTime = (curTime - lastUpdate);
         lastUpdate = curTime;
 
-        float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
-        return speed;
-
+        return Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
     }
-
-
-    public void updateSensorCoordinates(float x, float y, float z){
-
-        last_x = x;
-        last_y = y;
-        last_z = z;
-
-    }
-
-
 
     protected int rollDice() {
         Random random_d = new Random();
