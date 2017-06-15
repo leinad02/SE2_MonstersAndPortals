@@ -48,6 +48,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private TextView tvServerName, tvClientName;
     private Button closeServer, disconnect;
     int rolledNumber;
+    float speed;
     Handler handler;
     MyServer server;
     MyClient client;
@@ -1163,47 +1164,51 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         float x = event.values[0];
         float y = event.values[1];
         float z = event.values[2];
+
         long curTime = System.currentTimeMillis();
 
         if ((curTime - lastUpdate) > 100) {
-            long diffTime = (curTime - lastUpdate);
-            lastUpdate = curTime;
 
-            float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
-
-            if (speed > SHAKE_THRESHOLD) {
+            if (calculateSensor(x, y, z, last_x, last_y, last_z,curTime) > SHAKE_THRESHOLD) {
 
                 if (type.equalsIgnoreCase("Client")) {
-                    if(updateClient.getActiveSensorClient() == 1){
+
+                    if (updateClient.getActiveSensorClient() == 1) {
                         gameTurnClient();
                         updateClient.setActiveSensorClient(0);
                     } else {
-                        if (speed > 2000) {
+                        if (calculateSensor(x, y, z, last_x, last_y, last_z,curTime) > 2000) {
                             Toast.makeText(GameActivity.this, "Server noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
                         }
                     }
-
                 }
 
                 if (type.equalsIgnoreCase("Server")) {
-                    if(updateServer.getActiveSensorServer() == 1){
+                    if (updateServer.getActiveSensorServer() == 1) {
                         gameTurnServer();
                         updateServer.setActiveSensorServer(0);
                     } else {
-                        if (speed > 2000) {
+                        if (calculateSensor(x, y, z, last_x, last_y, last_z,curTime) > 2000) {
                             Toast.makeText(GameActivity.this, "Client noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
                         }
+
                     }
                 }
 
+                last_x = x;
+                last_y = y;
+                last_z = z;
             }
-
-            last_x = x;
-            last_y = y;
-            last_z = z;
         }
     }
 
+    protected float calculateSensor(float x, float y, float z, float last_x, float last_y, float last_z, long curTime) {
+
+        long diffTime = (curTime - lastUpdate);
+        lastUpdate = curTime;
+
+        return Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+    }
 
     protected int rollDice() {
         Random random_d = new Random();

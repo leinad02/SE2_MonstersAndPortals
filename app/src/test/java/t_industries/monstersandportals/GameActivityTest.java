@@ -1,12 +1,20 @@
 package t_industries.monstersandportals;
 
+import android.app.Application;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -15,6 +23,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import org.junit.runner.RunWith;
+
 import static t_industries.monstersandportals.GameActivity.gameBoard;
 import static t_industries.monstersandportals.GameActivity.monster;
 import static t_industries.monstersandportals.GameActivity.portal;
@@ -25,6 +36,8 @@ import static t_industries.monstersandportals.GameActivity.userPosition;
 /**
  * Created by SW on 07.06.2017.
  */
+
+
 public class GameActivityTest {
 
 
@@ -424,24 +437,57 @@ public class GameActivityTest {
 
         }
 
-        @Test
-        public void onSensorChanged () throws Exception {
+   
+
+
+    @Test
+    public void calculateSensor() throws Exception {
+
+        final GameActivity SensorTest = new GameActivity();
+
+        float x = 100;
+        float y = 200;
+        float z = 150;
+        float last_x = 80;
+        float last_y = 230;
+        float last_z = 400;
+        float diffTime = 1000;
+
+        float testSpeed = SensorTest.calculateSensor(100, 200, 150, 80, 230, 400, 1000);
+        float Speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+        assertTrue("speed ist ident!", Speed == testSpeed);
+        System.out.println("Ergebnis: " + Speed + "=" + testSpeed);
+        }
+      
+    @Test
+    public void rollDice() throws Exception {
+
+        GameActivity rollDice = new GameActivity();
+
+        for (int i = 0; i < 100000; i++) {
+            int diceCount = rollDice.rollDice();
+            assertTrue("Zahl muss zwischen 1 und 6 liegen: " + diceCount, 1 <= diceCount && diceCount <= 6);
+            System.out.println(diceCount);
 
         }
+    }
 
-        @Test
-        public void onAccuracyChanged () throws Exception {
+    @Test
+    public void onAccuracyChanged() throws Exception {
+        //wird nicht getestet, da nicht verwendet
+    }
 
-        }
+        
 
-        @Test
-        public void onResume () throws Exception {
+    @Test
+    public void onResume () throws Exception {
 
-        }
+    }
 
-        @Test
-        public void onPause () throws Exception {
-
-        }
+    @Test
+    public void onPause () throws Exception {
+      
+    }
 
     }
