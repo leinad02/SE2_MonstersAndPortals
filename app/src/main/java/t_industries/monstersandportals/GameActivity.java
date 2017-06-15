@@ -344,11 +344,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                             showDialogLose();
                         }
 
-                        //für den Fall, dass wirklich die Sitzung beendet wird
-                        if(updateClient.getIsConnectedClient() == 0){
-                            endConnectionDialogPassive();
-                        }
-
                         gameHandlerClient();
                     } else {
                         startRunnableClient();
