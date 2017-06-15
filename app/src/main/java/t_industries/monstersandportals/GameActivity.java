@@ -108,26 +108,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         // Der Screen wird noch auf Fullscreen gesetzt
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
-        tvServerName = (TextView) findViewById(R.id.nameServer);
-        tvClientName = (TextView) findViewById(R.id.nameClient);
-        closeServer = (Button) findViewById(R.id.serverClose);
-        disconnect = (Button) findViewById(R.id.disconnect);
-        rollClient = (ImageView) findViewById(R.id.rollClient);
-        rollServer = (ImageView) findViewById(R.id.rollServer);
-        btnCheatClient = (Button) findViewById(R.id.btnCheatClient);
-        btnCheatServer = (Button) findViewById(R.id.btnCheatServer);
-        updateServer = new UpdateServer();
-        updateClient = new UpdateClient();
-        riskServer = new RiskServer();
-        riskClient = new RiskClient();
-        cheatClient = new CheatClient();
-        cheatServer = new CheatServer();
-        handler = new Handler();
-
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(this, sensor, 1000000);
+        initializeButtons();
+        initializeNetwork();
+        initializeSensor();
 
 
         Intent i = this.getIntent();
@@ -167,10 +150,37 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
     }
+
+    protected void initializeButtons(){
+        tvServerName = (TextView) findViewById(R.id.nameServer);
+        tvClientName = (TextView) findViewById(R.id.nameClient);
+        closeServer = (Button) findViewById(R.id.serverClose);
+        disconnect = (Button) findViewById(R.id.disconnect);
+        rollClient = (ImageView) findViewById(R.id.rollClient);
+        rollServer = (ImageView) findViewById(R.id.rollServer);
+        btnCheatClient = (Button) findViewById(R.id.btnCheatClient);
+        btnCheatServer = (Button) findViewById(R.id.btnCheatServer);
+    }
+
+    protected void initializeNetwork(){
+        updateServer = new UpdateServer();
+        updateClient = new UpdateClient();
+        riskServer = new RiskServer();
+        riskClient = new RiskClient();
+        cheatClient = new CheatClient();
+        cheatServer = new CheatServer();
+        handler = new Handler();
+    }
+
+    protected void initializeSensor(){
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, sensor, 1000000);
+    }
                                                                                     //Spunds werden in den Variablen gespeichert
 
     //Sounds werden in den Variablen gespeichert
-    private void createMPSounds(){
+    protected void createMPSounds(){
         mpLaugh = MediaPlayer.create(this, R.raw.laugh);
         mpMonster = MediaPlayer.create(this, R.raw.monster2);
         mpPortal = MediaPlayer.create(this, R.raw.portal);
