@@ -109,26 +109,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         // Der Screen wird noch auf Fullscreen gesetzt
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
-        tvServerName = (TextView) findViewById(R.id.nameServer);
-        tvClientName = (TextView) findViewById(R.id.nameClient);
-        closeServer = (Button) findViewById(R.id.serverClose);
-        disconnect = (Button) findViewById(R.id.disconnect);
-        rollClient = (ImageView) findViewById(R.id.rollClient);
-        rollServer = (ImageView) findViewById(R.id.rollServer);
-        btnCheatClient = (Button) findViewById(R.id.btnCheatClient);
-        btnCheatServer = (Button) findViewById(R.id.btnCheatServer);
-        updateServer = new UpdateServer();
-        updateClient = new UpdateClient();
-        riskServer = new RiskServer();
-        riskClient = new RiskClient();
-        cheatClient = new CheatClient();
-        cheatServer = new CheatServer();
-        handler = new Handler();
-
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(this, sensor, 1000000);
+        initializeButtons();
+        initializeNetwork();
+        initializeSensor();
 
 
         Intent i = this.getIntent();
@@ -168,10 +151,37 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
 
     }
+
+    protected void initializeButtons(){
+        tvServerName = (TextView) findViewById(R.id.nameServer);
+        tvClientName = (TextView) findViewById(R.id.nameClient);
+        closeServer = (Button) findViewById(R.id.serverClose);
+        disconnect = (Button) findViewById(R.id.disconnect);
+        rollClient = (ImageView) findViewById(R.id.rollClient);
+        rollServer = (ImageView) findViewById(R.id.rollServer);
+        btnCheatClient = (Button) findViewById(R.id.btnCheatClient);
+        btnCheatServer = (Button) findViewById(R.id.btnCheatServer);
+    }
+
+    protected void initializeNetwork(){
+        updateServer = new UpdateServer();
+        updateClient = new UpdateClient();
+        riskServer = new RiskServer();
+        riskClient = new RiskClient();
+        cheatClient = new CheatClient();
+        cheatServer = new CheatServer();
+        handler = new Handler();
+    }
+
+    protected void initializeSensor(){
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, sensor, 1000000);
+    }
                                                                                     //Spunds werden in den Variablen gespeichert
 
     //Sounds werden in den Variablen gespeichert
-    private void createMPSounds(){
+    protected void createMPSounds(){
         mpLaugh = MediaPlayer.create(this, R.raw.laugh);
         mpMonster = MediaPlayer.create(this, R.raw.monster2);
         mpPortal = MediaPlayer.create(this, R.raw.portal);
@@ -242,7 +252,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     };
 
     private void startRunnableServer() {
-        handler.postDelayed(runnableServer, 1000);
+        handler.postDelayed(runnableServer, 500);
     }
 
     private Runnable runnableServer = new Runnable() {
@@ -295,15 +305,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     startRunnableServer();
                 }
             } else{
-                server.stopServer();
-                //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
+                endConnectionDialogPassive();
             }
 
         }
     };
 
     private void startRunnableClient() {
-        handler.postDelayed(runnableClient, 1000);
+        handler.postDelayed(runnableClient, 500);
     }
 
     private Runnable runnableClient = new Runnable() {
@@ -356,8 +365,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     startRunnableClient();
                 }
             } else {
-                client.disconnect();
-                //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
+                endConnectionDialogPassive();
             }
 
         }
@@ -772,6 +780,18 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         });
     }
 
+    private void endConnectionDialogActive(){
+        //Für Sarah: Hier Dialog einbinden "Du hast das Spiel beendet..."
+        startActivity(new Intent(GameActivity.this, EndActivity.class));
+        endGameConnection();
+    }
+
+    private void endConnectionDialogPassive(){
+        //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
+        startActivity(new Intent(GameActivity.this, EndActivity.class));
+        endGameConnection();
+    }
+
     private void endGameConnection(){
         if(type.equalsIgnoreCase("client")){
             client.disconnect();
@@ -779,8 +799,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             server.stopServer();
         }
     }
-
-
 
     public void drawRiskcardClient(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1116,15 +1134,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         switch (v.getId()) {
 
             case R.id.serverClose:
-                new serverEndConnection(updateServer).execute();
-                server.stopServer();
-                //Hier für Sarah: Dialog einbinden: "Du hast das Spiel beendet....."
+                new serverEndConnection().execute();
+                endConnectionDialogActive();
                 break;
 
             case R.id.disconnect:
-                new clientEndConnection(updateClient).execute();
-                client.disconnect();
-                //Hier für Sarah: Dialog einbinden: "Du hast das Spiel beendet....."
+                new clientEndConnection().execute();
+                endConnectionDialogActive();
                 break;
 
             case R.id.btnCheatServer:
@@ -1486,14 +1502,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private class clientEndConnection extends AsyncTask<Void, Void, Void> {
-        UpdateClient updateClient;
-        public clientEndConnection(UpdateClient updateClient) {
-            this.updateClient = updateClient;
-        }
-
         @Override
         protected Void doInBackground(Void... params) {
-            client.sendEndConnection(this.updateClient);
+            client.sendEndConnection();
             return null;
         }
 
@@ -1504,14 +1515,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private class serverEndConnection extends AsyncTask<Void, Void, Void> {
-        UpdateServer updateServer;
-        public serverEndConnection(UpdateServer updateServer) {
-            this.updateServer = updateServer;
-        }
-
         @Override
         protected Void doInBackground(Void... params) {
-            server.sendEndConnection(this.updateServer);
+            server.sendEndConnection();
             return null;
         }
 

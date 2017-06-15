@@ -131,11 +131,10 @@ public class MyServer implements Serializable{
         server.sendToAllTCP(randomACK);
     }
 
-    public void sendEndConnection(UpdateServer updateServer){
+    public void sendEndConnection(){
         DisconnectedClient disconnectedClient = new DisconnectedClient();
         disconnectedClient.setTextDisconnect("disconnect");
         server.sendToAllTCP(disconnectedClient);
-        updateServer.setIsConnectedServer(0);
     }
 
     private void registerKryoClasses(){

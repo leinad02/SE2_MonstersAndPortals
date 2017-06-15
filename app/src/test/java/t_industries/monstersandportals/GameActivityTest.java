@@ -19,17 +19,13 @@ import java.util.Random;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.shadow.api.Shadow;
-import org.robolectric.shadows.ShadowSensorManager;
 
-import static org.robolectric.Shadows.shadowOf;
 import static t_industries.monstersandportals.GameActivity.gameBoard;
 import static t_industries.monstersandportals.GameActivity.monster;
 import static t_industries.monstersandportals.GameActivity.portal;
@@ -45,23 +41,21 @@ import static t_industries.monstersandportals.GameActivity.userPosition;
 public class GameActivityTest {
 
 
-
     @Test
     public void setBoardFirst() {
 
-        int lowerBoundInclusive=1;
-        int upperBoundInclusive=48;
-        int arraySize = new Random().nextInt(upperBoundInclusive)+lowerBoundInclusive; //Zufällige Arraygröße
-        String[]testGameArray = new String[arraySize];
+        int lowerBoundInclusive = 1;
+        int upperBoundInclusive = 48;
+        int arraySize = new Random().nextInt(upperBoundInclusive) + lowerBoundInclusive; //Zufällige Arraygröße
+        String[] testGameArray = new String[arraySize];
         //assertTrue(Arrays.equals(testGameArray,GameActivity.gameBoard));
 
         try {
 
-            assertEquals(testGameArray.length,gameBoard.length);
+            assertEquals(testGameArray.length, gameBoard.length);
             System.out.println("Arrays sind gleich groß. Test funktioniert.");
 
-        }
-        catch (AssertionError expected) {
+        } catch (AssertionError expected) {
             System.out.println("Arrays sind ungleich groß. Test funktioniert.");
         }
 
@@ -70,32 +64,32 @@ public class GameActivityTest {
     @Test
     public void setMonster() {
         int[] testMonster = {12, 31, 46, 5, 25, 19};
-        assertTrue(Arrays.equals(testMonster,monster));
+        assertTrue(Arrays.equals(testMonster, monster));
 
     }
 
     @Test
     public void setPortal() {
         int[] testPortal = {7, 22, 33, 16, 28, 41};
-        assertTrue(Arrays.equals(testPortal,portal));
+        assertTrue(Arrays.equals(testPortal, portal));
     }
 
     @Test
     public void setRisk() {
         int[] testRisk = {10, 26, 40};
-        assertTrue(Arrays.equals(testRisk,risk));
+        assertTrue(Arrays.equals(testRisk, risk));
     }
 
     @Test
     public void setUserPosition() {
         int testUserPosition = 0;
-        assertEquals(testUserPosition,userPosition);
+        assertEquals(testUserPosition, userPosition);
     }
 
     @Test
     public void setRivalPosition() {
         int testRivalPosition = 0;
-        assertEquals(testRivalPosition,rivalPosition);
+        assertEquals(testRivalPosition, rivalPosition);
     }
 
     @Test
@@ -105,10 +99,9 @@ public class GameActivityTest {
     }
 
 
-
-     @Test
+    @Test
     public void setGras() {
-        int [] testGras = new int [48];
+        int[] testGras = new int[48];
         GameActivity testGame = new GameActivity();
 
 
@@ -116,25 +109,14 @@ public class GameActivityTest {
 
         try {
 
-            assertEquals(testGras.length,testGame.gras.length);
+            assertEquals(testGras.length, testGame.gras.length);
             System.out.println("Arrays sind gleich groß. Test funktioniert.");
 
-        }
-        catch (AssertionError expected) {
+        } catch (AssertionError expected) {
             System.out.println("Arrays sind ungleich groß. Test funktioniert.");
         }
 
     }
-
-
-
-
-
-
-
-
-   
-
 
 
     @Test
@@ -157,46 +139,52 @@ public class GameActivityTest {
     @Test
     public void newUserPosition() throws Exception {
         GameActivity testGame = new GameActivity();
-        int lowerBoundInclusive=0;
-        int upperBoundInclusive=45;
+        int lowerBoundInclusive = 0;
+        int upperBoundInclusive = 45;
         int rolledNr;
 
         //Zufallsfeld (int) so lange generieren >> https://stackoverflow.com/questions/738629/math-random-versus-random-nextintint
         //bis Sie auf kein Ereignisfeld kommt
-        do{rolledNr = new Random().nextInt(upperBoundInclusive)+lowerBoundInclusive;}while(rolledNr==12 || rolledNr==31 ||rolledNr==5 || rolledNr==25 || rolledNr==19
-                || rolledNr==7 || rolledNr==22 || rolledNr==33 || rolledNr==16 || rolledNr==28 || rolledNr==41
-                || rolledNr==10 || rolledNr==26 || rolledNr==40);
-
-            //mit try-catch, falls das Feld ein Aktionsfeld ist
-            // für Monsterfeld int rolledNr = 12;
-            try {
-                testGame.newUserPosition(rolledNr);
-                assertTrue(testGame.userPosition == rolledNr);
-            } catch (NullPointerException e) {
-                //assertEquals("server",testGame.checkMonsterOrPortalOrRiskServer(rolledNr));
-                //assertEquals(12,testGame.checkMonsterOrPortalOrRiskServer(rolledNr));
-            }
-
+        do {
+            rolledNr = new Random().nextInt(upperBoundInclusive) + lowerBoundInclusive;
         }
+        while (rolledNr == 12 || rolledNr == 31 || rolledNr == 5 || rolledNr == 25 || rolledNr == 19
+                || rolledNr == 7 || rolledNr == 22 || rolledNr == 33 || rolledNr == 16 || rolledNr == 28 || rolledNr == 41
+                || rolledNr == 10 || rolledNr == 26 || rolledNr == 40);
+
+        //mit try-catch, falls das Feld ein Aktionsfeld ist
+        // für Monsterfeld int rolledNr = 12;
+        try {
+            testGame.newUserPosition(rolledNr);
+            assertTrue(testGame.userPosition == rolledNr);
+        } catch (NullPointerException e) {
+            //assertEquals("server",testGame.checkMonsterOrPortalOrRiskServer(rolledNr));
+            //assertEquals(12,testGame.checkMonsterOrPortalOrRiskServer(rolledNr));
+        }
+
+    }
 
 
     @Test
     public void newrivalPosition() throws Exception {
         GameActivity testGame = new GameActivity();
-        int lowerBoundInclusive=0;
-        int upperBoundInclusive=45;
+        int lowerBoundInclusive = 0;
+        int upperBoundInclusive = 45;
         int rolledNr;
 
         //Zufallsfeld (int) so lange generieren
         //bis Sie auf kein Ereignisfeld kommt
-        do{rolledNr = new Random().nextInt(upperBoundInclusive)+lowerBoundInclusive;}while(rolledNr==12 || rolledNr==31 ||rolledNr==5 || rolledNr==25 || rolledNr==19
-                || rolledNr==7 || rolledNr==22 || rolledNr==33 || rolledNr==16 || rolledNr==28 || rolledNr==41
-                || rolledNr==10 || rolledNr==26 || rolledNr==40);
+        do {
+            rolledNr = new Random().nextInt(upperBoundInclusive) + lowerBoundInclusive;
+        }
+        while (rolledNr == 12 || rolledNr == 31 || rolledNr == 5 || rolledNr == 25 || rolledNr == 19
+                || rolledNr == 7 || rolledNr == 22 || rolledNr == 33 || rolledNr == 16 || rolledNr == 28 || rolledNr == 41
+                || rolledNr == 10 || rolledNr == 26 || rolledNr == 40);
 
-        try{
-        testGame.newrivalPosition(rolledNr);
-        assertTrue(testGame.rivalPosition==rolledNr);
-        }catch (NullPointerException e){
+        try {
+            testGame.newrivalPosition(rolledNr);
+            assertTrue(testGame.rivalPosition == rolledNr);
+        } catch (NullPointerException e) {
             e.printStackTrace();
 
         }
@@ -207,14 +195,14 @@ public class GameActivityTest {
     @Test
     public void onDestroy() throws Exception {
         GameActivity testGame = new GameActivity();
-        assertTrue(testGame.mpLaugh==null);
-        assertTrue(testGame.mpMonster==null);
-        assertTrue(testGame.mpPortal==null);
-        assertTrue(testGame.mpPunch==null);
-        assertTrue(testGame.mpUoh==null);
-        assertTrue(testGame.mpWoo==null);
-        assertTrue(testGame.mpYeah==null);
-        }
+        assertTrue(testGame.mpLaugh == null);
+        assertTrue(testGame.mpMonster == null);
+        assertTrue(testGame.mpPortal == null);
+        assertTrue(testGame.mpPunch == null);
+        assertTrue(testGame.mpUoh == null);
+        assertTrue(testGame.mpWoo == null);
+        assertTrue(testGame.mpYeah == null);
+    }
 
     @Test
     public void drawRiskcardClient() throws Exception {
@@ -236,7 +224,7 @@ public class GameActivityTest {
 
     }
 
-
+/*
     @Test
     public void checkBoard() throws Exception {
         /*
@@ -437,78 +425,19 @@ public class GameActivityTest {
         } catch (IllegalArgumentException expected) {
         }
     }
+*/
 
-/*
+        @Test
+        public void setBoard () throws Exception {
 
-
-
-
-
-/**
- *
- * //testet ob die Bilder richtig zugeteilt wurden, funktioniert auch noch nicht richtig,
- // >>>Probleme beim Zugriff auf die Ressource bzw. Vergleich des Pfads
-
-
-    @Test
-    public void checkBoard2() throws Exception {
-        GameActivity testGame = new GameActivity();
-        ImageButton[] testButtons = new ImageButton[48];
-        //ClassLoader classLoaderTest = getClass().getClassLoader();
-       
-
-        for (int i = 0; i < 48; i++) {
-
-            for ( int j = 0; j <3; j++){                                // soll verhindern, dass die Eventfelder neue Zeichnungen bekommen
-                if ( i == monster[j] || i == portal[j] || i == risk[j] || i == 47){
-                    i++;
-                }
-            }
-            if (gameBoard[i] == "H" ){
-                testButtons[i].setImageResource(R.drawable. player_guest);
-            } else if (gameBoard[i] == "G") {
-                testButtons[i].setImageResource(R.drawable. player_host);
-            } else if  (gameBoard[i] == "H G") {
-                testButtons[i].setImageResource(R.drawable. grass);
-            } else if (gameBoard[i] == "") {
-                testButtons[i].setImageResource(R.drawable. player_both);
-            }
         }
 
-        try {
-            for (int i = 0; i < 48; i++) {
+        @Test
+        public void onClick () throws Exception {
 
-                for (int j = 0; j < 3; j++) {                                // soll verhindern, dass die Eventfelder neue Zeichnungen bekommen
-                    if (i == monster[j] || i == portal[j] || i == risk[j] || i == 47) {
-                        i++;
-                    }
-                }
-                if (gameBoard[i] == "H") {
-                    assertEquals(testButtons[i].getResources(),testGame.buttons[i].getResources());
-                } else if (gameBoard[i] == "G") {
-                    assertEquals(testButtons[i].getResources(),testGame.buttons[i].getResources());
-                } else if (gameBoard[i] == "H G") {
-                    assertEquals(testButtons[i].getResources(),testGame.buttons[i].getResources());
-                } else if (gameBoard[i] == "") {
-                    assertEquals(testButtons[i].getResources(),testGame.buttons[i].getResources());
-                }
-            }
-            fail("Exception sollte geworden werden, da Bilder nicht richtig zugeordnet sind" );
         }
-        catch (IllegalArgumentException expected) {
-        }*/
-    }
 
-
-    @Test
-    public void setBoard() throws Exception {
-
-    }
-
-    @Test
-    public void onClick() throws Exception {
-
-    }
+   
 
 
     @Test
@@ -529,9 +458,8 @@ public class GameActivityTest {
 
         assertTrue("speed ist ident!", Speed == testSpeed);
         System.out.println("Ergebnis: " + Speed + "=" + testSpeed);
-
-    }
-
+        }
+      
     @Test
     public void rollDice() throws Exception {
 
@@ -550,14 +478,16 @@ public class GameActivityTest {
         //wird nicht getestet, da nicht verwendet
     }
 
+        
+
     @Test
-    public void onResume() throws Exception {
+    public void onResume () throws Exception {
 
     }
 
     @Test
-    public void onPause() throws Exception {
-
+    public void onPause () throws Exception {
+      
     }
 
-}
+    }

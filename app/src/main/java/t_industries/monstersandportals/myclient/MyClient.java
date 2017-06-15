@@ -153,11 +153,10 @@ public class MyClient implements Serializable{
         }
     }
 
-    public void sendEndConnection(UpdateClient updateClient){
+    public void sendEndConnection(){
         DisconnectedServer disconnectedServer = new DisconnectedServer();
         disconnectedServer.setTextDisconnect("disconnect");
         client.sendTCP(disconnectedServer);
-        updateClient.setIsConnectedClient(0);
     }
 
     private void registerKryoClasses(){
