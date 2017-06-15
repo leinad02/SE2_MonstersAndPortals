@@ -27,6 +27,7 @@ import t_industries.monstersandportals.myserver.MyServer;
 public class ServerActivity extends Activity implements View.OnClickListener {
     private EditText name;
     private Button createS, home;
+    ProgressDialog dialog;
     MyServer server;
     Handler handler;
     ForServer forServer;
@@ -63,6 +64,7 @@ public class ServerActivity extends Activity implements View.OnClickListener {
                     return;
                 }
 
+                dialog = ProgressDialog.show(this, "Laden", "Bitte warten bis der Gegner beigetreten ist...", true);
                 new MyTask().execute();
 
                 /*final ProgressDialog dialog = ProgressDialog.show(this, "Laden", "Bitte warten bis der Gegner beigetreten ist...", true);
@@ -103,6 +105,7 @@ public class ServerActivity extends Activity implements View.OnClickListener {
             i.putExtra("type", "server");
             //i.putExtra("objectServer", server);
             startActivity(i);
+            dialog.dismiss();
             server.stopServer();
         }
     }
