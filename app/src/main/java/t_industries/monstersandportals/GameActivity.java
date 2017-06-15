@@ -241,7 +241,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     };
 
     private void startRunnableServer() {
-        handler.postDelayed(runnableServer, 1000);
+        handler.postDelayed(runnableServer, 500);
     }
 
     private Runnable runnableServer = new Runnable() {
@@ -294,15 +294,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     startRunnableServer();
                 }
             } else{
-                server.stopServer();
-                //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
+                endConnectionDialogPassive();
             }
 
         }
     };
 
     private void startRunnableClient() {
-        handler.postDelayed(runnableClient, 1000);
+        handler.postDelayed(runnableClient, 500);
     }
 
     private Runnable runnableClient = new Runnable() {
@@ -345,6 +344,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                             showDialogLose();
                         }
 
+                        //für den Fall, dass wirklich die Sitzung beendet wird
+                        if(updateClient.getIsConnectedClient() == 0){
+                            endConnectionDialogPassive();
+                        }
+
                         gameHandlerClient();
                     } else {
                         startRunnableClient();
@@ -355,8 +359,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     startRunnableClient();
                 }
             } else {
-                client.disconnect();
-                //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
+                endConnectionDialogPassive();
             }
 
         }
@@ -771,6 +774,18 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         });
     }
 
+    private void endConnectionDialogActive(){
+        //Für Sarah: Hier Dialog einbinden "Du hast das Spiel beendet..."
+        startActivity(new Intent(GameActivity.this, EndActivity.class));
+        endGameConnection();
+    }
+
+    private void endConnectionDialogPassive(){
+        //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
+        startActivity(new Intent(GameActivity.this, EndActivity.class));
+        endGameConnection();
+    }
+
     private void endGameConnection(){
         if(type.equalsIgnoreCase("client")){
             client.disconnect();
@@ -778,8 +793,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             server.stopServer();
         }
     }
-
-
 
     public void drawRiskcardClient(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1115,15 +1128,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         switch (v.getId()) {
 
             case R.id.serverClose:
-                new serverEndConnection(updateServer).execute();
-                server.stopServer();
-                //Hier für Sarah: Dialog einbinden: "Du hast das Spiel beendet....."
+                new serverEndConnection().execute();
+                endConnectionDialogActive();
                 break;
 
             case R.id.disconnect:
-                new clientEndConnection(updateClient).execute();
-                client.disconnect();
-                //Hier für Sarah: Dialog einbinden: "Du hast das Spiel beendet....."
+                new clientEndConnection().execute();
+                endConnectionDialogActive();
                 break;
 
             case R.id.btnCheatServer:
@@ -1481,14 +1492,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private class clientEndConnection extends AsyncTask<Void, Void, Void> {
-        UpdateClient updateClient;
-        public clientEndConnection(UpdateClient updateClient) {
-            this.updateClient = updateClient;
-        }
-
         @Override
         protected Void doInBackground(Void... params) {
-            client.sendEndConnection(this.updateClient);
+            client.sendEndConnection();
             return null;
         }
 
@@ -1499,14 +1505,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     private class serverEndConnection extends AsyncTask<Void, Void, Void> {
-        UpdateServer updateServer;
-        public serverEndConnection(UpdateServer updateServer) {
-            this.updateServer = updateServer;
-        }
-
         @Override
         protected Void doInBackground(Void... params) {
-            server.sendEndConnection(this.updateServer);
+            server.sendEndConnection();
             return null;
         }
 
