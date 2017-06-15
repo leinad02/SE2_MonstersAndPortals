@@ -33,6 +33,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "com.esotericsoftware:kryonet:2.22.0-RC1"
     testCompile 'junit:junit:4.12'
+    testCompile "org.robolectric:robolectric:3.3.2"
+
 
     //damit Gif-Animationen benutzt werden können
     compile 'com.android.support:appcompat-v7:25.3.1'

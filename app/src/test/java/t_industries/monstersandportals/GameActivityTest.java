@@ -1,12 +1,20 @@
 package t_industries.monstersandportals;
 
+import android.app.Application;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -14,6 +22,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.shadow.api.Shadow;
+import org.robolectric.shadows.ShadowSensorManager;
+
+import static org.robolectric.Shadows.shadowOf;
 import static t_industries.monstersandportals.GameActivity.gameBoard;
 import static t_industries.monstersandportals.GameActivity.monster;
 import static t_industries.monstersandportals.GameActivity.portal;
@@ -24,6 +40,8 @@ import static t_industries.monstersandportals.GameActivity.userPosition;
 /**
  * Created by SW on 07.06.2017.
  */
+
+
 public class GameActivityTest {
 
 
@@ -492,14 +510,30 @@ public class GameActivityTest {
 
     }
 
+
     @Test
-    public void onSensorChanged() throws Exception {
+    public void onSensorUpdate(SensorEvent event, long curTime) throws Exception {
+
+        final GameActivity SensorTest = new GameActivity();
+
+        SensorManager sensorManager = (SensorManager) RuntimeEnvironment.application.getSystemService(Context.SENSOR_SERVICE);
+        ShadowSensorManager shadow = shadowOf(sensorManager);
+
+        Sensor sensor = Shadow.newInstanceOf(Sensor.class);
+        shadow.addSensor(Sensor.TYPE_ACCELEROMETER, sensor);
+
+
+        float testSpeed = SensorTest.onSensorUpdate(event, curTime);
+        float Speed = 0;
+
+        assertTrue("speed sollte ident sein!", Speed == testSpeed);
 
     }
 
+
     @Test
     public void onAccuracyChanged() throws Exception {
-
+        //wird nicht getestet, da nicht verwendet
     }
 
     @Test
