@@ -66,15 +66,6 @@ public class ServerActivity extends Activity implements View.OnClickListener {
 
                 dialog = ProgressDialog.show(this, "Laden", "Bitte warten bis der Gegner beigetreten ist...", true);
                 new MyTask().execute();
-
-                /*final ProgressDialog dialog = ProgressDialog.show(this, "Laden", "Bitte warten bis der Gegner beigetreten ist...", true);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        server.startServer(textName);
-                        dialog.dismiss();
-                    }
-                }, 30000);*/
                 break;
 
             case R.id.home:
