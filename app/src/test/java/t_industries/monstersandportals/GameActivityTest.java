@@ -98,6 +98,30 @@ public class GameActivityTest {
         assertNull(testGame.buttons);
     }
 
+    @Test
+    public void setImageView2() {
+        GameActivity testGame = new GameActivity();
+        assertNull(testGame.rollClient);
+    }
+
+    @Test
+    public void setImageView3() {
+        GameActivity testGame = new GameActivity();
+        assertNull(testGame.rollServer);
+    }
+
+    @Test
+    public void setButtons() {
+        GameActivity testGame = new GameActivity();
+        assertNull(testGame.btnCheatClient);
+    }
+
+    @Test
+    public void setButtons2() {
+        GameActivity testGame = new GameActivity();
+        assertNull(testGame.btnCheatServer);
+    }
+
 
     @Test
     public void setGras() {
@@ -116,6 +140,43 @@ public class GameActivityTest {
             System.out.println("Arrays sind ungleich groß. Test funktioniert.");
         }
 
+    }
+
+    @Test
+    public void checkRandom() throws Exception {
+
+        GameActivity randomTest = new GameActivity();
+        assertTrue("Zahl muss zwischen 1 und 10 liegen: " + randomTest.number, 1 <= randomTest.number && randomTest.number <= 10);
+
+    }
+
+    @Test
+    public void checkString() throws Exception {
+
+        GameActivity numTest = new GameActivity();
+        String test = String.valueOf(numTest.number);
+        assertEquals(test,numTest.num);
+    }
+
+    @Test
+    public void checkisRisk() throws Exception {
+
+        GameActivity numTest = new GameActivity();
+        assertEquals(0,numTest.isRisk);
+    }
+
+    @Test
+    public void checkIsActiveOrderServer() throws Exception {
+
+        GameActivity numTest = new GameActivity();
+        assertEquals(0,numTest.isActiveOrderServer);
+    }
+
+    @Test
+    public void checkIsActiveOrderClient() throws Exception {
+
+        GameActivity numTest = new GameActivity();
+        assertEquals(0,numTest.isActiveOrderClient);
     }
 
 
