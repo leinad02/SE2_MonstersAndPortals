@@ -792,13 +792,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     private void endConnectionDialogActive(){
         //Für Sarah: Hier Dialog einbinden "Du hast das Spiel beendet..."
-        startActivity(new Intent(GameActivity.this, EndActivity.class));
+        startActivity(new Intent(GameActivity.this, PlayerEndConnection.class));
         endGameConnection();
     }
 
     private void endConnectionDialogPassive(){
         //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
-        startActivity(new Intent(GameActivity.this, EndActivity.class));
+        startActivity(new Intent(GameActivity.this, OpponentEndConnection.class));
         endGameConnection();
     }
 
