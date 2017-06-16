@@ -84,11 +84,11 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
 
     Random random = new Random();
-    private int number = (random.nextInt(10) + 1);                  //Randomzahl zwischen 1 und 10
-    private String num = valueOf(number);
-    private int isRisk = 0;                                         //wenn richtig, den Player 4 Positionen vor schicken
-    private int isActiveOrderServer = 0;
-    private int isActiveOrderClient = 0;
+    protected int number = (random.nextInt(10) + 1);                  //Randomzahl zwischen 1 und 10
+    protected String num = valueOf(number);
+    protected int isRisk = 0;                                         //wenn richtig, den Player 4 Positionen vor schicken
+    protected int isActiveOrderServer = 0;
+    protected int isActiveOrderClient = 0;
     private int numberForOrder;
     private String type;
     //Dialoge für Monster,Portale,Gewonnen,Verloren
@@ -161,6 +161,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     }
 
+    //alle Buttons initialisieren
     protected void initializeButtons(){
         tvServerName = (TextView) findViewById(R.id.nameServer);
         tvClientName = (TextView) findViewById(R.id.nameClient);
@@ -172,6 +173,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         btnCheatServer = (Button) findViewById(R.id.btnCheatServer);
     }
 
+    //Netzwerkteile initialisieren
     protected void initializeNetwork(){
         updateServer = new UpdateServer();
         updateClient = new UpdateClient();
@@ -182,6 +184,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         handler = new Handler();
     }
 
+    //Sensor initialisieren
     protected void initializeSensor(){
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
