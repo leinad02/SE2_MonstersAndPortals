@@ -130,13 +130,22 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 btnCheatServer.setOnClickListener(this);
                 setBoard();
                 rollServer.setVisibility(View.VISIBLE);
-                startRunnableGameOrderServer();
-                new MPSounds().execute();
-
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startRunnableGameOrderServer();
+                        new MPSounds().execute();
+                    }
+                }, 1000);
             } else if (type.equalsIgnoreCase("client")) {
-                String ip = bundle.getString("ip");
-                client = new MyClient(55557, 55558, 5000);
-                new MyTaskClient(ip).execute();
+                final String ip = bundle.getString("ip");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        client = new MyClient(55557, 55558, 5000);
+                        new MyTaskClient(ip).execute();
+                    }
+                }, 1000);
                 disconnect.setVisibility(View.VISIBLE);
                 disconnect.setOnClickListener(this);
                 btnCheatClient.setOnClickListener(this);
@@ -226,6 +235,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 startRunnableGameOrderServer();
             } else {
                 setToastMessageStart();
+                new randomStartServer().execute();
             }
         }
     };
