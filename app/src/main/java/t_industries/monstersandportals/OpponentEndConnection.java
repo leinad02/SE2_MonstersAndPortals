@@ -15,7 +15,7 @@ public class OpponentEndConnection extends AppCompatActivity {
         das Programm eine Exception*/
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_endConnectionOpponent);
+        setContentView(R.layout.activity_end_c_opponent);
         //Damit der Screen immer aktiv bleibt, diese kleine Änderung
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         // Der Screen wird noch auf Fullscreen gesetzt
