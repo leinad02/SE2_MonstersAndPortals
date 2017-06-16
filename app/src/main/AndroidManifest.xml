@@ -26,6 +26,10 @@
             android:screenOrientation="landscape"/>
         <activity android:name=".EndActivity"
             android:screenOrientation="landscape"/>
+        <activity android:name=".OpponentEndConnection"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".PlayerEndConnection"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>
