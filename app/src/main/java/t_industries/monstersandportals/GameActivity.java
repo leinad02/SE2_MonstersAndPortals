@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import android.app.Dialog;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import android.content.DialogInterface;
@@ -87,12 +88,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     protected int number = (random.nextInt(10) + 1);                  //Randomzahl zwischen 1 und 10
     protected String num = valueOf(number);
     protected int isRisk = 0;                                         //wenn richtig, den Player 4 Positionen vor schicken
+    protected int isShown = 0;
     protected int isActiveOrderServer = 0;
     protected int isActiveOrderClient = 0;
     private int numberForOrder;
     private String type;
     //Dialoge für Monster,Portale,Gewonnen,Verloren
     Dialog dialog;
+    ProgressDialog progressDialog;
     //neue Alternative für die Sounds,Initialisiere MediaPlayer zur Verwaltung von Audiodateien
     protected MediaPlayer mpLaugh, mpMonster, mpPortal, mpPunch, mpUoh, mpWoo, mpYeah;
 
@@ -284,15 +287,19 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                             turn(4);
                         }else if(rivalPosition == 2 || rivalPosition == 18 || rivalPosition == 34){
                             if(cheatServer.getSuccessCheatClient() == 0 && cheatServer.getAllowFurtherClient() == 1){
+                                setTurnSettings();
                                 isRisk = 1;
-                                Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist beim Beantworten", Toast.LENGTH_SHORT).show();
+                                checkProgressDialog();
                                 startRunnableServer();
                             } else {
+                                progressDialog.dismiss();
                                 if(cheatServer.getClientCheat() == 1){
                                     turn(6);
                                 }
                                 isRisk = 0;
+                                isShown = 0;
                                 cheatServer.setSuccessCheatClient(0);
+                                resetTurnSettings();
                             }
                         }
 
@@ -344,15 +351,19 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                             turn(4);
                         }else if(userPosition == 2 || userPosition == 18 || userPosition == 34){
                             if(cheatClient.getSuccessCheatServer() == 0 && cheatClient.getAllowFurtherServer() == 1){
+                                setTurnSettings();
                                 isRisk = 1;
-                                Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist beim Beantworten", Toast.LENGTH_SHORT).show();
+                                checkProgressDialog();
                                 startRunnableClient();
                             } else {
+                                progressDialog.dismiss();
                                 if(cheatClient.getServerCheat() == 1){
                                     turn(6);
                                 }
                                 isRisk = 0;
+                                isShown = 0;
                                 cheatClient.setSuccessCheatServer(0);
+                                resetTurnSettings();
                             }
                         }
 
@@ -383,6 +394,33 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         }
     };
+
+    private void setTurnSettings(){
+        if(type.equalsIgnoreCase("client")){
+            rollClient.setVisibility(View.INVISIBLE);
+            updateClient.setActiveSensorClient(0);
+        } else {
+            rollServer.setVisibility(View.INVISIBLE);
+            updateServer.setActiveSensorServer(0);
+        }
+    }
+
+    private void resetTurnSettings(){
+        if(type.equalsIgnoreCase("client")){
+            rollClient.setVisibility(View.VISIBLE);
+            updateClient.setActiveSensorClient(1);
+        } else {
+            rollServer.setVisibility(View.VISIBLE);
+            updateServer.setActiveSensorServer(1);
+        }
+    }
+
+    private void checkProgressDialog(){
+        if(isShown == 0){
+            progressDialog = ProgressDialog.show(GameActivity.this, "Bitte warten", "Der Gegner ist gerade beim Beantworten.", true);
+            isShown = 1;
+        }
+    }
 
     private void startTimerButton() {
         if(type.equalsIgnoreCase("client")){
@@ -962,41 +1000,41 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     public void turn(int num){
         if(type.equalsIgnoreCase("client")){
             if(riskClient.isCheckFieldClient() == 0){
-                updateClient.setActiveSensorClient(0);
-                rollClient.setVisibility(View.INVISIBLE);
-                Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist noch beim Beantworten!", Toast.LENGTH_SHORT).show();
+                setTurnSettings();
+                checkProgressDialog();
                 isRisk = 1;
                 startRunnableClient();
             } else{
+                progressDialog.dismiss();
                 if(riskClient.getFailCounterClient() == 0){
                     newUserPosition(num);
                     checkBoard();
                     Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(GameActivity.this, "Der Gegner ist zu dumm, um die Frage zu beantworten!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, "Der Gegner konnte die Frage nicht beantworten!", Toast.LENGTH_SHORT).show();
                 }
-                rollClient.setVisibility(View.VISIBLE);
                 resetRiskValues();
-                updateClient.setActiveSensorClient(1);
+                isShown = 0;
+                resetTurnSettings();
             }
         }else{
             if(riskServer.isCheckField() == 0){
-                updateServer.setActiveSensorServer(0);
-                rollServer.setVisibility(View.INVISIBLE);
-                Toast.makeText(GameActivity.this, "Bitte warten, der Gegner ist noch beim Beantworten!", Toast.LENGTH_SHORT).show();
+                setTurnSettings();
+                checkProgressDialog();
                 isRisk = 1;
                 startRunnableServer();
             } else {
+                progressDialog.dismiss();
                 if(riskServer.getFailCounterServer() == 0){
                     newrivalPosition(num);
                     checkBoard();
                     Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(GameActivity.this, "Der Gegner ist zu dumm, um die Frage zu beantworten!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, "Der Gegner konnte die Frage nicht beantworten!", Toast.LENGTH_SHORT).show();
                 }
-                rollServer.setVisibility(View.VISIBLE);
                 resetRiskValues();
-                updateServer.setActiveSensorServer(1);
+                isShown = 0;
+                resetTurnSettings();
             }
 
         }
