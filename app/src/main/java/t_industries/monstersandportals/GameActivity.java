@@ -30,6 +30,20 @@ import android.widget.Toast;
 import java.io.Serializable;
 import java.util.Random;
 
+import t_industries.monstersandportals.AsyncTaskClasses.ACKClient;
+import t_industries.monstersandportals.AsyncTaskClasses.ACKServer;
+import t_industries.monstersandportals.AsyncTaskClasses.CheckRiskClient;
+import t_industries.monstersandportals.AsyncTaskClasses.CheckRiskServer;
+import t_industries.monstersandportals.AsyncTaskClasses.ClientDetectCheat;
+import t_industries.monstersandportals.AsyncTaskClasses.ClientEndConnection;
+import t_industries.monstersandportals.AsyncTaskClasses.MessageClient;
+import t_industries.monstersandportals.AsyncTaskClasses.MessageServer;
+import t_industries.monstersandportals.AsyncTaskClasses.MyTaskClient;
+import t_industries.monstersandportals.AsyncTaskClasses.MyTaskServer;
+import t_industries.monstersandportals.AsyncTaskClasses.RandomStartClient;
+import t_industries.monstersandportals.AsyncTaskClasses.RandomStartServer;
+import t_industries.monstersandportals.AsyncTaskClasses.ServerDetectCheat;
+import t_industries.monstersandportals.AsyncTaskClasses.ServerEndConnection;
 import t_industries.monstersandportals.NetworkClasses.CheatClient;
 import t_industries.monstersandportals.NetworkClasses.CheatServer;
 import t_industries.monstersandportals.NetworkClasses.RiskClient;
@@ -127,7 +141,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             type = bundle.getString("type");
             if (type.equalsIgnoreCase("server")) {
                 server = new MyServer(55557, 55558);
-                new MyTaskServer().execute();
+                new MyTaskServer(server, updateServer, riskServer, cheatServer).execute();
                 closeServer.setVisibility(View.VISIBLE);
                 closeServer.setOnClickListener(this);
                 btnCheatServer.setOnClickListener(this);
@@ -146,7 +160,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     @Override
                     public void run() {
                         client = new MyClient(55557, 55558, 5000);
-                        new MyTaskClient(ip).execute();
+                        new MyTaskClient(client, updateClient, riskClient, cheatClient, ip).execute();
                     }
                 }, 1000);
                 disconnect.setVisibility(View.VISIBLE);
@@ -235,13 +249,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         public void run() {
             if(updateServer.getCheckRandomNrServer() == 0){
                 if(isActiveOrderServer == 0){
-                    new randomStartServer().execute();
+                    new RandomStartServer(server).execute();
                     isActiveOrderServer = 1;
                 }
                 startRunnableGameOrderServer();
             } else {
                 setToastMessageStart();
-                new randomStartServer().execute();
+                new RandomStartServer(server).execute();
             }
         }
     };
@@ -256,13 +270,13 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             if(updateClient.getCheckRandomNrClient() == 0){
                 if(isActiveOrderClient == 0){
                     numberForOrder = random.nextInt(2);
-                    new randomStartClient(updateClient, numberForOrder).execute();
+                    new RandomStartClient(updateClient, numberForOrder, client).execute();
                     isActiveOrderClient = 1;
                 }
                 startRunnableGameOrderClient();
             } else {
                 setToastMessageStart();
-                new randomStartClient(updateClient, numberForOrder).execute();
+                new RandomStartClient(updateClient, numberForOrder, client).execute();
             }
         }
     };
@@ -483,7 +497,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             int rolledNo = rollDice();
             setDiceServer();
             System.out.println("Host zieht weiter:");
-            new MessageServer(rolledNo).execute();
+            new MessageServer(rolledNo, server).execute();
             System.out.println("Client ist dran:");
             newUserPosition(rolledNo);
             checkBoard();
@@ -498,7 +512,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
             }
 
-            new ACKServer(updateServer).execute();
+            new ACKServer(updateServer, server).execute();
             startRunnableServer();
         }
 
@@ -517,7 +531,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             int rolledNo = rollDice();
             setDiceClient();
             System.out.println("Client zieht weiter:");
-            new MessageClient(rolledNo).execute();
+            new MessageClient(rolledNo, client).execute();
             System.out.println("Host ist dran:");
             newrivalPosition(rolledNo);
             checkBoard();
@@ -532,7 +546,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 }
             }
 
-            new ACKClient(updateClient).execute();
+            new ACKClient(updateClient, client).execute();
             startRunnableClient();
         }
 
@@ -1045,22 +1059,22 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             if (type.equalsIgnoreCase("client")) {
                 newrivalPosition(6);
                 checkBoard();
-                new CheckRiskClient(decision).execute();
-                new MessageClient(6).execute();
+                new CheckRiskClient(decision, client).execute();
+                new MessageClient(6, client).execute();
             } else {
                 newUserPosition(6);
                 checkBoard();
-                new CheckRiskServer(decision).execute();
-                new MessageServer(6).execute();
+                new CheckRiskServer(decision, server).execute();
+                new MessageServer(6, server).execute();
             }
     }
 
     public void sendRiskMessageFailCheat(){
         String decision = "failcheat";
         if(type.equalsIgnoreCase("client")){
-            new CheckRiskClient(decision).execute();
+            new CheckRiskClient(decision, client).execute();
         } else{
-            new CheckRiskServer(decision).execute();
+            new CheckRiskServer(decision, server).execute();
         }
     }
 
@@ -1069,22 +1083,22 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         if(type.equalsIgnoreCase("client")){
             newrivalPosition(4);
             checkBoard();
-            new CheckRiskClient(decision).execute();
-            new MessageClient(4).execute();
+            new CheckRiskClient(decision, client).execute();
+            new MessageClient(4, client).execute();
         } else{
             newUserPosition(4);
             checkBoard();
-            new CheckRiskServer(decision).execute();
-            new MessageServer(4).execute();
+            new CheckRiskServer(decision, server).execute();
+            new MessageServer(4, server).execute();
         }
     }
 
     public void sendRiskMessageFail(){
         String decision = "fail";
         if(type.equalsIgnoreCase("client")){
-            new CheckRiskClient(decision).execute();
+            new CheckRiskClient(decision, client).execute();
         } else{
-            new CheckRiskServer(decision).execute();
+            new CheckRiskServer(decision, server).execute();
         }
     }
 
@@ -1185,23 +1199,23 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         switch (v.getId()) {
 
             case R.id.serverClose:
-                new serverEndConnection().execute();
+                new ServerEndConnection(server).execute();
                 endConnectionDialogActive();
                 break;
 
             case R.id.disconnect:
-                new clientEndConnection().execute();
+                new ClientEndConnection(client).execute();
                 endConnectionDialogActive();
                 break;
 
             case R.id.btnCheatServer:
                 Toast.makeText(GameActivity.this, "Glückwunsch, du hast den Gegner beim Schummeln erwischt!", Toast.LENGTH_SHORT).show();
-                new serverDetectCheat(cheatServer).execute();
+                new ServerDetectCheat(cheatServer, server).execute();
                 break;
 
             case R.id.btnCheatClient:
                 Toast.makeText(GameActivity.this, "Glückwunsch, du hast den Gegner beim Schummeln erwischt!", Toast.LENGTH_SHORT).show();
-                new clientDetectCheat(cheatClient).execute();
+                new ClientDetectCheat(cheatClient, client).execute();
                 break;
 
             default:
@@ -1298,209 +1312,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         sensorManager.unregisterListener(this);
     }
 
-    private class MyTaskServer extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            server.startServerNew(updateServer, riskServer, cheatServer);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    private class MyTaskClient extends AsyncTask<Void, Void, Void> {
-        String ip;
-
-        public MyTaskClient(String ip) {
-            this.ip = ip;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            client.connectNew(this.ip, updateClient, riskClient, cheatClient);
-            client.sendWelcomeMessage();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    private class MessageClient extends AsyncTask<Void, Void, Void> {
-        int rolledNr;
-
-        public MessageClient(int roll) {
-            this.rolledNr = roll;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            client.sendPosition(this.rolledNr);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    private class MessageServer extends AsyncTask<Void, Void, Void> {
-        int rolledNr;
-
-        public MessageServer(int roll) {
-            this.rolledNr = roll;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            server.sendPosition(this.rolledNr);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    private class ACKServer extends AsyncTask<Void, Void, Void> {
-        UpdateServer updateServer;
-
-        public ACKServer(UpdateServer updateServer) {
-            this.updateServer = updateServer;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            server.sendACK(this.updateServer);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    private class ACKClient extends AsyncTask<Void, Void, Void> {
-        UpdateClient updateClient;
-
-        public ACKClient(UpdateClient updateClient) {
-            this.updateClient = updateClient;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            client.sendACK(this.updateClient);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-
-
-
-    private class CheckRiskClient extends AsyncTask<Void, Void, Void> {
-        String decision;
-        public CheckRiskClient(String decision) {
-            this.decision = decision;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            if(decision.equalsIgnoreCase("fail")){
-                client.sendRiskFail();
-            } else if(decision.equalsIgnoreCase("success")) {
-                client.sendRiskField();
-            } else if(decision.equalsIgnoreCase("successcheat")){
-                client.sendCheatMessage();
-            } else {
-                client.sendCheatMessageFail();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-
-
-
-    private class CheckRiskServer extends AsyncTask<Void, Void, Void> {
-        String decision;
-        public CheckRiskServer(String decision) {
-            this.decision = decision;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            if(decision.equalsIgnoreCase("fail")){
-                server.sendRiskFail();
-            } else if(decision.equalsIgnoreCase("success")) {
-                server.sendRiskField();
-            } else if(decision.equalsIgnoreCase("successcheat")){
-                server.sendCheatMessage();
-            } else {
-                server.sendCheatMessageFail();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-
-
-
-    private class randomStartClient extends AsyncTask<Void, Void, Void> {
-        UpdateClient updateClient;
-        int number;
-        public randomStartClient(UpdateClient updateClient, int numberForOrder) {
-            this.updateClient = updateClient;
-            this.number = numberForOrder;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            client.sendRandomNumber(this.updateClient, this.number);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    private class randomStartServer extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            server.sendACKRandom();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
 
     private class MPSounds extends AsyncTask<Void, Void, Void> {
         @Override
@@ -1514,70 +1325,4 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             super.onPostExecute(result);
         }
     }
-
-    private class serverDetectCheat extends AsyncTask<Void, Void, Void> {
-        CheatServer cheatServer;
-
-        public serverDetectCheat(CheatServer cheatServer) {
-            this.cheatServer = cheatServer;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            server.sendDetectMessage(this.cheatServer);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    private class clientDetectCheat extends AsyncTask<Void, Void, Void> {
-        CheatClient cheatClient;
-        public clientDetectCheat(CheatClient cheatClient) {
-         this.cheatClient = cheatClient;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            client.sendDetectMessage(this.cheatClient);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    private class clientEndConnection extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            client.sendEndConnection();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    private class serverEndConnection extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            server.sendEndConnection();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-
-
 }
