@@ -6,7 +6,7 @@ import t_industries.monstersandportals.NetworkClasses.UpdateClient;
 import t_industries.monstersandportals.myclient.MyClient;
 
 /**
- * Created by micha on 17.06.2017.
+ * Created by Michael on 17.06.2017.
  */
 
 public class ACKClient extends AsyncTask<Void, Void, Void> {

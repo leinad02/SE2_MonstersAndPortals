@@ -15,6 +15,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     protected Button serverBtn, clientBtn, anleitungBtn;
     Dialog dialog;
+    protected int isPlayed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         clientBtn.setOnClickListener(this);
         anleitungBtn = (Button) findViewById(R.id.anleitungBtn);
         anleitungBtn.setOnClickListener(this);
-
+        Intent i = this.getIntent();
+        Bundle bundle = i.getExtras();
+        if (bundle != null) {
+            isPlayed = bundle.getInt("isPlayed");
+        }
+        if(isPlayed == 0){
+            MusicManager.SoundPlayer(this, R.raw.opener);
+            isPlayed = 1;
+        }
     }
 
     @Override
@@ -42,11 +51,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
 
             case R.id.server:
-                startActivity(new Intent(this, ServerActivity.class));
+                Intent serverAct = new Intent(this, ServerActivity.class);
+                serverAct.putExtra("isPlayed", isPlayed);
+                startActivity(serverAct);
                 break;
 
             case R.id.client:
-                startActivity(new Intent(this, ClientActivity.class));
+                Intent clientAct = new Intent(this, ClientActivity.class);
+                clientAct.putExtra("isPlayed", isPlayed);
+                startActivity(clientAct);
                 break;
 
             case R.id.anleitungBtn:
@@ -62,7 +75,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                         dialog.cancel();
                        }
                 });
-
                 break;
 
             default:

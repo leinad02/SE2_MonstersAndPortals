@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import t_industries.monstersandportals.myclient.MyClient;
 
 /**
- * Created by micha on 17.06.2017.
+ * Created by Michael on 17.06.2017.
  */
 
 public class CheckRiskClient extends AsyncTask<Void, Void, Void> {
@@ -22,10 +22,6 @@ public class CheckRiskClient extends AsyncTask<Void, Void, Void> {
             this.client.sendRiskFail();
         } else if(decision.equalsIgnoreCase("success")) {
             this.client.sendRiskField();
-        } else if(decision.equalsIgnoreCase("successcheat")){
-            this.client.sendCheatMessage();
-        } else {
-            this.client.sendCheatMessageFail();
         }
         return null;
     }
