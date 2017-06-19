@@ -71,8 +71,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     static int rivalPosition = 0;
 
     ImageView[] buttons;
-    int[] gras = new int[48];                                     // für zufällige Grasbilder
-    int[] grasImg = new int[]{                                // für die Schleife in checkBoard();
+    int[] gras = new int[48];                                       // für zufällige Grasbilder
+    int[] grasImg = new int[]{                                      // für die Schleife in checkBoard();
             R.drawable.gras_1, R.drawable.gras_2,
             R.drawable.gras_3, R.drawable.gras_4,};
 
@@ -1040,15 +1040,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 if (i == monster[3] || i == monster[4] || i == monster[5]) {
                     buttons[i].setImageResource(R.drawable.gras_m);
                 } else if (i == portal[3] || i == portal[4] || i == portal[5]) {
-                    buttons[i].setImageResource(R.drawable.gras_p);                    // nimmt wieder die Ursprüngliche Grasform an
+                    buttons[i].setImageResource(R.drawable.gras_p);
                 } else
-                    for (int j = 0; j < grasImg.length; j++) {
+                    for (int j = 0; j < grasImg.length; j++) {                    // nimmt wieder die Ursprüngliche Grasform an
                         if (gras[i] == (j + 1)) {
-                            buttons[j].setImageResource(grasImg[j]);
+                            buttons[i].setImageResource(grasImg[j]);
                             j = grasImg.length;
                         }
                     }
-
                         /*(gras[i] == 1){
                     buttons[i].setImageResource(R.drawable. gras_1);
             } else if (gras[i] == 2) {
