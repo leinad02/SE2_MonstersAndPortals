@@ -32,6 +32,7 @@ public class ServerActivity extends Activity implements View.OnClickListener {
     MyServer server;
     Handler handler;
     ForServer forServer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /*Die Titelleiste (Akku etc.) wird ausgeblendet wichtig, dies muss vor setContentView geschehen, sonst schmeißt
@@ -65,7 +66,7 @@ public class ServerActivity extends Activity implements View.OnClickListener {
 
             case R.id.createServer:
                 final String textName = name.getText().toString();
-                if(TextUtils.isEmpty(textName)){
+                if (TextUtils.isEmpty(textName)) {
                     name.setError("Bitte Namen eingeben!");
                     return;
                 }
@@ -96,11 +97,11 @@ public class ServerActivity extends Activity implements View.OnClickListener {
         }
 
         @Override
-        protected void onPostExecute(Void result){
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             Intent i = new Intent(getApplicationContext(), GameActivity.class);
-            i.putExtra("serverName",textName);
-            i.putExtra("clientName",forServer.getName());
+            i.putExtra("serverName", textName);
+            i.putExtra("clientName", forServer.getName());
             i.putExtra("type", "server");
             //i.putExtra("objectServer", server);
             startActivity(i);

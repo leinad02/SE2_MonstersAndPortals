@@ -26,6 +26,7 @@ public class ClientActivity extends Activity implements View.OnClickListener {
     protected int isPlayed;
     MyClient client;
     ForClient forClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /*Die Titelleiste (Akku etc.) wird ausgeblendet wichtig, dies muss vor setContentView geschehen, sonst schmeißt
@@ -59,10 +60,10 @@ public class ClientActivity extends Activity implements View.OnClickListener {
             case R.id.connectServer:
                 final String textName = name.getText().toString();
                 final String textIP = ip.getText().toString();
-                if(TextUtils.isEmpty(textName)){
+                if (TextUtils.isEmpty(textName)) {
                     name.setError("Bitte Namen eingeben!");
                     return;
-                } else if(TextUtils.isEmpty(textIP)){
+                } else if (TextUtils.isEmpty(textIP)) {
                     ip.setError("Bitte IP-Adresse eingeben!");
                     return;
                 }
@@ -80,7 +81,7 @@ public class ClientActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private class MyTask extends AsyncTask<Void, Void, Void>{
+    private class MyTask extends AsyncTask<Void, Void, Void> {
         final String textName = name.getText().toString();
         final String textIP = ip.getText().toString();
 
@@ -92,11 +93,11 @@ public class ClientActivity extends Activity implements View.OnClickListener {
         }
 
         @Override
-        protected void onPostExecute(Void result){
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             Intent i = new Intent(getApplicationContext(), GameActivity.class);
-            i.putExtra("serverName",forClient.getName());
-            i.putExtra("clientName",textName);
+            i.putExtra("serverName", forClient.getName());
+            i.putExtra("clientName", textName);
             i.putExtra("type", "client");
             i.putExtra("ip", textIP);
             //i.putExtra("objectClient", client);

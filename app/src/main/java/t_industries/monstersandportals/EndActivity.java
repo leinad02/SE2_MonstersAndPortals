@@ -26,20 +26,19 @@ public class EndActivity extends AppCompatActivity {
 
         /**vielleicht für später
          * againBtn = (Button) findViewById(R.id.againBtn);
-        againBtn.setOnClickListener(this);*/
+         againBtn.setOnClickListener(this);*/
     }
 
-   /**
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    /**
+     @Override public void onClick(View v) {
+     switch (v.getId()) {
 
-            case R.id.againBtn:
-                startActivity(new Intent(this, MenuActivity.class));
-                break;
+     case R.id.againBtn:
+     startActivity(new Intent(this, MenuActivity.class));
+     break;
 
-            default:
-                break;
-        }
-    }*/
+     default:
+     break;
+     }
+     }*/
 }

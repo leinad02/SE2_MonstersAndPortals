@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="18"
-    tools:context="t_industries.monstersandportals.ServerActivity"
+    android:baselineAligned="false"
     android:orientation="horizontal"
-    android:baselineAligned="false">
+    android:weightSum="18"
+    tools:context="t_industries.monstersandportals.ServerActivity">
 
 
     <LinearLayout
@@ -86,19 +86,18 @@
                     android:weightSum="3">
 
                     <Button
-                        android:id="@+id/platzhalter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:visibility="invisible" />
-
-
-                    <Button
                         android:id="@+id/serverClose"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/serverClose"
+                        android:text="Disconnect"
+                        android:visibility="invisible" />
+
+                    <Button
+                        android:id="@+id/platzhalter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:visibility="invisible" />
 
                     <Button
@@ -124,49 +123,49 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_top_r" />
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f46"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_top_l" />
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f45"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_top_r" />
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f44"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_top_l" />
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f43"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_top_r" />
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f42"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_top_l" />
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f41"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_top_r" />
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f40"
@@ -188,49 +187,49 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_r_g" />
+                        android:background="@drawable/ground_bot_l_g" />
 
                     <ImageView
                         android:id="@+id/f33"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_l" />
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f34"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_r" />
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f35"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_l" />
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f36"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_r" />
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f37"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_l" />
+                        android:background="@drawable/ground_top_r" />
 
                     <ImageView
                         android:id="@+id/f38"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_r" />
+                        android:background="@drawable/ground_top_l" />
 
                     <ImageView
                         android:id="@+id/f39"
@@ -251,49 +250,49 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_top_r_g" />
+                        android:background="@drawable/ground_top_l_g" />
 
                     <ImageView
                         android:id="@+id/f30"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_l" />
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f29"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_r" />
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f28"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_l" />
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f27"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_r" />
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f26"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_l" />
+                        android:background="@drawable/ground_bot_r" />
 
                     <ImageView
                         android:id="@+id/f25"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/ground_bot_r" />
+                        android:background="@drawable/ground_bot_l" />
 
                     <ImageView
                         android:id="@+id/f24"
