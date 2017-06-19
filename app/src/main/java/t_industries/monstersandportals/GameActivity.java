@@ -82,7 +82,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private static final int SHAKE_THRESHOLD = 800;
 
 
-
     static String[] gameBoard = new String[48];  // 8 x 6 Spielfeld;;
     static int[] monster = {12, 31, 46, 5, 25, 19};
     static int[] portal = {7, 22, 33, 16, 28, 41};
@@ -100,7 +99,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     ImageView rollClient;
     ImageView rollServer;
     Button btnCheatClient, btnCheatServer;
-
 
 
     Random random = new Random();
@@ -183,7 +181,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
 
     //alle Buttons initialisieren
-    protected void initializeButtons(){
+    protected void initializeButtons() {
         tvServerName = (TextView) findViewById(R.id.nameServer);
         tvClientName = (TextView) findViewById(R.id.nameClient);
         closeServer = (Button) findViewById(R.id.serverClose);
@@ -195,7 +193,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     //Netzwerkteile initialisieren
-    protected void initializeNetwork(){
+    protected void initializeNetwork() {
         updateServer = new UpdateServer();
         updateClient = new UpdateClient();
         riskServer = new RiskServer();
@@ -206,15 +204,15 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     //Sensor initialisieren
-    protected void initializeSensor(){
+    protected void initializeSensor() {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, sensor, 1000000);
     }
-                                                                                    //Spunds werden in den Variablen gespeichert
+    //Spunds werden in den Variablen gespeichert
 
     //Sounds werden in den Variablen gespeichert
-    protected void createMPSounds(){
+    protected void createMPSounds() {
         mpLaugh = MediaPlayer.create(this, R.raw.laugh);
         mpMonster = MediaPlayer.create(this, R.raw.monster2);
         mpPortal = MediaPlayer.create(this, R.raw.portal);
@@ -227,18 +225,18 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         createMainGameSound();
     }
 
-    protected void createMainGameSound(){
+    protected void createMainGameSound() {
         mpMainGameSound = MediaPlayer.create(this, R.raw.main_game_sound);
         mpMainGameSound.setLooping(true);
         mpMainGameSound.start();
     }
 
-    protected void createWinSound(){
+    protected void createWinSound() {
         mpWinSound = MediaPlayer.create(this, R.raw.win_sound);
         mpWinSound.setLooping(true);
     }
 
-    protected void createLoseSound(){
+    protected void createLoseSound() {
         mpLoseSound = MediaPlayer.create(this, R.raw.lose_sound);
         mpLoseSound.setLooping(true);
     }
@@ -270,8 +268,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     private Runnable runnableOrderServer = new Runnable() {
         @Override
         public void run() {
-            if(updateServer.getCheckRandomNrServer() == 0){
-                if(isActiveOrderServer == 0){
+            if (updateServer.getCheckRandomNrServer() == 0) {
+                if (isActiveOrderServer == 0) {
                     new RandomStartServer(server).execute();
                     isActiveOrderServer = 1;
                 }
@@ -310,27 +308,27 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     private Runnable runnableServer = new Runnable() {
         public void run() {
-            if(updateServer.getIsConnectedServer() == 1){
-                if(cheatServer.getDetectCheat() == 0){
+            if (updateServer.getIsConnectedServer() == 1) {
+                if (cheatServer.getDetectCheat() == 0) {
                     int getReady = updateServer.getReadyForTurnServer();
                     int rolledNrRival = updateServer.getPosition();
                     if (getReady == 1) {
-                        if(isRisk == 0){
+                        if (isRisk == 0) {
                             newrivalPosition(rolledNrRival);
                             checkBoard();
                             Toast.makeText(GameActivity.this, "Client würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
                         }
-                        if(rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40){
+                        if (rivalPosition == 10 || rivalPosition == 26 || rivalPosition == 40) {
                             turn(4);
-                        }else if(rivalPosition == 2 || rivalPosition == 18 || rivalPosition == 34){
-                            if(cheatServer.getSuccessCheatClient() == 0 && cheatServer.getAllowFurtherClient() == 1){
+                        } else if (rivalPosition == 2 || rivalPosition == 18 || rivalPosition == 34) {
+                            if (cheatServer.getSuccessCheatClient() == 0 && cheatServer.getAllowFurtherClient() == 1) {
                                 setTurnSettings();
                                 isRisk = 1;
                                 checkProgressDialog();
                                 startRunnableServer();
                             } else {
                                 progressDialog.dismiss();
-                                if(cheatServer.getClientCheat() == 1){
+                                if (cheatServer.getClientCheat() == 1) {
                                     turn(6);
                                 }
                                 isShown = 0;
@@ -340,8 +338,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                             }
                         }
 
-                        if(rivalPosition == 8 || rivalPosition == 24 || rivalPosition == 40){
-                            if(cheatServer.getClientCheat() == 1){
+                        if (rivalPosition == 8 || rivalPosition == 24 || rivalPosition == 40) {
+                            if (cheatServer.getClientCheat() == 1) {
                                 btnCheatServer.setVisibility(View.VISIBLE);
                                 startTimerButton();
                                 cheatServer.setClientCheat(0);
@@ -356,12 +354,12 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     } else {
                         startRunnableServer();
                     }
-                } else{
+                } else {
                     Toast.makeText(GameActivity.this, "Der Gegner hat dich entlarvt, du darfst jetzt nicht mehr schummeln!", Toast.LENGTH_SHORT).show();
                     cheatServer.setDetectCheat(0);
                     startRunnableServer();
                 }
-            } else{
+            } else {
                 endConnectionDialogPassive();
             }
 
@@ -374,27 +372,27 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     private Runnable runnableClient = new Runnable() {
         public void run() {
-            if(updateClient.getIsConnectedClient() == 1){
-                if(cheatClient.getDetectCheat() == 0){
+            if (updateClient.getIsConnectedClient() == 1) {
+                if (cheatClient.getDetectCheat() == 0) {
                     int getReady = updateClient.getReadyForTurnClient();
                     int rolledNrRival = updateClient.getPosition();
                     if (getReady == 1) {
-                        if(isRisk == 0){
+                        if (isRisk == 0) {
                             newUserPosition(rolledNrRival);
                             checkBoard();
                             Toast.makeText(GameActivity.this, "Server würfelte: " + rolledNrRival + ". Du bist am Zug!", Toast.LENGTH_SHORT).show();
                         }
-                        if(userPosition == 10 || userPosition == 26 || userPosition == 40){
+                        if (userPosition == 10 || userPosition == 26 || userPosition == 40) {
                             turn(4);
-                        }else if(userPosition == 2 || userPosition == 18 || userPosition == 34){
-                            if(cheatClient.getSuccessCheatServer() == 0 && cheatClient.getAllowFurtherServer() == 1){
+                        } else if (userPosition == 2 || userPosition == 18 || userPosition == 34) {
+                            if (cheatClient.getSuccessCheatServer() == 0 && cheatClient.getAllowFurtherServer() == 1) {
                                 setTurnSettings();
                                 isRisk = 1;
                                 checkProgressDialog();
                                 startRunnableClient();
                             } else {
                                 progressDialog.dismiss();
-                                if(cheatClient.getServerCheat() == 1){
+                                if (cheatClient.getServerCheat() == 1) {
                                     turn(6);
                                 }
                                 isShown = 0;
@@ -404,8 +402,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                             }
                         }
 
-                        if(userPosition == 8 || userPosition == 24 || userPosition == 40){
-                            if(cheatClient.getServerCheat() == 1){
+                        if (userPosition == 8 || userPosition == 24 || userPosition == 40) {
+                            if (cheatClient.getServerCheat() == 1) {
                                 btnCheatClient.setVisibility(View.VISIBLE);
                                 startTimerButton();
                                 cheatClient.setServerCheat(0);
@@ -432,8 +430,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     };
 
-    private void setTurnSettings(){
-        if(type.equalsIgnoreCase("client")){
+    private void setTurnSettings() {
+        if (type.equalsIgnoreCase("client")) {
             rollClient.setVisibility(View.INVISIBLE);
             updateClient.setActiveSensorClient(0);
         } else {
@@ -442,8 +440,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     }
 
-    private void resetTurnSettings(){
-        if(type.equalsIgnoreCase("client")){
+    private void resetTurnSettings() {
+        if (type.equalsIgnoreCase("client")) {
             rollClient.setVisibility(View.VISIBLE);
             updateClient.setActiveSensorClient(1);
         } else {
@@ -452,8 +450,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     }
 
-    private void checkProgressDialog(){
-        if(isShown == 0){
+    private void checkProgressDialog() {
+        if (isShown == 0) {
             progressDialog = ProgressDialog.show(GameActivity.this, "Bitte warten", "Der Gegner ist gerade beim Beantworten.", true);
             isShown = 1;
         }
@@ -879,27 +877,27 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         });
     }
 
-    private void endConnectionDialogActive(){
+    private void endConnectionDialogActive() {
         //Für Sarah: Hier Dialog einbinden "Du hast das Spiel beendet..."
         startActivity(new Intent(GameActivity.this, PlayerEndConnection.class));
         endGameConnection();
     }
 
-    private void endConnectionDialogPassive(){
+    private void endConnectionDialogPassive() {
         //Für Sarah: Hier Dialog einbinden "Der Gegner hat das Spiel beendet..."
         startActivity(new Intent(GameActivity.this, OpponentEndConnection.class));
         endGameConnection();
     }
 
-    private void endGameConnection(){
-        if(type.equalsIgnoreCase("client")){
+    private void endGameConnection() {
+        if (type.equalsIgnoreCase("client")) {
             client.disconnect();
         } else {
             server.stopServer();
         }
     }
 
-    public void drawRiskcardClient(){
+    public void drawRiskcardClient() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog.Builder builderfalse = new AlertDialog.Builder(this);
 
@@ -1046,16 +1044,16 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     }
 
-    public void turn(int num){
-        if(type.equalsIgnoreCase("client")){
-            if(riskClient.isCheckFieldClient() == 0){
+    public void turn(int num) {
+        if (type.equalsIgnoreCase("client")) {
+            if (riskClient.isCheckFieldClient() == 0) {
                 setTurnSettings();
                 checkProgressDialog();
                 isRisk = 1;
                 startRunnableClient();
-            } else{
+            } else {
                 progressDialog.dismiss();
-                if(riskClient.getFailCounterClient() == 0){
+                if (riskClient.getFailCounterClient() == 0) {
                     newUserPosition(num);
                     checkBoard();
                     Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet!", Toast.LENGTH_SHORT).show();
@@ -1066,15 +1064,15 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 isShown = 0;
                 resetTurnSettings();
             }
-        }else{
-            if(riskServer.isCheckField() == 0){
+        } else {
+            if (riskServer.isCheckField() == 0) {
                 setTurnSettings();
                 checkProgressDialog();
                 isRisk = 1;
                 startRunnableServer();
             } else {
                 progressDialog.dismiss();
-                if(riskServer.getFailCounterServer() == 0){
+                if (riskServer.getFailCounterServer() == 0) {
                     newrivalPosition(num);
                     checkBoard();
                     Toast.makeText(GameActivity.this, "Der Gegner hat die Frage richtig beantwortet!", Toast.LENGTH_SHORT).show();
@@ -1090,25 +1088,25 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     public void sendRiskMessageSuccessCheat() {
-            String decision = "successcheat";
-            if (type.equalsIgnoreCase("client")) {
-                newrivalPosition(6);
-                checkBoard();
-                new CheckCheatClient(decision, client).execute();
-                new MessageClient(6, client).execute();
-            } else {
-                newUserPosition(6);
-                checkBoard();
-                new CheckCheatServer(decision, server).execute();
-                new MessageServer(6, server).execute();
-            }
+        String decision = "successcheat";
+        if (type.equalsIgnoreCase("client")) {
+            newrivalPosition(6);
+            checkBoard();
+            new CheckCheatClient(decision, client).execute();
+            new MessageClient(6, client).execute();
+        } else {
+            newUserPosition(6);
+            checkBoard();
+            new CheckCheatServer(decision, server).execute();
+            new MessageServer(6, server).execute();
+        }
     }
 
     public void sendRiskMessageFailCheat() {
         String decision = "failcheat";
-        if(type.equalsIgnoreCase("client")){
+        if (type.equalsIgnoreCase("client")) {
             new CheckCheatClient(decision, client).execute();
-        } else{
+        } else {
             new CheckCheatServer(decision, server).execute();
         }
     }
@@ -1120,7 +1118,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             checkBoard();
             new CheckRiskClient(decision, client).execute();
             new MessageClient(4, client).execute();
-        } else{
+        } else {
             newUserPosition(4);
             checkBoard();
             new CheckRiskServer(decision, server).execute();
@@ -1130,9 +1128,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
     public void sendRiskMessageFail() {
         String decision = "fail";
-        if(type.equalsIgnoreCase("client")){
+        if (type.equalsIgnoreCase("client")) {
             new CheckRiskClient(decision, client).execute();
-        } else{
+        } else {
             new CheckRiskServer(decision, server).execute();
         }
     }
@@ -1276,15 +1274,14 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         if ((curTime - lastUpdate) > 100) {
 
-            if (calculateSensor(x, y, z, last_x, last_y, last_z,curTime) > SHAKE_THRESHOLD) {
+            if (calculateSensor(x, y, z, last_x, last_y, last_z, curTime) > SHAKE_THRESHOLD) {
 
                 if (type.equalsIgnoreCase("Client")) {
-
                     if (updateClient.getActiveSensorClient() == 1) {
                         gameTurnClient();
                         updateClient.setActiveSensorClient(0);
                     } else {
-                        if (calculateSensor(x, y, z, last_x, last_y, last_z,curTime) > 2000) {
+                        if (calculateSensor(x, y, z, last_x, last_y, last_z, curTime) > 2000) {
                             Toast.makeText(GameActivity.this, "Server noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -1295,17 +1292,16 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                         gameTurnServer();
                         updateServer.setActiveSensorServer(0);
                     } else {
-                        if (calculateSensor(x, y, z, last_x, last_y, last_z,curTime) > 2000) {
+                        if (calculateSensor(x, y, z, last_x, last_y, last_z, curTime) > 2000) {
                             Toast.makeText(GameActivity.this, "Client noch am Zug, warten mit Schuetteln!", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 }
-
-                last_x = x;
-                last_y = y;
-                last_z = z;
             }
+
+            last_x = x;
+            last_y = y;
+            last_z = z;
         }
     }
 
