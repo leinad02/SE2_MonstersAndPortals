@@ -63,7 +63,6 @@ public class MyClient implements Serializable{
 
         } catch (IOException e) {
             Logger.getLogger("Client konnte sich nicht verbinden.", String.valueOf(e));
-            //e.printStackTrace();
         }
 
         while(forClient.getName() == null){
@@ -83,7 +82,6 @@ public class MyClient implements Serializable{
 
         } catch (IOException e) {
             Logger.getLogger("Client konnte sich nicht mit dem zweiten Server verbinden.", String.valueOf(e));
-            //e.printStackTrace();
         }
     }
 

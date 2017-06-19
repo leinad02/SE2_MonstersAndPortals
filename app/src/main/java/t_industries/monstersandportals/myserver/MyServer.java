@@ -56,12 +56,10 @@ public class MyServer implements Serializable{
                 MyServerListener listener = new MyServerListener(clientRegister, name, forServer);
                 server.addListener(listener);
                 while(!clientRegister.isLogin()){
-                    //System.out.println(clientRegister.isLogin());
                     Logger.getLogger(String.valueOf(clientRegister.isLogin()));
                 }
             } catch (IOException e) {
                 Logger.getLogger("Server konnte nicht gestartet werden.", String.valueOf(e));
-               // e.printStackTrace();
             }
         ServerName serverName = new ServerName();
         serverName.setNameFromServer(name);
@@ -76,7 +74,6 @@ public class MyServer implements Serializable{
             server.addListener(listener);
         } catch (IOException e) {
             Logger.getLogger("Zweiter Server konnte nicht gestartet werden.", String.valueOf(e));
-            //e.printStackTrace();
         }
     }
 

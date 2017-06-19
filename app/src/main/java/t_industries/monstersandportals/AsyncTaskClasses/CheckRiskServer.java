@@ -18,12 +18,6 @@ public class CheckRiskServer extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        /*if(decision.equalsIgnoreCase("fail")){
-            this.server.sendRiskFail();
-        } else if(decision.equalsIgnoreCase("success")) {
-            this.server.sendRiskField();
-        }*/
-
         if("fail".equalsIgnoreCase(decision)){
             this.server.sendRiskFail();
         } else if("success".equalsIgnoreCase(decision)) {

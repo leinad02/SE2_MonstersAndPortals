@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -155,28 +156,28 @@ public class GameActivityTest {
 
         GameActivity numTest = new GameActivity();
         String test = String.valueOf(numTest.number);
-        assertEquals(test,numTest.num);
+        assertEquals(test, numTest.num);
     }
 
     @Test
     public void checkisRisk() throws Exception {
 
         GameActivity numTest = new GameActivity();
-        assertEquals(0,numTest.isRisk);
+        assertEquals(0, numTest.isRisk);
     }
 
     @Test
     public void checkIsActiveOrderServer() throws Exception {
 
         GameActivity numTest = new GameActivity();
-        assertEquals(0,numTest.isActiveOrderServer);
+        assertEquals(0, numTest.isActiveOrderServer);
     }
 
     @Test
     public void checkIsActiveOrderClient() throws Exception {
 
         GameActivity numTest = new GameActivity();
-        assertEquals(0,numTest.isActiveOrderClient);
+        assertEquals(0, numTest.isActiveOrderClient);
     }
 
 
@@ -244,17 +245,16 @@ public class GameActivityTest {
 
         try {
             testGame.newrivalPosition(rolledNr);
-            assertTrue(testGame.rivalPosition == rolledNr);
+            assertTrue(rivalPosition == rolledNr);
         } catch (NullPointerException e) {
-            e.printStackTrace();
-
+            Logger.getLogger("Falsche Position", String.valueOf(e));
         }
     }
 
 
     //prüft ob die Variablen wieder freigegeben wurden
     @Test
-    public void onDestroy() throws Exception {
+    public void onDestroy() throws AssertionError {
         GameActivity testGame = new GameActivity();
         assertTrue(testGame.mpLaugh == null);
         assertTrue(testGame.mpMonster == null);
@@ -488,21 +488,19 @@ public class GameActivityTest {
     }
 */
 
-        @Test
-        public void setBoard () throws Exception {
+    @Test
+    public void setBoard() throws Exception {
 
-        }
+    }
 
-        @Test
-        public void onClick () throws Exception {
+    @Test
+    public void onClick() throws Exception {
 
-        }
-
-   
+    }
 
 
     @Test
-    public void calculateSensor() throws Exception {
+    public void calculateSensor() throws ArithmeticException {
 
         final GameActivity SensorTest = new GameActivity();
 
@@ -521,18 +519,18 @@ public class GameActivityTest {
         assertEquals(Speed, testSpeed, 0.1);
         System.out.println("Ergebnis: " + Speed + "=" + testSpeed);
     }
-      
+
     @Test
-    public void rollDice() throws Exception {
+    public void rollDice() throws AssertionError {
 
         GameActivity rollDice = new GameActivity();
 
         for (int i = 0; i < 100000; i++) {
             int diceCount = rollDice.rollDice();
-            assertTrue("Zahl muss zwischen 1 und 6 liegen: " + diceCount, 1 <= diceCount && diceCount <= 6);
             System.out.println(diceCount);
-
+            assertTrue("Zahl ist kleiner 1 oder groesser 6.", 1 <= diceCount && diceCount <= 6);
         }
+
     }
 
     @Test
@@ -540,16 +538,15 @@ public class GameActivityTest {
         //wird nicht getestet, da nicht verwendet
     }
 
-        
 
     @Test
-    public void onResume () throws Exception {
+    public void onResume() throws Exception {
 
     }
 
     @Test
-    public void onPause () throws Exception {
-      
-    }
+    public void onPause() throws Exception {
 
     }
+
+}
