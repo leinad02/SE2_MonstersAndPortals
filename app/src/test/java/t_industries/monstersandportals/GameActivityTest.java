@@ -1,31 +1,14 @@
 package t_industries.monstersandportals;
 
-import android.app.Application;
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-
-import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import org.junit.runner.RunWith;
 
 import static t_industries.monstersandportals.GameActivity.gameBoard;
 import static t_industries.monstersandportals.GameActivity.monster;
@@ -169,7 +152,7 @@ public class GameActivityTest {
     public void checkIsActiveOrderServer() {
 
         GameActivity numTest = new GameActivity();
-        assertEquals(7, numTest.isActiveOrderServer);
+        assertEquals(0, numTest.isActiveOrderServer);
     }
 
     @Test
