@@ -144,15 +144,14 @@ public class GameActivityTest {
     }
 
     @Test
-    public void checkRandom() throws Exception {
+    public void checkRandom() {
 
         GameActivity randomTest = new GameActivity();
         assertTrue("Zahl muss zwischen 1 und 10 liegen: " + randomTest.number, 1 <= randomTest.number && randomTest.number <= 10);
-
     }
 
     @Test
-    public void checkString() throws Exception {
+    public void checkString() {
 
         GameActivity numTest = new GameActivity();
         String test = String.valueOf(numTest.number);
@@ -160,21 +159,21 @@ public class GameActivityTest {
     }
 
     @Test
-    public void checkisRisk() throws Exception {
+    public void checkisRisk() {
 
         GameActivity numTest = new GameActivity();
         assertEquals(0, numTest.isRisk);
     }
 
     @Test
-    public void checkIsActiveOrderServer() throws Exception {
+    public void checkIsActiveOrderServer() {
 
         GameActivity numTest = new GameActivity();
-        assertEquals(0, numTest.isActiveOrderServer);
+        assertEquals(7, numTest.isActiveOrderServer);
     }
 
     @Test
-    public void checkIsActiveOrderClient() throws Exception {
+    public void checkIsActiveOrderClient() {
 
         GameActivity numTest = new GameActivity();
         assertEquals(0, numTest.isActiveOrderClient);
@@ -182,24 +181,24 @@ public class GameActivityTest {
 
 
     @Test
-    public void onCreate() throws Exception {
+    public void onCreate() {
 
     }
 
     @Test
-    public void gameTurnServer() throws Exception {
+    public void gameTurnServer() {
 
     }
 
     @Test
-    public void gameTurnClient() throws Exception {
+    public void gameTurnClient() {
 
     }
 
 
     //klappt nur solange man nicht auf einem Ereignisfeld landet >>>suche noch nach Lösung
     @Test
-    public void newUserPosition() throws Exception {
+    public void newUserPosition() {
         GameActivity testGame = new GameActivity();
         int lowerBoundInclusive = 0;
         int upperBoundInclusive = 45;
@@ -218,7 +217,7 @@ public class GameActivityTest {
         // für Monsterfeld int rolledNr = 12;
         try {
             testGame.newUserPosition(rolledNr);
-            assertTrue(testGame.userPosition == rolledNr);
+            assertTrue(userPosition == rolledNr);
         } catch (NullPointerException e) {
             //assertEquals("server",testGame.checkMonsterOrPortalOrRiskServer(rolledNr));
             //assertEquals(12,testGame.checkMonsterOrPortalOrRiskServer(rolledNr));
@@ -228,7 +227,7 @@ public class GameActivityTest {
 
 
     @Test
-    public void newrivalPosition() throws Exception {
+    public void newrivalPosition() {
         GameActivity testGame = new GameActivity();
         int lowerBoundInclusive = 0;
         int upperBoundInclusive = 45;
@@ -254,7 +253,7 @@ public class GameActivityTest {
 
     //prüft ob die Variablen wieder freigegeben wurden
     @Test
-    public void onDestroy() throws AssertionError {
+    public void onDestroy() {
         GameActivity testGame = new GameActivity();
         assertTrue(testGame.mpLaugh == null);
         assertTrue(testGame.mpMonster == null);
@@ -266,22 +265,22 @@ public class GameActivityTest {
     }
 
     @Test
-    public void drawRiskcardClient() throws Exception {
+    public void drawRiskcardClient() {
 
     }
 
     @Test
-    public void drawRiskcardServer() throws Exception {
+    public void drawRiskcardServer() {
 
     }
 
     @Test
-    public void sendRiskMessageSuccess() throws Exception {
+    public void sendRiskMessageSuccess() {
 
     }
 
     @Test
-    public void sendRiskMessageFail() throws Exception {
+    public void sendRiskMessageFail() {
 
     }
 
@@ -489,18 +488,18 @@ public class GameActivityTest {
 */
 
     @Test
-    public void setBoard() throws Exception {
+    public void setBoard() {
 
     }
 
     @Test
-    public void onClick() throws Exception {
+    public void onClick() {
 
     }
 
 
     @Test
-    public void calculateSensor() throws ArithmeticException {
+    public void calculateSensor() {
 
         final GameActivity SensorTest = new GameActivity();
 
@@ -521,7 +520,7 @@ public class GameActivityTest {
     }
 
     @Test
-    public void rollDice() throws AssertionError {
+    public void rollDice() {
 
         GameActivity rollDice = new GameActivity();
 
@@ -534,18 +533,18 @@ public class GameActivityTest {
     }
 
     @Test
-    public void onAccuracyChanged() throws Exception {
+    public void onAccuracyChanged() {
         //wird nicht getestet, da nicht verwendet
     }
 
 
     @Test
-    public void onResume() throws Exception {
+    public void onResume() {
 
     }
 
     @Test
-    public void onPause() throws Exception {
+    public void onPause() {
 
     }
 
