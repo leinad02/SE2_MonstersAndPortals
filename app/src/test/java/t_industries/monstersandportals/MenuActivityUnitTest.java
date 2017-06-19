@@ -11,7 +11,7 @@ public class MenuActivityUnitTest {
 
     //müssen null sein, bevor Ihnen ein Wert zugewiesen wird
     @Test
-    public void onCreate() throws Exception {
+    public void onCreate() {
         MenuActivity testMenu = new MenuActivity();
         assertTrue(testMenu.serverBtn == null);
         assertTrue(testMenu.clientBtn == null);
@@ -19,7 +19,7 @@ public class MenuActivityUnitTest {
     }
 
     @Test
-    public void onClick() throws Exception {
+    public void onClick() {
 
     }
 
