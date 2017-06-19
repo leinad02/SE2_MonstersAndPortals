@@ -1350,7 +1350,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         sensorManager.unregisterListener(this);
     }
 
-
     private class MPSounds extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
