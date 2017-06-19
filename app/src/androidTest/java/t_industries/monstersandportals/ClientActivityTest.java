@@ -18,12 +18,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
  */
 
 @RunWith(AndroidJUnit4.class)
-public class ClientActivityest {
+public class ClientActivityTest {
 
     //Bedeutet, dass beim Test automatisch die ServerActivity aufgerufen wird
     @Rule
     public ActivityTestRule<ClientActivity> clientActivityTestRule =
-            new ActivityTestRule<ClientActivity>(ClientActivity.class);
+            new ActivityTestRule<>(ClientActivity.class);
 
     @Test
     public void editTextNameAndIP(){

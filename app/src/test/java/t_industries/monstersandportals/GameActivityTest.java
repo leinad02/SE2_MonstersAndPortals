@@ -1,30 +1,14 @@
 package t_industries.monstersandportals;
 
-import android.app.Application;
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-
-import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import org.junit.runner.RunWith;
 
 import static t_industries.monstersandportals.GameActivity.gameBoard;
 import static t_industries.monstersandportals.GameActivity.monster;
@@ -143,62 +127,61 @@ public class GameActivityTest {
     }
 
     @Test
-    public void checkRandom() throws Exception {
+    public void checkRandom() {
 
         GameActivity randomTest = new GameActivity();
         assertTrue("Zahl muss zwischen 1 und 10 liegen: " + randomTest.number, 1 <= randomTest.number && randomTest.number <= 10);
-
     }
 
     @Test
-    public void checkString() throws Exception {
+    public void checkString() {
 
         GameActivity numTest = new GameActivity();
         String test = String.valueOf(numTest.number);
-        assertEquals(test,numTest.num);
+        assertEquals(test, numTest.num);
     }
 
     @Test
-    public void checkisRisk() throws Exception {
+    public void checkisRisk() {
 
         GameActivity numTest = new GameActivity();
-        assertEquals(0,numTest.isRisk);
+        assertEquals(0, numTest.isRisk);
     }
 
     @Test
-    public void checkIsActiveOrderServer() throws Exception {
+    public void checkIsActiveOrderServer() {
 
         GameActivity numTest = new GameActivity();
-        assertEquals(0,numTest.isActiveOrderServer);
+        assertEquals(0, numTest.isActiveOrderServer);
     }
 
     @Test
-    public void checkIsActiveOrderClient() throws Exception {
+    public void checkIsActiveOrderClient() {
 
         GameActivity numTest = new GameActivity();
-        assertEquals(0,numTest.isActiveOrderClient);
+        assertEquals(0, numTest.isActiveOrderClient);
     }
 
 
     @Test
-    public void onCreate() throws Exception {
+    public void onCreate() {
 
     }
 
     @Test
-    public void gameTurnServer() throws Exception {
+    public void gameTurnServer() {
 
     }
 
     @Test
-    public void gameTurnClient() throws Exception {
+    public void gameTurnClient() {
 
     }
 
 
     //klappt nur solange man nicht auf einem Ereignisfeld landet >>>suche noch nach Lösung
     @Test
-    public void newUserPosition() throws Exception {
+    public void newUserPosition() {
         GameActivity testGame = new GameActivity();
         int lowerBoundInclusive = 0;
         int upperBoundInclusive = 45;
@@ -217,7 +200,7 @@ public class GameActivityTest {
         // für Monsterfeld int rolledNr = 12;
         try {
             testGame.newUserPosition(rolledNr);
-            assertTrue(testGame.userPosition == rolledNr);
+            assertTrue(userPosition == rolledNr);
         } catch (NullPointerException e) {
             //assertEquals("server",testGame.checkMonsterOrPortalOrRiskServer(rolledNr));
             //assertEquals(12,testGame.checkMonsterOrPortalOrRiskServer(rolledNr));
@@ -227,7 +210,7 @@ public class GameActivityTest {
 
 
     @Test
-    public void newrivalPosition() throws Exception {
+    public void newrivalPosition() {
         GameActivity testGame = new GameActivity();
         int lowerBoundInclusive = 0;
         int upperBoundInclusive = 45;
@@ -244,17 +227,16 @@ public class GameActivityTest {
 
         try {
             testGame.newrivalPosition(rolledNr);
-            assertTrue(testGame.rivalPosition == rolledNr);
+            assertTrue(rivalPosition == rolledNr);
         } catch (NullPointerException e) {
-            e.printStackTrace();
-
+            Logger.getLogger("Falsche Position", String.valueOf(e));
         }
     }
 
 
     //prüft ob die Variablen wieder freigegeben wurden
     @Test
-    public void onDestroy() throws Exception {
+    public void onDestroy() {
         GameActivity testGame = new GameActivity();
         assertTrue(testGame.mpLaugh == null);
         assertTrue(testGame.mpMonster == null);
@@ -266,22 +248,22 @@ public class GameActivityTest {
     }
 
     @Test
-    public void drawRiskcardClient() throws Exception {
+    public void drawRiskcardClient() {
 
     }
 
     @Test
-    public void drawRiskcardServer() throws Exception {
+    public void drawRiskcardServer() {
 
     }
 
     @Test
-    public void sendRiskMessageSuccess() throws Exception {
+    public void sendRiskMessageSuccess() {
 
     }
 
     @Test
-    public void sendRiskMessageFail() throws Exception {
+    public void sendRiskMessageFail() {
 
     }
 
@@ -488,21 +470,19 @@ public class GameActivityTest {
     }
 */
 
-        @Test
-        public void setBoard () throws Exception {
+    @Test
+    public void setBoard() {
 
-        }
+    }
 
-        @Test
-        public void onClick () throws Exception {
+    @Test
+    public void onClick() {
 
-        }
-
-   
+    }
 
 
     @Test
-    public void calculateSensor() throws Exception {
+    public void calculateSensor() {
 
         final GameActivity SensorTest = new GameActivity();
 
@@ -514,41 +494,41 @@ public class GameActivityTest {
         float last_z = 400;
         float diffTime = 1000;
 
+        //curTime muss als Parameter mitgegeben werden, da aber diffTime berechnet wird nehmen wir einfach an, dass die Zeit noch nie upgedated wurde und die diffTime = currentTime ist
         float testSpeed = SensorTest.calculateSensor(100, 200, 150, 80, 230, 400, 1000);
         float Speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
-        assertTrue("speed ist ident!", Speed == testSpeed);
+        assertEquals(Speed, testSpeed, 0.1);
         System.out.println("Ergebnis: " + Speed + "=" + testSpeed);
-        }
-      
+    }
+
     @Test
-    public void rollDice() throws Exception {
+    public void rollDice() {
 
         GameActivity rollDice = new GameActivity();
 
         for (int i = 0; i < 100000; i++) {
             int diceCount = rollDice.rollDice();
-            assertTrue("Zahl muss zwischen 1 und 6 liegen: " + diceCount, 1 <= diceCount && diceCount <= 6);
             System.out.println(diceCount);
-
+            assertTrue("Zahl ist kleiner 1 oder groesser 6.", 1 <= diceCount && diceCount <= 6);
         }
+
     }
 
     @Test
-    public void onAccuracyChanged() throws Exception {
+    public void onAccuracyChanged() {
         //wird nicht getestet, da nicht verwendet
     }
 
-        
 
     @Test
-    public void onResume () throws Exception {
+    public void onResume() {
 
     }
 
     @Test
-    public void onPause () throws Exception {
-      
-    }
+    public void onPause() {
 
     }
+
+}
