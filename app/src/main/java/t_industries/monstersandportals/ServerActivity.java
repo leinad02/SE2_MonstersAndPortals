@@ -27,6 +27,8 @@ import t_industries.monstersandportals.myserver.MyServer;
 public class ServerActivity extends Activity implements View.OnClickListener {
     private EditText name;
     private Button createS, home;
+    protected int isPlayed;
+    ProgressDialog dialog;
     MyServer server;
     Handler handler;
     ForServer forServer;
@@ -51,6 +53,11 @@ public class ServerActivity extends Activity implements View.OnClickListener {
         home.setOnClickListener(this);
         handler = new Handler();
         forServer = new ForServer();
+        Intent i = this.getIntent();
+        Bundle bundle = i.getExtras();
+        if (bundle != null) {
+            isPlayed = bundle.getInt("isPlayed");
+        }
     }
 
     @Override
@@ -64,20 +71,14 @@ public class ServerActivity extends Activity implements View.OnClickListener {
                     return;
                 }
 
+                dialog = ProgressDialog.show(this, "Laden", "Bitte warten bis der Gegner beigetreten ist...", true);
                 new MyTask().execute();
-
-                /*final ProgressDialog dialog = ProgressDialog.show(this, "Laden", "Bitte warten bis der Gegner beigetreten ist...", true);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        server.startServer(textName);
-                        dialog.dismiss();
-                    }
-                }, 30000);*/
                 break;
 
             case R.id.home:
-                startActivity(new Intent(this, MenuActivity.class));
+                Intent home = new Intent(this, MenuActivity.class);
+                home.putExtra("isPlayed", isPlayed);
+                startActivity(home);
                 break;
 
             default:
@@ -104,6 +105,8 @@ public class ServerActivity extends Activity implements View.OnClickListener {
             i.putExtra("type", "server");
             //i.putExtra("objectServer", server);
             startActivity(i);
+            dialog.dismiss();
+            MusicManager.player.stop();
             server.stopServer();
         }
     }
