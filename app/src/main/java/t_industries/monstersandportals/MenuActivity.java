@@ -40,7 +40,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         if (bundle != null) {
             isPlayed = bundle.getInt("isPlayed");
         }
-        if(isPlayed == 0){
+        if (isPlayed == 0) {
             MusicManager.SoundPlayer(this, R.raw.opener);
             isPlayed = 1;
         }

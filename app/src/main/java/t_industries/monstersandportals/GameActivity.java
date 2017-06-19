@@ -1175,16 +1175,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                             j = grasImg.length;
                         }
                     }
-                        /*(gras[i] == 1){
-                    buttons[i].setImageResource(R.drawable. gras_1);
-            } else if (gras[i] == 2) {
-                    buttons[i].setImageResource(R.drawable. gras_2);
-            } else if (gras[i] == 3) {
-                    buttons[i].setImageResource(R.drawable. gras_3);
-            } else if (gras[i] == 4) {
-                    buttons[i].setImageResource(R.drawable. gras_4);
-            }   */
-
                 if (i == 47) {
                     buttons[i].setImageResource(R.drawable.end_field);             // das letzte Feld behält die Zeichnung
                 }
