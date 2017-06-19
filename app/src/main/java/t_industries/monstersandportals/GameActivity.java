@@ -209,7 +209,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, sensor, 1000000);
     }
-    //Spunds werden in den Variablen gespeichert
 
     //Sounds werden in den Variablen gespeichert
     protected void createMPSounds() {
