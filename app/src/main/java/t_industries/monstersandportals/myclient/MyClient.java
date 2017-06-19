@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Client;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import t_industries.monstersandportals.NetworkClasses.ACKClient;
 import t_industries.monstersandportals.NetworkClasses.ACKServer;
@@ -61,7 +62,8 @@ public class MyClient implements Serializable{
             client.sendTCP(req);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("Client konnte sich nicht verbinden.", String.valueOf(e));
+            //e.printStackTrace();
         }
 
         while(forClient.getName() == null){
@@ -80,7 +82,8 @@ public class MyClient implements Serializable{
             client.sendTCP(req);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("Client konnte sich nicht mit dem zweiten Server verbinden.", String.valueOf(e));
+            //e.printStackTrace();
         }
     }
 

@@ -514,12 +514,13 @@ public class GameActivityTest {
         float last_z = 400;
         float diffTime = 1000;
 
+        //curTime muss als Parameter mitgegeben werden, da aber diffTime berechnet wird nehmen wir einfach an, dass die Zeit noch nie upgedated wurde und die diffTime = currentTime ist
         float testSpeed = SensorTest.calculateSensor(100, 200, 150, 80, 230, 400, 1000);
         float Speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
-        assertTrue("speed ist ident!", Speed == testSpeed);
+        assertEquals(Speed, testSpeed, 0.1);
         System.out.println("Ergebnis: " + Speed + "=" + testSpeed);
-        }
+    }
       
     @Test
     public void rollDice() throws Exception {

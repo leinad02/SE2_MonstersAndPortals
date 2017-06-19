@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 import t_industries.monstersandportals.NetworkClasses.ACKClient;
 import t_industries.monstersandportals.NetworkClasses.ACKServer;
@@ -55,10 +56,12 @@ public class MyServer implements Serializable{
                 MyServerListener listener = new MyServerListener(clientRegister, name, forServer);
                 server.addListener(listener);
                 while(!clientRegister.isLogin()){
-                    System.out.println(clientRegister.isLogin());
+                    //System.out.println(clientRegister.isLogin());
+                    Logger.getLogger(String.valueOf(clientRegister.isLogin()));
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.getLogger("Server konnte nicht gestartet werden.", String.valueOf(e));
+               // e.printStackTrace();
             }
         ServerName serverName = new ServerName();
         serverName.setNameFromServer(name);
@@ -72,7 +75,8 @@ public class MyServer implements Serializable{
             MyServerListener listener = new MyServerListener(updateServer, riskServer, cheatServer);
             server.addListener(listener);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("Zweiter Server konnte nicht gestartet werden.", String.valueOf(e));
+            //e.printStackTrace();
         }
     }
 
