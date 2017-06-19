@@ -13,5 +13,6 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
+        throw new Exception("Example Unit Test schlufg fehl");
     }
 }
