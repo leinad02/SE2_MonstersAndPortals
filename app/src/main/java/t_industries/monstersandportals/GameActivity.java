@@ -831,6 +831,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
+        setTurnSettings();
         mpMainGameSound.stop();
         mpYeah.seekTo(0);
         mpYeah.start();
@@ -858,6 +859,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
+        setTurnSettings();
         mpMainGameSound.stop();
         mpPunch.seekTo(0);
         mpPunch.start();
