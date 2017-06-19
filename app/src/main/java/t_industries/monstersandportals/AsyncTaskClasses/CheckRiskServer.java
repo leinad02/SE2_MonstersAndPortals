@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import t_industries.monstersandportals.myserver.MyServer;
 
 /**
- * Created by micha on 17.06.2017.
+ * Created by Michael on 17.06.2017.
  */
 
 public class CheckRiskServer extends AsyncTask<Void, Void, Void> {
@@ -22,10 +22,6 @@ public class CheckRiskServer extends AsyncTask<Void, Void, Void> {
             this.server.sendRiskFail();
         } else if(decision.equalsIgnoreCase("success")) {
             this.server.sendRiskField();
-        } else if(decision.equalsIgnoreCase("successcheat")){
-            this.server.sendCheatMessage();
-        } else {
-            this.server.sendCheatMessageFail();
         }
         return null;
     }

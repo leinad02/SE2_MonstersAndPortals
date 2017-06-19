@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import t_industries.monstersandportals.myserver.MyServer;
 
 /**
- * Created by micha on 17.06.2017.
+ * Created by Michael on 17.06.2017.
  */
 
 public class MessageServer extends AsyncTask<Void, Void, Void> {

@@ -32,6 +32,8 @@ import java.util.Random;
 
 import t_industries.monstersandportals.AsyncTaskClasses.ACKClient;
 import t_industries.monstersandportals.AsyncTaskClasses.ACKServer;
+import t_industries.monstersandportals.AsyncTaskClasses.CheckCheatClient;
+import t_industries.monstersandportals.AsyncTaskClasses.CheckCheatServer;
 import t_industries.monstersandportals.AsyncTaskClasses.CheckRiskClient;
 import t_industries.monstersandportals.AsyncTaskClasses.CheckRiskServer;
 import t_industries.monstersandportals.AsyncTaskClasses.ClientDetectCheat;
@@ -111,7 +113,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     Dialog dialog;
     ProgressDialog progressDialog;
     //neue Alternative für die Sounds,Initialisiere MediaPlayer zur Verwaltung von Audiodateien
-    protected MediaPlayer mpLaugh, mpMonster, mpPortal, mpPunch, mpUoh, mpWoo, mpYeah;
+    protected MediaPlayer mpLaugh, mpMonster, mpPortal, mpPunch, mpUoh, mpWoo, mpYeah, mpMainGameSound, mpWinSound, mpLoseSound;
 
 
     @Override
@@ -129,7 +131,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         initializeButtons();
         initializeNetwork();
         initializeSensor();
-
+        new MPSounds().execute();
 
         Intent i = this.getIntent();
         Bundle bundle = i.getExtras();
@@ -151,7 +153,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                     @Override
                     public void run() {
                         startRunnableGameOrderServer();
-                        new MPSounds().execute();
                     }
                 }, 1000);
             } else if (type.equalsIgnoreCase("client")) {
@@ -169,7 +170,6 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                 setBoard();
                 rollClient.setVisibility(View.VISIBLE);
                 startRunnableGameOrderClient();
-                new MPSounds().execute();
             }
 
         } else {
@@ -218,6 +218,25 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         mpUoh = MediaPlayer.create(this, R.raw.ouh);
         mpWoo = MediaPlayer.create(this, R.raw.woo);
         mpYeah = MediaPlayer.create(this, R.raw.yeah);
+        createWinSound();
+        createLoseSound();
+        createMainGameSound();
+    }
+
+    protected void createMainGameSound(){
+        mpMainGameSound = MediaPlayer.create(this, R.raw.main_game_sound);
+        mpMainGameSound.setLooping(true);
+        mpMainGameSound.start();
+    }
+
+    protected void createWinSound(){
+        mpWinSound = MediaPlayer.create(this, R.raw.win_sound);
+        mpWinSound.setLooping(true);
+    }
+
+    protected void createLoseSound(){
+        mpLoseSound = MediaPlayer.create(this, R.raw.lose_sound);
+        mpLoseSound.setLooping(true);
     }
 
     private void setToastMessageStart(){
@@ -310,9 +329,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                                 if(cheatServer.getClientCheat() == 1){
                                     turn(6);
                                 }
-                                isRisk = 0;
                                 isShown = 0;
                                 cheatServer.setSuccessCheatClient(0);
+                                resetRiskValues();
                                 resetTurnSettings();
                             }
                         }
@@ -374,9 +393,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
                                 if(cheatClient.getServerCheat() == 1){
                                     turn(6);
                                 }
-                                isRisk = 0;
                                 isShown = 0;
                                 cheatClient.setSuccessCheatServer(0);
+                                resetRiskValues();
                                 resetTurnSettings();
                             }
                         }
@@ -711,6 +730,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         mpUoh.release();
         mpWoo.release();
         mpYeah.release();
+        mpMainGameSound.release();
+        mpWinSound.release();
+        mpLoseSound.release();
         super.onDestroy();
     }
 
@@ -804,10 +826,12 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
+        mpMainGameSound.stop();
         mpYeah.seekTo(0);
         mpYeah.start();
         mpWoo.seekTo(0);
         mpWoo.start();
+        mpWinSound.start();
 
         Button back = (Button) dialog.findViewById(R.id.backMenuBtnn);
         back.setOnClickListener(new View.OnClickListener() {
@@ -829,8 +853,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         dialog.show();
 
         //Beim Öffnen des Dialogs Sound abspielen
+        mpMainGameSound.stop();
         mpPunch.seekTo(0);
         mpPunch.start();
+        mpLoseSound.start();
 
         Button back = (Button) dialog.findViewById(R.id.backMenuBtnn);
         back.setOnClickListener(new View.OnClickListener() {
@@ -1059,12 +1085,12 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             if (type.equalsIgnoreCase("client")) {
                 newrivalPosition(6);
                 checkBoard();
-                new CheckRiskClient(decision, client).execute();
+                new CheckCheatClient(decision, client).execute();
                 new MessageClient(6, client).execute();
             } else {
                 newUserPosition(6);
                 checkBoard();
-                new CheckRiskServer(decision, server).execute();
+                new CheckCheatServer(decision, server).execute();
                 new MessageServer(6, server).execute();
             }
     }
@@ -1072,9 +1098,9 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     public void sendRiskMessageFailCheat(){
         String decision = "failcheat";
         if(type.equalsIgnoreCase("client")){
-            new CheckRiskClient(decision, client).execute();
+            new CheckCheatClient(decision, client).execute();
         } else{
-            new CheckRiskServer(decision, server).execute();
+            new CheckCheatServer(decision, server).execute();
         }
     }
 

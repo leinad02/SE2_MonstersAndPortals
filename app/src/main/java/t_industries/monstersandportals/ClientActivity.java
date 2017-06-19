@@ -23,6 +23,7 @@ import t_industries.monstersandportals.myclient.MyClient;
 public class ClientActivity extends Activity implements View.OnClickListener {
     private EditText name, ip;
     private Button connectS, home;
+    protected int isPlayed;
     MyClient client;
     ForClient forClient;
     @Override
@@ -44,6 +45,11 @@ public class ClientActivity extends Activity implements View.OnClickListener {
         home = (Button) findViewById(R.id.home);
         home.setOnClickListener(this);
         forClient = new ForClient();
+        Intent i = this.getIntent();
+        Bundle bundle = i.getExtras();
+        if (bundle != null) {
+            isPlayed = bundle.getInt("isPlayed");
+        }
     }
 
     @Override
@@ -64,7 +70,9 @@ public class ClientActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.home:
-                startActivity(new Intent(this, MenuActivity.class));
+                Intent home = new Intent(this, MenuActivity.class);
+                home.putExtra("isPlayed", isPlayed);
+                startActivity(home);
                 break;
 
             default:
@@ -93,6 +101,7 @@ public class ClientActivity extends Activity implements View.OnClickListener {
             i.putExtra("ip", textIP);
             //i.putExtra("objectClient", client);
             startActivity(i);
+            MusicManager.player.stop();
             client.disconnect();
         }
     }
