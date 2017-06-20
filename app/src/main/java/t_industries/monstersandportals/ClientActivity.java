@@ -17,7 +17,7 @@ import t_industries.monstersandportals.NetworkClasses.ForClient;
 import t_industries.monstersandportals.myclient.MyClient;
 
 /**
- * Created by micha on 21.04.2017.
+ * Created by Michael on 21.04.2017.
  */
 
 public class ClientActivity extends Activity implements View.OnClickListener {
@@ -100,7 +100,6 @@ public class ClientActivity extends Activity implements View.OnClickListener {
             i.putExtra("clientName", textName);
             i.putExtra("type", "client");
             i.putExtra("ip", textIP);
-            //i.putExtra("objectClient", client);
             startActivity(i);
             MusicManager.player.stop();
             client.disconnect();

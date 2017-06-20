@@ -14,7 +14,6 @@ public class MusicManager {
         player = MediaPlayer.create(ctx, raw_id);
         player.setLooping(true); // Set looping
         player.setVolume(100, 100);
-        //player.release();
         player.start();
     }
 }

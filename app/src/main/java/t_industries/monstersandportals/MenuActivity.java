@@ -11,6 +11,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * Created by Michael on 21.04.2017.
+ */
+
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
     protected Button serverBtn, clientBtn, anleitungBtn;
