@@ -108,6 +108,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     protected int isShown = 0;
     protected int isActiveOrderServer = 0;
     protected int isActiveOrderClient = 0;
+    protected boolean isPaused = false;
     private int numberForOrder;
     private String type;
     //Dialoge für Monster,Portale,Gewonnen,Verloren
@@ -832,6 +833,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         //Beim Öffnen des Dialogs Sound abspielen
         setTurnSettings();
+        sensorManager.unregisterListener(this);
         mpMainGameSound.stop();
         mpYeah.seekTo(0);
         mpYeah.start();
@@ -860,6 +862,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
         //Beim Öffnen des Dialogs Sound abspielen
         setTurnSettings();
+        sensorManager.unregisterListener(this);
         mpMainGameSound.stop();
         mpPunch.seekTo(0);
         mpPunch.start();
@@ -1333,12 +1336,19 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
             Sensor sensor = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
             sensorManager.registerListener(this, sensor, 1000000);
         }
+
+        if(isPaused == true){
+            mpMainGameSound.start();
+            isPaused = false;
+        }
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
         sensorManager.unregisterListener(this);
+        mpMainGameSound.pause();
+        isPaused = true;
+        super.onPause();
     }
 
     private class MPSounds extends AsyncTask<Void, Void, Void> {

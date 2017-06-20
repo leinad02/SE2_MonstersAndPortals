@@ -21,7 +21,7 @@ import t_industries.monstersandportals.myclient.MyClient;
 import t_industries.monstersandportals.myserver.MyServer;
 
 /**
- * Created by micha on 21.04.2017.
+ * Created by Michael on 21.04.2017.
  */
 
 public class ServerActivity extends Activity implements View.OnClickListener {
