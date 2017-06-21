@@ -4,8 +4,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SE2_MAP_16_06_17.iml" filepath="$PROJECT_DIR$/SE2_MAP_16_06_17.iml" />
       <module fileurl="file://$PROJECT_DIR$/SE2_MAP_Master12_06_17.iml" filepath="$PROJECT_DIR$/SE2_MAP_Master12_06_17.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SE2_Master21_06_16.iml" filepath="$PROJECT_DIR$/SE2_Master21_06_16.iml" />
       <module fileurl="file://$PROJECT_DIR$/SE2_MonstersAndPortals.iml" filepath="$PROJECT_DIR$/SE2_MonstersAndPortals.iml" />
       <module fileurl="file://$PROJECT_DIR$/SE2_MonstersAndPortalsneu.iml" filepath="$PROJECT_DIR$/SE2_MonstersAndPortalsneu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

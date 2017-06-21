@@ -27,8 +27,8 @@ public class ClientActivityTest {
 
     @Test
     public void editTextNameAndIP(){
-        /*findet Button mit der richtigen ID und simuliert einen User der "Michael" als Name eingibt, schließt Keyboard
-       olt das Keyboard* gibt anschließend eine Ip-Adresse ein und schließt wiederhi*/
+        /*findet Button mit der richtigen ID und simuliert einen User der "Michael" als Name eingibt, schließt Keyboard.
+       Gibt anschließend eine Ip-Adresse ein und schließt wiederholt das Keyboard*/
         onView(withId(R.id.textfieldNameClient))
                 .perform(typeText("Michael"), closeSoftKeyboard());
         onView(withId(R.id.textfieldIP))
