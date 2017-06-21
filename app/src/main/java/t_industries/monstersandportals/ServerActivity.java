@@ -25,8 +25,8 @@ import t_industries.monstersandportals.myserver.MyServer;
  */
 
 public class ServerActivity extends Activity implements View.OnClickListener {
-    private EditText name;
-    private Button createS, home;
+    protected EditText name;
+    protected Button createS, home;
     protected int isPlayed;
     ProgressDialog dialog;
     MyServer server;
