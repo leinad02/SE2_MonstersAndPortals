@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import t_industries.monstersandportals.AsyncTaskClasses.ACKServer;
+import t_industries.monstersandportals.AsyncTaskClasses.MessageServer;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -168,8 +171,44 @@ public class GameActivityTest {
 
     }
 
+    //funktioniert nicht
     @Test
     public void gameTurnServer() {
+        GameActivity gameActivity = new GameActivity();
+
+
+
+        try {
+
+            int userPosition = new Random().nextInt(47);
+            int rivalPosition = new Random().nextInt(47);
+          // gameActivity.gameTurnServer();
+            if (userPosition <= 47 && rivalPosition <= 47) {
+                int rolledNo = gameActivity.rollDice();
+                gameActivity.setDiceServer();
+                System.out.println("Host zieht weiter:");
+                new MessageServer(rolledNo, gameActivity.server).execute();
+                System.out.println("Client ist dran:");
+                newUserPosition();
+                gameActivity.checkBoard();
+
+                if (userPosition == 10 || userPosition == 26 || userPosition == 40) {
+                    drawRiskcardServer();
+                }
+
+                if (userPosition == 2 || userPosition == 18 || userPosition == 34) {
+                    if (gameActivity.cheatServer.getReadyCheatServer() == 1) {
+                        gameActivity.cheat();
+                    }
+                }
+
+                new ACKServer(gameActivity.updateServer, gameActivity.server).execute();
+                gameActivity.startRunnableServer();
+            }
+
+        } catch (Exception e){
+           e.printStackTrace();
+        }
 
     }
 

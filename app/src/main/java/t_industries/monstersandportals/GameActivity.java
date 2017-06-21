@@ -302,7 +302,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         }
     };
 
-    private void startRunnableServer() {
+    protected void startRunnableServer() {
         handler.postDelayed(runnableServer, 500);
     }
 
@@ -1313,7 +1313,7 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
         return rolledNumber;
     }
 
-    private void setDiceServer() {
+    protected void setDiceServer() {
         int diceImageServer = getResources().getIdentifier("d" + rolledNumber, "drawable", "t_industries.monstersandportals");
         rollServer.setImageResource(diceImageServer);
     }
