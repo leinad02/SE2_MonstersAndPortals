@@ -83,9 +83,10 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
 
 
     static String[] gameBoard = new String[48];  // 8 x 6 Spielfeld;;
-    static int[] monster = {12, 31, 46, 5, 25, 19};
+    static int[] monster = {(int) (Math.random() * 10 + 1) + 1, 31, 46, 5, 25, 19};
     static int[] portal = {7, 22, 33, 16, 28, 41};
     static int[] risk = {10, 26, 40};
+
 
     static int userPosition = 0;
     static int rivalPosition = 0;
@@ -1019,32 +1020,38 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     public void cheat() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final AlertDialog.Builder builderfalse = new AlertDialog.Builder(this);
 
-        // Hilfsklasse für Dialogfenster erstellen
+        boolean schummeln = true;
 
-        //cheatclient/server hier als ober if machen, um sicher zu sein, dass das nur bei 0 angezeigt wird?
-        builder.setMessage("Willst du deinem Gegner eines auswischen?");
+        if ( schummeln == true ) {
 
-        final DialogInterface.OnClickListener goListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                sendRiskMessageFailCheat();
-                dialog.dismiss();
-            }
-        };
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final AlertDialog.Builder builderfalse = new AlertDialog.Builder(this);
 
-        DialogInterface.OnClickListener positivListenerClient = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                sendRiskMessageSuccessCheat();
-                dialog.dismiss();
-            }
-        };
-        builder.setPositiveButton("schummeln", positivListenerClient);
-        builder.setNegativeButton("jetzt nicht", goListener);
-        builder.show();
+            // Hilfsklasse für Dialogfenster erstellen
+
+            //cheatclient/server hier als ober if machen, um sicher zu sein, dass das nur bei 0 angezeigt wird?
+            builder.setMessage("Willst du deinem Gegner eines auswischen?");
+
+            final DialogInterface.OnClickListener goListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    sendRiskMessageFailCheat();
+                    dialog.dismiss();
+                }
+            };
+
+            DialogInterface.OnClickListener positivListenerClient = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    sendRiskMessageSuccessCheat();
+                    dialog.dismiss();
+                }
+            };
+            builder.setPositiveButton("schummeln", positivListenerClient);
+            builder.setNegativeButton("jetzt nicht", goListener);
+            builder.show();
+        }
 
     }
 
@@ -1140,6 +1147,8 @@ public class GameActivity extends Activity implements Serializable, View.OnClick
     }
 
     public void checkBoard() {                                           //checkt wo Host & Gast sich gerade befinden
+
+
 
         for (int i = 0; i < 47; i++) {
 
